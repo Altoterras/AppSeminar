@@ -1,0 +1,140 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 8 - static メンバ
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトで static メンバについて勉強しましょう。
+
+★ 参考サイト
+http://www.javadrive.jp/start/about/index4.html
+
+---
+◆static メンバ
+
+static メンバは、変数（定数）、メソッドを静的なものとして定義します。
+static メンバは new によって生成されるものではなく、プログラムが実行された時点で最初に生成されます。
+外部からアクセスするには、非 static メンバと同じく . （ドット）演算子でアクセスできますが、クラス名 . メンバ で記述します。
+staic メソッド内では、static 変数にはアクセスできますが、非 static 変数にはアクセスできません。
+非 staic メソッド内では、非 static 変数にも static 変数にもアクセスできます。
+
+
+----
+【問 1】難易度：☆
+
+筆記問題です。
+ソースを見て解答をし、最後にプログラムを実行して答えを確認しましょう。
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、public class Main { から } を以下のソースにしましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+public class Main
+{
+	public static class Class1
+	{
+		public static int _field1;
+		public int _field2;
+		public int _field3;
+		
+		public Class1()
+		{
+			_field1++;
+			_field2 = _field1;
+			_field3 = 0;
+		}
+		
+		public void func1()
+		{
+			_field1++;
+			_field2++;
+			_field3 = _field1 + _field2;
+			System.out.println("_field1=" + _field1 + ", _field2=" + _field2 + ", _field3=" + _field3);
+		}
+		
+		public static void func2()
+		{
+			System.out.println("_field1=" + _field1 + ", _field2=?, _field3=?");
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		//X
+		Class1 var1 = new Class1();
+		Class1 var2 = new Class1();
+		var1.func1();
+		var2.func1();
+		Class1.func2();
+	}
+}
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+※間違えた場合は間違えた原因をしっかり確認しましょう！
+
+
+----
+【問 2】難易度：☆☆
+
+「はじめに」を参考に (A) の状態を作りましょう。
+
+Main.java と同じフォルダ（Java パッケージ）に、SingletonDice.java を作りましょう。
+
+＜ヒント; Eclipse の場合＞
+　Package Explorer -> JavaLangLesson -> src -> (default package) を右クリック
+　-> New -> Class
+　・Name = SingletonDice
+　・public static void main(String[] args) = OFF
+　-> Finish
+
+SingletonDice.java の内容を以下のようにします。
+↓↓↓↓
+import java.util.Random;
+
+public class SingletonDice
+{
+	// field
+	private Random _r;
+	
+	// methods
+	private SingletonDice() { }	// !
+	public int roll() { return _r.nextInt(6) + 1; }
+
+	// static field
+	private static SingletonDice _thisSole = new SingletonDice();
+
+	// static method
+	public static SingletonDice getInstance()
+	{
+		_r = new Random();	// !
+		return _thisSole;
+	} 
+}
+↑↑↑↑
+
+次に、Main.java の //X の下に以下のソースを記述しましょう。（コピペ可。）
+
+↓↓↓↓
+		SingletonDice die1 = new SingletonDice();	// ! 
+		for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+↑↑↑↑
+
+上記のプログラムのエラーを解消しましょう。
+
+このプログラムは、以下のような動作を意図しています。
+・プログラム中で必ず１つしか実体を作らない（シングルトン パターン）
+・乱数生成器 _r は static にせず、SigletonDice が new されてはじめて生成したい
+・外部による SingletonDice の new は禁止したい
+・取得した唯一の SingletonDice インスタンスによって 10 回サイを回したい
+
+＜ヒント＞
+_r はコンストラクタ内で生成（new）するのが自然でしょう
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

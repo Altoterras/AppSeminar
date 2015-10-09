@@ -1,0 +1,77 @@
+----
+【問 1】
+
+a1.getValue1()=1
+b1.getValue2()=null
+a2.getValue1()=2
+b2.getValue2()=3
+
+
+----
+【問 2】
+public class Main
+{
+	interface Swimmable
+	{
+		public void swim();
+		public boolean isSwimming();
+	}
+	
+	public static class Human
+	{
+		private boolean _walking;
+		public void walk() { _walking = true; }
+		public boolean isWalking() { return _walking; }
+		public void stop() { _walking = false; }
+	}
+	
+	public static class SwimmableHuman extends Human implements Swimmable
+	{
+		private boolean _swimming;
+		public void swim() { stop(); _swimming = true; }
+		public boolean isSwimming() { return _swimming; }
+		public void stop() { super.stop(); _swimming = false; } 
+	}
+
+	public static void main(String[] args)
+	{
+		SwimmableHuman taro = new SwimmableHuman();
+		taro.walk();
+		taro.swim();
+		System.out.println("(1) taro.isWalking()=" + taro.isWalking() + ", taro.isSwimming()=" + taro.isSwimming());
+		taro.stop();
+		System.out.println("(2) taro.isWalking()=" + taro.isWalking() + ", taro.isSwimming()=" + taro.isSwimming());
+	}
+}
+
+
+----
+【問 3】
+
+abstract class A
+{
+	private String _name1;
+	public A(String name1) { _name1 = name1; }
+	public String getName1() { return _name1; }
+	abstract public String getName2();
+	public String getName() { return getName1() + " " + getName2(); }
+	public final void print() { System.out.println(getName()); }
+}
+abstract class B extends A
+{
+	private String _name2;
+	public B(String name1, String name2) { super(name1); _name2 = name2; }
+	public String getName2() { return _name2; }
+	abstract public String getName3(); 
+	public String getName() { return getName1() + " " + getName2() + " " + getName3(); }
+}
+class C extends B
+{
+	String _name3;
+	C(String name1, String name2, String name3) { super(name1, name2); _name3 = name3; }
+	public String getName3() { return _name3; }
+}
+A s = new C("Yamada", "M", "Taro");
+s.print();		
+
+

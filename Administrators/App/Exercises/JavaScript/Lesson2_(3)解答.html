@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<title>Lesson2</title>
+	<script type="text/javascript">
+		function println(msg)
+		{
+			document.write(msg + "<br>");
+		}
+	</script>
+</head>
+<body>
+	問 1 ：<br>
+	<script type="text/javascript">
+		var a = {};
+		var b = function(){};
+		var c = new Array();
+		var d = 1;
+		var e = "abc";
+		var f = new String("abc");
+		a.prop = 101;
+		b.prop = 102;
+		c.prop = 103;
+		d.prop = undefined;
+		e.prop = undefined;
+		f.prop = 106;
+		a.func = println;
+		b.func = println;
+		c.func = println;
+		d.func = println;
+		e.func = println;
+		f.func = println;
+		println("a.prop = " + a.prop);
+		println("b.prop = " + b.prop);
+		println("c.prop = " + c.prop);
+		println("d.prop = " + d.prop);
+		println("e.prop = " + e.prop);
+		println("f.prop = " + f.prop);
+		a.func("* 1 *");
+		b.func("* 2 *");
+		c.func("* 3 *");
+		// d.func("* 4 *"); これはエラー
+		// e.func("* 5 *"); これはエラー
+		f.func("* 6 *");
+	</script>
+	<hr>
+	問 2 ：<br>
+	<script type="text/javascript">
+		function a(msg) { println("* a * " + msg); this.prop1 = 1; }
+		a("1");
+		var b = new a("2");
+		var c = new a("3");
+		a.prop1 = 10;
+		a.prop2 = 20;
+		b.prop2 = 200;
+		c.prop2 = 2000;
+		println("c.prop1 = " + c.prop1 + ", c.prop2 = " + c.prop2);
+		println("b.prop1 = " + b.prop1 + ", b.prop2 = " + b.prop2);
+		println("a.prop1 = " + a.prop1 + ", a.prop2 = " + a.prop2);
+		var d = {}
+		d.prop = 101;
+		println("d.prop = " + d.prop);
+		d.func = println;
+		d.func("* d *");
+	</script>
+	<hr>
+	問 3 ：<br>
+	<script type="text/javascript">
+		var FSET = {};
+		FSET.func1 = function() { println("* func1 *"); }
+		FSET.func1.func2 = function() { println("* func2 *"); }
+		FSET.func3 = function(n) { this.prop1 = n; println("* func3 * prop1=" + this.prop1); }
+		FSET.func3.func4 = function() { println("* func4 * prop1=" + this.prop1); }
+		FSET.func1();
+		FSET.func1.func2();
+		FSET.func3();
+		FSET.func3.func4();
+		var a = new FSET.func1();
+		var b = new FSET.func1.func2();
+		var c = new FSET.func3(99);
+		var d = new FSET.func3.func4();
+		println("a.func2 = " + a.func2);
+		println("c.func4 = " + c.func4);
+	</script>
+</body>
+</html>
+  

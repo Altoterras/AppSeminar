@@ -1,0 +1,61 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 はじめに
+----------------------------------------------------------------------------
+
+----
+▼ 1
+
+File -> New -> Java Project
+・Project name: JavaLangLesson
+・JRE はデフォルトのまま
+・その他のオプションもデフォルトのまま
+-> Finish
+
+
+----
+▼ 2
+
+Package Explorer -> JavaLangLesson を展開 -> src 右クリック -> New -> Class
+・Name: Main
+・「public static void main(String[] args)」にチェックを入れる
+・「Generate comments」にチェックを入れる
+・その他のオプションもデフォルトのまま
+-> Finish
+
+
+----
+▼ 3
+
+public static void main(String[] args) {
+	// TODO Auto-generated method stub
+}
+の // TODO Auto-generated method stub を消して、代りに //X と記述しましょう。
+
+　・・・この状態を (A) とします。
+
+
+----
+▼ 4
+
+//X の下に
+System.out.println("Hello!");
+を書きましょう。
+
+
+----
+▼ 5
+
+デバッグ（虫）ボタンをクリックし、デバッグしましょう。
+Eclipse の Console （デフォルトでは下部にある）に Hello! と表示されたら成功。
+
+その後、追加した
+System.out.println("Hello!");
+行を消します。
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

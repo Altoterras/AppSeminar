@@ -1,0 +1,29 @@
+#example {
+	color: red;
+}
+
+
+
+
+#example2 {
+	color: red;
+}
+
+
+
+#example3 {
+	color: red;
+}
+
+
+
+
+/* 消さないでください */
+body {
+	width: 980px;
+}
+
+h1 {
+	margin: 50px 0 30px;
+}
+

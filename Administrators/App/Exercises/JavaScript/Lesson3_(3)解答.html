@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<title>Lesson3</title>
+	<script type="text/javascript">
+		function print(msg)
+		{
+			document.write(msg);
+		}
+		function println(msg)
+		{
+			document.write(msg + "<br>");
+		}
+	</script>
+</head>
+<body>
+	問 1 ：<br>
+	<script type="text/javascript">
+		function x(n) { this.prop1 = n; this.prop2 = 2; }
+		x.prototype.prop3 = 3;
+		x.prototype.func1 = function() { println("* " + this.prop1 + " * prop2 = " + this.prop2 + ", prop3 = " + this.prop3); }
+		println("---");
+		var a = new x('a');
+		var b = new x('b');
+		a.func1();
+		b.func1();
+		println("---");
+		a.prop2 = 20;
+		a.prop3 = 30;
+		a.func1();
+		b.func1();
+		println("---");
+		x.prototype.prop2 = 200;
+		x.prototype.prop3 = 300;
+		a.func1();
+		b.func1();
+	</script>
+	<hr>
+	問 2 ：<br>
+	<script type="text/javascript">
+		function x(n) { this.prop1 = n; this.prop2 = 2; }
+		x.prototype.prop3 = 3;
+		x.prototype.func1 = function() { println("* " + this.prop1 + " * prop2 = " + this.prop2 + ", prop3 = " + this.prop3); }
+		function y(n) { x.call(this, n); }
+		y.prototype = new x();
+		y.prototype.func1 = function() { print("# "); x.prototype.func1.call(this); }
+		function z(n) { y.call(this, n); }
+		z.prototype = new y();
+		z.prototype.func1 = function() { print("# "); y.prototype.func1.call(this); }
+		z.prototype.func2 = function() { print("@ "); x.prototype.func1.call(this); }
+		println("---");
+		var a = new x('a');
+		var b = new x('b');
+		var c = new y('c');
+		var d = new z('d');
+		a.func1();
+		b.func1();
+		c.func1();
+		d.func1();
+		println("---");
+		a.prop2 = 20;
+		a.prop3 = 30;
+		a.func1();
+		b.func1();
+		c.func1();
+		d.func1();
+		println("---");
+		x.prototype.prop2 = 200;
+		x.prototype.prop3 = 300;
+		y.prototype.prop2 = 2000;
+		y.prototype.prop3 = 3000;
+		z.prototype.prop2 = 20000;
+		z.prototype.prop3 = 30000;
+		a.func1();
+		b.func1();
+		c.func1();
+		d.func1();
+		d.func2();
+	</script>
+	<hr>
+	問 3 ：<br>
+	<script type="text/javascript">
+		var x = function(n)
+		{
+			this.prop1 = n;
+			this.prop2 = 2;
+			println("! " + this.prop1 + " !");
+			this.func2 = function() { println("[func2] " + this.prop1 + ", " + this.prop2 + ", " + this.prop3); }
+		}
+		x.prototype.prop3 = 3;
+		x.prototype.func1 = function() { println("* " + this.prop1 + " * prop2 = " + this.prop2 + ", prop3 = " + this.prop3); }
+		var y = function(n)
+		{
+			x.call(this, n);
+			this.func4 = function() { println("[func4] " + this.prop1 + ", " + this.prop2 + ", " + this.prop3); }
+		}
+		y.prototype = new x();
+		y.prototype.func1 = function() { print("# "); x.prototype.func1.call(this); }
+		function z(n)
+		{
+			x.call(this, n);
+			this.func3 = function() { println("[func3] " + this.prop1 + ", " + this.prop2 + ", " + this.prop3); }
+		}
+		z.prototype = new x('z');
+		z.prototype.func1 = function() { print("@ "); y.prototype.func1.call(this); }	// y の prototype を呼ぶこともできる
+		z.prototype.func2 = function() { print("?"); }
+		Object.prototype.func4 = function() { println("!"); }
+		println("---");
+		var a = new x('a');
+		var b = new y('b');
+		var c = new z('c');
+		c.prop3 = 0.3;
+		x.prop2 = 20;
+		x.prototype.prop3 = 30;
+		a.func1();
+		b.func1();
+		c.func1();
+		a.func2();
+		b.func2();
+		c.func2();
+		println("a.func3 = " + a.func3);
+		println("b.func3 = " + b.func3);
+		c.func3();
+		a.func4();
+		b.func4();
+		c.func4();
+		println("---");
+		x('d');
+		y('e');
+		z('f');
+		y.prototype.func1();
+		z.prototype.func1();
+	</script>
+</body>
+</html>
+  

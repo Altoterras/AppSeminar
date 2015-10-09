@@ -1,0 +1,81 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(2)実践編 - Android 初級 2
+----------------------------------------------------------------------------
+
+まずは、
+http://test-oth01.sigrest.co.jp/seminar/saj_q002.zip
+をダウンロード、解凍し、
+Eclipse の Package Explorer から Import してみましょう
+＜ヒント＞ import source は Android の Existing Android Code... です
+
+
+★ クラスリファレンスを使い慣れましょう
+	まずは
+	http://developer.android.com/reference/
+	をブックマーク
+
+★ ウェブでの技術情報検索と個人ブログの情報との付き合い方に慣れましょう
+	※個人ブログの情報の取り入れはほどほどに…
+
+
+【問１】
+「占う！」ボタンをクリックしたら ResultActivity を表示しましょう
+
+	＜ヒント＞
+		同様の処理を StartActivity が既にやっています
+		※ StartActivity クラスと startActivity メソッドはたまたま名前が似てしまっただけです
+
+
+【問２】
+ResultActivity に、YEAR, MONTH, DAY のパラメーターを渡しましょう
+
+	＜ヒント＞
+		ResultActivity でパラメータの取得処理を行なっています
+		onCreate メソッドの内容を読んでみましょう
+		その処理（パラメータの取得）からパラメータの設定メソッドを推察しましょう
+		Intent クラスのクラスリファレンスを開きましょう
+
+
+【問３】
+「占う！」ボタンをイメージボタンに変えましょう
+
+	＜やり方＞
+		(1)	Package Explorer から
+			Fortune\res\layout\activity_fortune_input.xml
+			を開く
+		(2)	配置モードを下部の Graphical Layout タブに
+		(3) Palette の Images & Media から ImageButton を表示させる
+		(4) スマホ画面にドラッグ＆ドロップして配置する
+		(5) Resource Chooser で button_do を選び OK
+		(6) Properties の ID を
+			「@+id/imageButton1」から「@+id/imageButtonDo」に変更
+		(7)	FortuneInputActivity.java の onCreate で
+			ボタン（_buttonDo）と同じようにイメージボタン（_imgbtnDo）も
+			リソースの関連付け（findViewById）と 
+			クリックイベント取得設定（setOnClickListener）を行う
+
+
+【問４】
+占いの結果を Timer で２秒後に表示してみましょう
+
+	＜ヒント＞
+		使うクラスは Timer, TimerTask, Runnable などを使います
+		ウェブで検索して使えそうなソースを探してみましょう
+
+
+【課題１】
+誕生日と今日の日付から違う占いのアルゴリズムを作ってみましょう
+
+	＜コメント＞
+		毎回実行するごとに変化するよりも、
+		日にち毎に変化する方が占いの結果として適しているかもしれませんね
+
+
+★ 参考サイト
+	「Androidアプリ作成の基本“Activity”とは何か？」@IT
+	http://www.atmarkit.co.jp/fsmart/articles/android02/android02_1.html
+	「Activityを実装して“Intent”を理解しよう」@IT
+	http://www.atmarkit.co.jp/fsmart/articles/android03/android03_2.html#03
+	「Javaのタスクを定期的に実行する」@IT
+	http://www.atmarkit.co.jp/fjava/javatips/078java008.html
+	※古い記事は情報鮮度にご注意ください

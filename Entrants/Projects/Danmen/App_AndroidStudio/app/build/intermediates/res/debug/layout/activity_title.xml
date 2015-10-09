@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#d6f9a9"
+    tools:context=".TitleActivity" >
+
+    <ImageView
+        android:id="@+id/imageviewTitleLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@null"
+        android:contentDescription="@string/empty_string"
+        android:src="@drawable/title_logo" />
+    
+    <ImageButton
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:contentDescription="@string/empty_string"
+        android:src="@drawable/button_start" />
+
+    <ImageButton
+        android:id="@+id/buttonManual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonStart"
+        android:layout_below="@+id/buttonStart"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:contentDescription="@string/empty_string"
+        android:src="@drawable/button_manual" />
+
+</RelativeLayout><!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/layout/activity_title.xml -->

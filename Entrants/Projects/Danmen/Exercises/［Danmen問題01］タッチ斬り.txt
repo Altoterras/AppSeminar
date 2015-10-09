@@ -1,0 +1,78 @@
+public class ActionActivity extends Activity implements View.OnClickListener {
+	
+	・・・
+	
+	private float _xTouchStart;
+	private float _yTouchStart;
+	
+	・・・
+	
+	@Override 
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		switch(event.getAction())
+		{
+		// タッチした
+		case MotionEvent.ACTION_DOWN:
+			{
+				_xTouchStart = event.getX();	// タッチの開始 X 座標 
+				_yTouchStart = event.？１？;	// タッチの開始 Y 座標
+			}
+			break;
+			
+		// タッチが離れた
+		case MotionEvent.ACTION_UP:
+			{
+				final float DIST_NEAR = 0.001f;		// 非常に近いと判定する距離定数値
+				final float DIST_DETECT = 100.0f;	// 移動したとみなす距離定数値
+
+				float xEnd = event.？２？;		// タッチの終了 X 座標 
+				float yEnd = event.？３？;		// タッチの終了 Y 座標
+				
+				float xDif = xEnd - _xTouchStart;	// X 座標の差
+				float yDif = yEnd - _yTouchStart;	// Y 座標の差
+
+				// 十分に移動している時のみ
+				float distancesq = (xDif * xDif) + (yDif * yDif);	// 移動距離の２乗
+				if(distancesq >= (DIST_DETECT * DIST_DETECT))
+				{
+					boolean vertical = false;		// 縦か横か（初期値は横） 
+					float slope = 0.0f;				// 傾き
+					
+					if((xDif * xDif) < (DIST_NEAR * DIST_NEAR))
+					{
+						vertical = true;	// 縦である		※１※
+					}
+					else
+					{
+						slope = yDif / xDif;	// 傾きを計算
+						if((slope >= ？４？) || (slope <= ？５？))
+						{
+							vertical = true;	// 縦である
+						}
+					}
+	
+					AlertDialog.Builder dlg;
+					dlg = new AlertDialog.Builder(this);
+					dlg.setMessage((vertical ? "縦斬りです" : "横斬りです") + "\n\nxStart=" + _xTouchStart + ", yStart=" + _yTouchStart + ", xEnd=" + xEnd + ", yEnd=" + yEnd + ", slope=" + slope);
+					dlg.show();
+				}
+			}
+			break;
+		}
+		
+		return super.onTouchEvent(event);
+	}
+	
+	・・・
+	
+}
+
+
+＜参考＞
+
+・２点間の距離（三平方の定理）
+http://www.geisya.or.jp/~mwm48961/math2/m3pita00.htm
+
+・直線の傾き
+http://w3e.kanazawa-it.ac.jp/math/category/kansuu/henkan-tex.cgi?target=/math/category/kansuu/tyokusenn-no-katamuki.html

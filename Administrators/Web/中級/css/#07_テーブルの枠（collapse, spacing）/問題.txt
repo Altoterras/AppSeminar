@@ -1,0 +1,46 @@
+
+
+【問題】mycss.css内に書いてください。
+
+（1）レイアウト.jpgを参考に、table要素に下記の通り設定して下さい。
+	・幅: 400px
+	・マージン: 下に20px
+	・表の境界線: 2px #2b2b2b solid
+
+（2）td要素とth要素に下記の通り設定して下さい。	
+	・border: 2px #2b2b2b solid
+	
+（3）class名「example1」に下記の通り設定して下さい。
+	・境界線の表示方法: collapse
+	
+（4）class名「example2」に下記の通り設定して下さい。
+	・境界線の表示方法: separate
+	
+	
+	
+	
+
+【参考サイト】
+TAG index
+http://www.tagindex.com/stylesheet/table/index.html
+
+
+
+【このレッスンで解説されている処理の概要は以下のとおりです。】
+（1）表の境界線の表示方法について設定する。
+
+
+
+
+【補足】
+
+実際によくつ分かれる表示方法は、
+
+“collapse”
+
+になるかと思います。
+
+
+
+
+

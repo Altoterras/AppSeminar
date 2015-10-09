@@ -1,0 +1,24 @@
+---
+Eclipse での Android エミュレータの作成方法
+
+(01) Eclipse ツールバーの虫アイコンの右▼
+(02) Debug Configurations を選択
+(03) 左ペインで対象プロジェクトを選択
+(04) 右ペインの Target タブを開く
+(05) Automatically pick compatible device: を選択
+(06) その下の Select a preferred... リストの右下の Manager ボタンを押す
+
+…または、
+(01-06) Eclipse ツールバーの端末アイコン Android Virtual Device Manager ボタンを押す
+
+(07) List of existing... リストの右上の New ボタンを押す
+(08) Create new Android Virtual Device (AVD) ダイアログを以下の設定に
+　　　　AVD Name: NexusOne
+　　　　Device: Nexus One (3.7", 480 x 720: hdpi)
+　　　　Target: Android 4.2 ※最新のものを選択
+　　　　Emulation Options の Use Host GPU にチェックを入れる（エラーを起こす場合は外す）
+　　上記以外はデフォルトのまま OK ボタンを押す
+
+※ ADT ver21.0 をベースにテキスト化しています
+※ Intel 版エミュレータを使えると速いので試してみましょう
+　　http://dev.classmethod.jp/smartphone/build-fast-android-emulator/

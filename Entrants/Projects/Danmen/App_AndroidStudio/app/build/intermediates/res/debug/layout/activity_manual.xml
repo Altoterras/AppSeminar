@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#e0fefa" >
+		
+    <RelativeLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" >
+
+	    <TextView
+	        android:id="@+id/textviewManualTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp"
+	        android:maxLines="100"
+	        android:textSize="16sp"
+	        android:textStyle="bold"
+	        android:text="@string/manual_title" />
+        
+        <TextView
+	        android:id="@+id/textviewManualContents01"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/textviewManualTitle"
+	        android:padding="10dp"
+	        android:maxLines="100"
+	        android:textSize="16sp"
+	        android:text="@string/manual_contents_01" />
+
+	    <ImageView
+	        android:id="@+id/imageviewManualImage01"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/textviewManualContents01"
+	        android:layout_centerHorizontal="true"
+	        android:background="@null"
+	        android:contentDescription="@string/empty_string"
+	        android:src="@drawable/manual_title" />
+        
+        <TextView
+	        android:id="@+id/textviewManualContents02"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/imageviewManualImage01"
+	        android:padding="10dp"
+	        android:maxLines="100"
+	        android:textSize="16sp"
+	        android:text="@string/manual_contents_02" />
+
+	    <ImageView
+	        android:id="@+id/imageviewManualImage02"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/textviewManualContents02"
+	        android:layout_centerHorizontal="true"
+	        android:background="@null"
+	        android:contentDescription="@string/empty_string"
+	        android:src="@drawable/manual_select" />
+        
+        <TextView
+	        android:id="@+id/textviewManualContents03"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/imageviewManualImage02"
+	        android:padding="10dp"
+	        android:maxLines="100"
+	        android:textSize="16sp"
+	        android:text="@string/manual_contents_03" />
+
+	    <ImageView
+	        android:id="@+id/imageviewManualImage03"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/textviewManualContents03"
+	        android:layout_centerHorizontal="true"
+	        android:background="@null"
+	        android:contentDescription="@string/empty_string"
+	        android:src="@drawable/manual_action" />
+        
+        <TextView
+	        android:id="@+id/textviewManualContents"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/imageviewManualImage03"
+	        android:padding="10dp"
+	        android:maxLines="100"
+	        android:textSize="16sp"
+	        android:text="@string/manual_contents_04" />
+	    	    	    	
+		<ImageButton
+	        android:id="@+id/buttonReturnTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/textviewManualContents"
+	        android:layout_centerHorizontal="true"
+	        android:paddingTop="10dp"
+	        android:paddingBottom="20dp"
+	        android:background="@null"
+	        android:contentDescription="@string/empty_string"
+	        android:src="@drawable/button_back" />
+			
+	</RelativeLayout>
+
+</ScrollView>
+<!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/layout/activity_manual.xml -->

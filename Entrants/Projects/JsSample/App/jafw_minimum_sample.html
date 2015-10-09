@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=480, user-scalable=no" />
+	<body>
+	<title>Minimum Sample</title>
+	<script src="js/jafw.js"></script>
+	<script src="js/jafw_minimum_sample.js"></script>
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+			font-size: 12px;
+		}
+		body {
+			background: #fff;
+			width: 480px;
+			-webkit-user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="app_canvas" width="640" height="960">
+		キャンバス
+	</canvas>
+	<script>
+		var app = new App('app_canvas', 640, 960);
+		app.start();
+	</script>
+</body>
+</html>
+  

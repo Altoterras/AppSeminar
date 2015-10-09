@@ -1,0 +1,147 @@
+----
+【問 1】
+
+Date d1 = new Date(2013, 2, 3);
+System.out.println("d1 = " + d1.getYear() + "/" + d1.getMonth() + "/" + d1.getDay());
+
+
+----
+【問 2】
+
+// 曜日を得る
+public int getDayOfWeek()
+{
+	int year = _year;
+	int month = _month + 1;
+	if(month <= 2)	// ２月以下
+	{
+	    year--;
+	    month += 12;
+	}
+	int youbi = (365 * year + year / 4 - year / 100 + year / 400 + 306 * (month + 1) / 10 + _day - 428) % 7;
+	return youbi;
+}
+
+----
+【問 3】
+
+// 曜日を得る
+public DayOfWeek getDayOfWeek()
+{
+	int year = _year;
+	int month = _month + 1;
+	if(month <= 2)	// ２月以下
+	{
+	    year--;
+	    month += 12;
+	}
+	int youbi = (365 * year + year / 4 - year / 100 + year / 400 + 306 * (month + 1) / 10 + _day - 428) % 7;
+	return DayOfWeek.values()[youbi];
+}
+
+
+----
+【問 4】
+
+※以下は解答の一例である（問３までも含む）
+
+public class Main
+{
+	static class Date
+	{
+		//======================================================================
+		// 定数
+		
+		public enum DayOfWeek
+		{
+			SUNDAY,
+			MONDAY,
+			TUESDAY,
+			WEDNESDAY,
+			THURSDAY,
+			FRIDAY,
+			SATURDAY,
+		}
+
+		//======================================================================
+		// メンバ変数
+		
+		private int _year;
+		private int _month;
+		private int _day;
+		
+		//======================================================================
+		// メソッド
+		
+		// デフォルトコンストラクタ
+		public Date()
+		{
+			_year = 2000;
+			_month = 0;
+			_day = 1;
+		}
+		
+		// コンストラクタ
+		public Date(int year, int month, int day)
+		{
+			_year = year;
+			_month = month - 1;
+			_day = day;
+		}
+		
+		// コピーコンストラクタ
+		public Date(final Date src)
+		{
+			_year = src._year;
+			_month = src._month;
+			_day = src._day;
+		}
+		
+		// 年を得る
+		public int getYear()
+		{
+			return _year;
+		}
+		
+		// 月を得る
+		public int getMonth()
+		{
+			return _month + 1;
+		}
+		
+		// 日を得る
+		public int getDay()
+		{
+			return _day;
+		}
+		
+		// 曜日を得る
+		public DayOfWeek getDayOfWeek()
+		{
+			int year = _year;
+			int month = _month + 1;
+			if(month <= 2)	// ２月以下
+			{
+			    year--;
+			    month += 12;
+			}
+			int youbi = (365 * year + year / 4 - year / 100 + year / 400 + 306 * (month + 1) / 10 + _day - 428) % 7;
+			return DayOfWeek.values()[youbi];
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		//X
+		// 問1
+		Date d1 = new Date(2013, 2, 3);
+		System.out.println("d1 = " + d1.getYear() + "/" + d1.getMonth() + "/" + d1.getDay() + "(" + d1.getDayOfWeek() + ")");
+		// デフォルトコンストラクタを使用する
+		Date d2 = new Date();
+		System.out.println("d2 = " + d2.getYear() + "/" + d2.getMonth() + "/" + d2.getDay());
+		// コピーコンストラクタを使用する
+		Date d3 = new Date(d1);
+		System.out.println("d3 = " + d3.getYear() + "/" + d3.getMonth() + "/" + d3.getDay());
+	}
+}
+

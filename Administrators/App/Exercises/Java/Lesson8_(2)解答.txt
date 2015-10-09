@@ -1,0 +1,41 @@
+----
+【問 1】
+
+_field1=3, _field2=2, _field3=5
+_field1=4, _field2=3, _field3=7
+_field1=4, _field2=?, _field3=?
+
+
+----
+【問 2】
+
+＜SingletonDice.java＞
+
+import java.util.Random;
+
+public class SingletonDice
+{
+	// field
+	private Random _r;
+	
+	// methods
+	private SingletonDice() { _r = new Random(); }
+	public int roll() { return _r.nextInt(6) + 1; }
+
+	// static field
+	private static SingletonDice _thisSole = new SingletonDice();
+
+	// static method
+	public static SingletonDice getInstance()
+	{
+		return _thisSole;
+	} 
+}
+
+＜Main.java＞
+
+		//X
+		SingletonDice die1 = SingletonDice.getInstance();
+		for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+
+

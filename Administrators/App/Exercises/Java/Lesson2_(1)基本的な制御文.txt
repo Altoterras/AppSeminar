@@ -1,0 +1,264 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 2 - 基本的な制御文
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトで基本的な制御文について勉強しましょう。
+
+★ 参考サイト
+http://www.atmarkit.co.jp/ait/articles/0409/09/news105.html
+http://www.atmarkit.co.jp/ait/articles/0411/03/news028.html
+http://www.javadrive.jp/start/if/
+http://www.javadrive.jp/start/for/
+http://www.javadrive.jp/start/break/
+
+
+---
+◆制御文
+
+Java には様々な条件分岐処理や繰り返し処理を効率的にプログラミングできるような制御文が用意されています。
+これらは、条件分岐とジャンプの組み合わせのバリエーションです。
+if, else, for, while は頻繁に使用しますので、覚えておきましょう。
+
+
+◆その他
+
+continue, break
+
+
+----
+【問 1】
+
+筆記問題です。
+ソースを見て解答をし、最後にプログラムを実行して答えを確認しましょう。
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+int n = 0;
+String s = null;
+
+// 数値の if
+n = 240;
+if(n >= 500)
+{
+	System.out.println("if-1: n=" + n);
+	s = "";
+}
+else if(n >= 250)
+{
+	System.out.println("if-2: n=" + n);
+	s = "test";
+}
+else
+{
+	System.out.println("if-3: n=" + n);
+}
+
+// オブジェクトの if
+if(s == null)
+{
+	System.out.println("if-4: s=" + s);
+}
+else
+{
+	if(s == "")
+	{
+		System.out.println("if-5: s=" + s);
+	}
+	
+	if(s.isEmpty())
+	{
+		System.out.println("if-6: s=" + s);
+	}
+	else
+	{
+		System.out.println("if-7: s=" + s);
+	}
+}
+
+// switch 文
+n = 3;
+System.out.println("switch-1: n=" + n);
+switch(n)
+{
+case 0:
+	System.out.println("switch-2: n=" + n);
+	break;
+case 1:
+	System.out.println("switch-3: n=" + n);
+	break;
+case 3:
+case 4:
+	System.out.println("switch-4: n=" + n);
+	break;
+default:
+	System.out.println("switch-5: n=" + n);
+	break;
+}
+
+// ? 文
+n = 3;
+s = (n <= 2) ? "abc" : "def";
+System.out.println("?-1: s=" + s);
+
+// for ループ
+n = 240;
+System.out.println("for-1: n=" + n);
+for(int i = 0; i < 100; i++)
+{
+	n++;
+	
+	if(n >= 750)
+	{
+		continue;
+	}
+	else if(n >= 500)
+	{
+		break;
+	}
+}
+System.out.println("for-2: n=" + n);
+
+// while ループ
+s = "A";
+System.out.println("while-1: s=" + s);
+while(s.length() <= 5)
+{
+	s += "a";
+}
+System.out.println("while-2: s=" + s);
+
+// do while ループ
+n = 700;
+do
+{
+	n++;
+}
+while(n <= 500);
+System.out.println("dowhile-1: n=" + n);
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+※間違えた場合は間違えた原因をしっかり確認しましょう！
+
+
+----
+【問 2】
+
+「はじめに」を参考に (A) の状態を作りましょう。
+
+以下のようなプログラムを書いてみましょう。
+
+1 ～ 5 の乱数を生成し、それぞれ以下のようなプログラムを書きましょう。
+・1 であれば文字列 "Abc" をコンソールに出力
+・2 であれば文字列 "defg" をコンソールに出力
+・3 または 4 であれば文字列 "Hijklmn" をコンソールに出力
+・それ以外であれば文字列 "op" をコンソールに出力
+
+＜ヒント＞
+	乱数は、一例として
+	int n = 1 + (int)(Math.random() * 5);
+	のように生成できる。
+
+＜ヒント＞
+	コンソールへの出力は、
+	System.out.println("XXX");
+	で出力できる。
+
+
+----
+【問 3】
+
+「はじめに」を参考に (A) の状態を作りましょう。
+
+以下のようなプログラムを書いてみましょう。
+
+int n = (int)(Math.random() * 1000);
+の結果が 900 以上が出るまで最大 100 回実行するプログラムを
+for, while, do while 文でそれぞれ書いてみましょう。
+なお、900 以上が出たらループを抜けるとする。
+
+＜ヒント＞
+	for の例：
+	↓↓↓↓
+	for(？？？)
+	{
+		int n = (int)(Math.random() * 1000);
+		if(？？？)
+		{
+			？？？
+		}
+	}
+	↑↑↑↑
+
+＜ヒント＞
+	while の例：
+	↓↓↓↓
+	int count = 0;
+	while(？？？)
+	{
+		int n = (int)(Math.random() * 1000);
+	}
+	↑↑↑↑
+
+＜ヒント＞
+	do while の例：
+	↓↓↓↓
+	int count = 0;
+	do
+	{
+		int n = (int)(Math.random() * 1000);
+	}
+	while(？？？);
+	↑↑↑↑
+
+
+----
+【課題 1】※上級者向け
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+class I
+{
+	int _i;
+	I() { System.out.println("A"); _i = 0; }
+	int get() { return _i; }
+	boolean cond(int n) { System.out.println("B"); return _i < 10; }
+	void next() { System.out.println("C"); _i++; }
+}
+int a = 100;
+for(I i = new I(); i.cond(10); i.next())
+{
+	if(i.get() == 1)
+	{
+		System.out.println("X"); 
+		continue;
+	}
+	else if(i.get() == 2)
+	{
+		System.out.println("Y");
+		break;
+	}
+	a++;
+	System.out.println("a=" + a); 
+}
+System.out.println("a=" + a + ".");
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+※間違えた場合は間違えた原因をしっかり確認しましょう！
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

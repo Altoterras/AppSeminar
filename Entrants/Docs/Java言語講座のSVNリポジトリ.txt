@@ -1,0 +1,15 @@
+svn+ssh://kishinet@kishinet.sakura.ne.jp/home/kishinet/svn/repos/App/Exercises/Java
+
+
+
+(7) リポジトリをチェックアウト
+
+　　作業用の適当なフォルダを作る
+　　　　例：C:\Users\__USERNAME__\Documents\AppSeminar\SvnWorks\Exercises\Java
+　　→　そのフォルダを右クリック
+　　→　SVN Checkout
+　　→　もし、鍵を信頼しますか？と聞かれたら「はい」を押す
+　　→　もし、「次の鍵への照会を許可しますか？」と聞かれたら「次回から確認しない」にチェックを入れて「Yes」を押す
+　　→　URL of repository:
+　　　　　　svn+ssh://kishinet@kishinet.sakura.ne.jp/home/kishinet/svn/repos/App/Exercises/Java
+　　　　を入力して OK

@@ -1,0 +1,46 @@
+
+
+【問題】mycss.css内に書いてください。
+
+（1）レイアウト.jpgを参考に、index.htmlの<p>タグ内に、下記の通り設定して下さい。
+	・class名：sample1
+	・背景色：#f8dce0
+	・マージン：上下左右に50px
+
+（2）レイアウト.jpgを参考に、index.htmlの<p>タグ内に、下記の通り設定して下さい。
+	・class名：sample2
+	・背景色：#f8dce0
+	・マージン：上下に50px、左右に100px
+
+（3）レイアウト.jpgを参考に、index.htmlの<p>タグ内に、下記の通り設定して下さい。
+	・class名：sample3
+	・背景色：#f8dce0
+	・マージン：上20px、左右40px、下60px
+
+（4）レイアウト.jpgを参考に、index.htmlの<p>タグ内に、下記の通り設定して下さい。
+	・class名：sample4
+	・背景色：#f8dce0
+	・マージン：上50px、右10px、下50px、左200px
+
+
+【参考サイト】
+TAG index
+http://www.tagindex.com/stylesheet/box/index.html
+
+
+
+【このレッスンで解説されている処理の概要は以下のとおりです。】
+（1）マージンの設定について
+
+
+
+【参考】
+■パディングについて（今回の問題には使いません）
+
+body要素にマージンを設定する場合は、同時に padding: 0 を指定しておくことをお勧めします。（一部のブラウザで余白の大きさが異なってしまうのを避けるため）
+
+body {
+margin: 10px;
+padding: 0;
+}
+}

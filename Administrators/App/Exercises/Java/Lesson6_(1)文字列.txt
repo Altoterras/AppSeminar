@@ -1,0 +1,49 @@
+----
+【問 1】難易度：☆
+
+筆記問題です。
+ソースを見て解答をし、最後にプログラムを実行して答えを確認しましょう。
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+String s1 = "abc";
+String s2 = "defg";
+char c1 = s1.charAt(2);
+s1 = s2;
+String s3 = c1 + s1;
+String s4 = "cdefg";
+boolean b1 = (s3 == s4);
+boolean b2 = s3.equals(s4);
+boolean b3 = s4.equalsIgnoreCase("CDefG");
+System.out.println("s3=" + s3 + " (" + s3.length() + ")");
+System.out.println("b1=" + b1 + ", b2=" + b2 + ", b3=" + b3);
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+※間違えた場合は間違えた原因をしっかり確認しましょう！
+
+
+----
+【問 2】難易度：☆☆
+
+以下のようなプログラムを書きましょう
+
+URL 文字列 "http://altoterras.co.jp/img/logo_ja.png" から、
+ドメイン名（http://altoterras.co.jp）とファイル名（logo_ja.png）、拡張子（.png）
+を抜き出すプログラムを書いてみましょう。
+※ URL は省略形ではなく、プロトコル、ドメインなどがあるとする
+
+
+----
+【課題 1】難易度：☆☆☆
+
+以下のようなプログラムを書きましょう
+
+URL 文字列 "http://altoterras.co.jp/img/logo_ja.png" から、
+ドメイン名（http://altoterras.co.jp）とファイル名（logo_ja.png）、拡張子（.png）
+を String クラスのメソッドは getBytes() のみを使って抜き出すプログラムを書いてみましょう。
+----------------------------------------------------------------------------

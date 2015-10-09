@@ -1,0 +1,278 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 6 - 継承とインターフェイス
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトで継承とインターフェイスについて勉強しましょう。
+
+★ 参考サイト
+http://www.atmarkit.co.jp/ait/articles/0907/23/news115.html
+http://www.javadrive.jp/start/extends/
+
+
+---
+◆継承
+
+クラスは特徴やデータをそのままそっくり引き継いだ子クラスを作ることができます。
+これが継承という仕組みです。
+引き継ぐだけでなく、メソッドを上書きして挙動を変更することもできます。
+メソッドを上書きすることをオーバーライドといいます。
+
+下のプログラムを見てみましょう。
+
+class Dice
+{
+	int roll() { return (int)(Math.random() * 6) + 1; }
+}
+class DiceSide10 extends Dice
+{
+	@Override int roll() { return (int)(Math.random() * 10) + 1; }
+}
+Dice die1 = new Dice();
+Dice die2 = new DiceSide10();
+for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+for(int i = 0; i < 10; i++) { System.out.println("die2(" + (i + 1) + "): " + die2.roll()); }
+
+※ @Override はアノテーションと呼ばれるものです。凡ミス防止のための機構ですが、なくても動きます。
+
+通常の 6 面サイコロを Dice、10 面サイコロを DiceSide10 とします。
+サイコロを振るメソッド roll は 6 面サイコロでは、1 ～ 6 の整数を返しますが、10 面サイコロでは 1 ～ 10 を返します。
+DiceSide10 は Dice を継承（extends）しているため、親クラス Dice の roll() を使うことができますが、親クラスの roll() は意図した挙動ではないので、オーバーライドしています。
+注目すべきは、die2 の型です。die2 も Dice と定義されていますが、new しているのは DiceSide10 であるため、di2.roll() は die2 が Dice クラスであるにもかかわらず、DiceSide10 の roll() が呼ばれています。
+
+なお、子クラスから親クラスのメソッドを呼びたい場合は、super.roll(); のように、親クラスを意味する super を用います。
+
+◆インターフェイス
+
+インターフェイスは、クラスのメソッドの型のみをあらかじめて定めておく仕組みです。
+
+インターフェイスはもともとは多重継承を回避するために編み出されたものです。
+Java のクラスはルールとして、人つのクラスからしか派生（extends）できません。
+しかし、複数のクラスメソッドをオーバーライドしたいという場面はよくあります。
+それを実現するのがインターフェイスです。
+
+下のプログラムを見てみましょう。
+
+interface Ikasama
+{
+	int rollIkasama();
+}
+public class Dice
+{
+	public int roll() { return (int)(Math.random() * 6) + 1; }
+}
+public class DiceSide10 extends Dice implements Ikasama
+{
+	public int roll() { return (int)(Math.random() * 10) + 1; }
+	public int rollIkasama() { return 10; }
+}
+Dice die1 = new Dice();
+Ikasama die2 = new DiceSide10();
+Dice die3 = new DiceSide10();
+for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+for(int i = 0; i < 10; i++) { System.out.println("die2(" + (i + 1) + "): " + die2.rollIkasama()); }
+if(die3 instanceof Ikasama)	{ System.out.println("die3: " + ((Ikasama)die3).rollIkasama()); }
+
+※ 上記には @Override アノテーションを使用してません。
+
+先ほどのプログラムの発展形です。
+DiceSide10 がイカサマをサポートしました。必ず 10 を出します。
+DiceSide10 は Ikasama インターフェイスを実装しているので、rollIkasama() を実行できます。
+
+die2 は型が Ikasama のため、問題なく rollIkasama() を実行できます。
+
+die3 は型が Dice のため、Ikasama を実装しているのか不明です。
+そんのため、instanceof で Ikasama を実装しているかを調べ、その後、die3 を Ikasama にキャスト（型変換）し、rollIkasama() を実行しています。
+
+◆抽象クラス
+
+クラスには必ず派生しないと new できない抽象クラスというものがあります。抽象クラスには abstract キーワードをを使います。
+抽象クラスは、インターフェイスに近いものですが、具体的な実装を含めることもできます。
+
+下のプログラムを見てみましょう。
+
+abstract class Dice
+{
+	protected Random _r;
+	public Dice() { reset(); }
+	public void reset() { _r = new Random(); }
+	public abstract int roll();
+}
+class DiceSide6 extends Dice
+{
+	public int roll() { return _r.nextInt(6) + 1; }
+}
+class DiceSide10 extends Dice
+{
+	public int roll() { return _r.nextInt(10) + 1; }
+}
+Dice die1 = new DiceSide6();
+Dice die2 = new DiceSide10();
+///Dice die3 = new Dice(); // これはエラー
+for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+for(int i = 0; i < 10; i++) { System.out.println("die2(" + (i + 1) + "): " + die2.roll()); }
+die1.reset();
+die2.reset();
+for(int i = 0; i < 10; i++) { System.out.println("die1(" + (i + 1) + "): " + die1.roll()); }
+for(int i = 0; i < 10; i++) { System.out.println("die2(" + (i + 1) + "): " + die2.roll()); }
+
+今回は、基底クラス Dice を抽象クラスで定義しています。
+Dice ではサイコロを振る roll の基本動作を定義していません。
+もとより派生クラスを作成することを意図しています。
+これは、派生クラスでは必ず roll を実装しないとまた abstract クラスになってしまうことも意味しています。
+
+◆その他
+
+アノテーション
+
+
+----
+【問 1】難易度：☆
+
+筆記問題です。
+ソースを見て解答をし、最後にプログラムを実行して答えを確認しましょう。
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、public class Main { から } を以下のソースにしましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+public class Main
+{
+	public static class A
+	{
+		int _f1;
+		public A() { _f1 = 1; }
+		public int getValue1() { return _f1; }
+	}
+	
+	interface B
+	{
+		int getValue2();
+	}
+	
+	public static class C extends A implements B
+	{
+		int _f2;
+		public C() { _f2 = 2; }
+		public int getValue1() { return _f2; }
+		public int getValue2() { return _f1 + 2; }
+	}
+	
+	public static void main(String[] args)
+	{
+		//X
+		A a1 = new A();
+		A a2 = new C();
+		B b1 = a1 instanceof B ? (B)a1 : null;
+		B b2 = a2 instanceof B ? (B)a2 : null;
+		System.out.println("a1.getValue1()=" + a1.getValue1());
+		System.out.println("b1.getValue2()=" + ((b1 != null) ? b1.getValue2() : "null"));
+		System.out.println("a2.getValue1()=" + a2.getValue1());
+		System.out.println("b2.getValue2()=" + ((b2 != null) ? b2.getValue2() : "null"));
+	}
+}
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+※間違えた場合は間違えた原因をしっかり確認しましょう！
+
+
+----
+【問 2】難易度：☆
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、public class Main { から } を以下のソースにしましょう。（コピペ可。）
+
+↓↓↓↓
+public class Main
+{
+	interface Swimmable
+	{
+		public void swim();
+		public boolean isSwimming();
+	}
+	
+	public static class Human
+	{
+		private boolean _walking;
+		public void walk() { _walking = true; }
+		public boolean isWalking() { return _walking; }
+		public void stop() { _walking = false; }
+	}
+	
+	public static class SwimmableHuman extends Human implements Swimmable
+	{
+		private boolean _swimming;
+		public void swim() { /*?1?*/ _swimming = true; }
+		public boolean isSwimming() { return _swimming; }
+		/*?2?*/ 
+	}
+	
+	public static void main(String[] args)
+	{
+		SwimmableHuman taro = new SwimmableHuman();
+		taro.walk();
+		taro.swim();
+		System.out.println("(1) taro.isWalking()=" + taro.isWalking() + ", taro.isSwimming()=" + taro.isSwimming());
+		taro.stop();
+		System.out.println("(2) taro.isWalking()=" + taro.isWalking() + ", taro.isSwimming()=" + taro.isSwimming());
+	}
+}
+↑↑↑↑
+
+この結果が、
+
+(1) taro.isWalking()=false, taro.isSwimming()=true
+(2) taro.isWalking()=false, taro.isSwimming()=false
+
+となるように、/*?1?*/, /*?2?*/ の箇所のみを書き換えましょう。
+
+
+----
+【問 3】難易度：☆
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。
+
+↓↓↓↓
+abstract class A
+{
+	private String _name1;
+	public A(String name1) { _name1 = name1; }
+	public String getName1() { return _name1; }
+	abstract public String getName2();
+	public String getName() { return getName1() + " " + getName2(); }
+	public final void print() { System.out.println(getName()); }
+}
+abstract class B extends A
+{
+	private String _name2;
+	public B(String name1, String name2) { super(name1); _name2 = name2; }
+	public String getName2() { return _name2; }
+	abstract public String getName3(); 
+	public String getName() { return /*?1?*/; }
+}
+class C extends B
+{
+	String _name3;
+	C(String name1, String name2, String name3) { /*?2?*/ _name3 = name3; }
+	public String getName3() { return _name3; }
+}
+A s = new C("Yamada", /*?3?*/, "Taro");
+s.print();
+↑↑↑↑
+
+この結果が、
+
+Yamada M Taro
+
+となるように、/*?1?*/, /*?2?*/, /*?3?*/ の箇所のみを書き換えましょう。
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

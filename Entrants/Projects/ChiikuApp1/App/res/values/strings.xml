@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChiikuApp1</string>
+    <string name="Start">Start</string>
+    <string name="Manual">あそびかた</string>
+    <string name="action_settings">Settings</string>
+    <string name="Game1">ゲーム１</string>
+    <string name="Test">テストボタン</string>
+    <string name="hello_world">Hello world!</string>
+    
+
+</resources>

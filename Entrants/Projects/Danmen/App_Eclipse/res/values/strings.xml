@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ざくざく！だんめん</string>
+    <string name="select_label">きるものをえらんでね！</string>
+    <string name="return_button_title">もどる</string>
+    <string name="cut_button_title">復活！</string>
+    <string name="manual_title">―　ざくざくだんめん つかいかた　―</string>
+    <string name="manual_contents_01">
+■１．タイトルがめん\n
+「はじめる」ボタンをおして、アプリをスタートしましょう！
+	</string>
+    <string name="manual_contents_02">
+「はじめる」ボタン：アプリをはじめます\n
+「つかいかた」ボタン：ざくざくだんめんのそうさせつめいをひょうじします\n
+\n
+■２．どれをきる？\n
+いろいろなものがでてくるよ。きりたいものをえらんでタッチしてみよう！
+	</string>
+    <string name="manual_contents_03">
+\n
+■３．ざくっときってね♪\n
+まえのがめんでえらんだものがひょうじされるよ。ものをたて、よこになぞってだんめんをのぞいてみよう！
+	</string>
+    <string name="manual_contents_04">
+「もどる」ボタン：どれをきる？にもどります。
+	</string>
+    <string name="empty_string"></string>
+
+</resources>

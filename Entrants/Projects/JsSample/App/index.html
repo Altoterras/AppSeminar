@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=480, user-scalable=no" />
+	<body>
+	<title>Sample</title>
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+			font-size: 12px;
+		}
+		body {
+			background: #fff;
+			width: 480px;
+			-webkit-user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="app_canvas" width="640" height="960">
+		キャンバス
+	</canvas>
+	<script>
+		var c = document.getElementById("app_canvas");
+		var ctx = c.getContext("2d");
+		ctx.beginPath();
+		ctx.arc(100,75,50,0,2*Math.PI);
+		ctx.stroke();
+		
+		/*
+		var A = function(c)
+		{
+			this.b = c;
+		};
+		var a = new A(3);
+		a.z = 4;
+		alert("" + a.z);
+		
+		a.f = function(x)
+		{
+			alert("x=" + x);
+		};
+		a.f(null);
+		*/
+		
+		
+		var h = 100;
+		var i = " 1";
+		var j = h + i;
+		j = +j;
+		j += 99;
+		//alert("j=" + j);
+		h = function() { alert("!"); } 
+		h();
+		var g = new h();
+		g.x = 10;
+		alert("g.x=" + g.x);
+		
+		g.x = function(){ alert("!!"); }
+		g.x();
+		
+		var k = new h();
+		//k.x();
+		
+		h.prototype.y = function(){ alert("abc"); }
+		g.y();
+		k.y();
+		
+		/*
+		h.hh = 10;
+		alert("h.hh=" + h.hh);
+		*/
+		
+	</script>
+</body>
+</html>
+  

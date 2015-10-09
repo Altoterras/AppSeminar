@@ -1,0 +1,68 @@
+----
+(1) Java の準備
+★Java がインストールされていないのが明らかな場合は (1-2) に進んでください
+
+(1-1) Java のバージョン確認
+　　コントロールパネル
+　　→　(プログラム) or (表示方法を小さいアイコンに変更)
+　　→　Java を選択　　★Java が無い場合は (1-2) に進んでください
+　　→　「バージョン情報」ボタン選択でバージョン表示
+　　★“バージョン7の更新17 (ビルド1.7.0_17-xxx)”以上である場合は (2) に進んでください
+
+(1-2) ご自分の Windows 環境の調査
+　　コントロールパネル
+　　→　(システムとセキュリティ → システム) or (表示方法を小さいアイコンに変更 → システム)
+　　→　“システム”の“システムの種類”を確認
+　　★“64 ビット オペ―レーティング システム”は『64bit』もしくは『x64』環境、
+　　　“32 ビット オペ―レーティング システム”は『32bit』もしくは『x86』環境と呼ばれます
+
+(1-3) JDK のダウンロード
+　　http://www.oracle.com/technetwork/jp/java/javase/downloads/index.html
+　　→　“Java SE ダウンロードの最新版は、こちら（USサイト）からダウンロードをお願いします。 ”
+　　　　の「こちら（USサイト）」を選択
+　　→　“Java SE Downloads”ページの“JDK”「DOWNLOAD」画像ボタンを押す
+　　→　“Java SE Development Kit 7 Downloads”ページの「Accept License Agreement」ラジオボタンを押す
+　　→　(1-2) の環境に合わせて、同ページの“Windows x86”または“Windows x64”の右にある「jdk-xxx.exe」を選択してダウンロード
+
+(1-4) JDK のインストール
+　　ダウンロードした JDK の EXE ファイルを実行してインストール
+
+----
+(2) Android SDK (ADT) のインストール
+
+★Eclipse が入っていない、もしくは既存の Eclipse とは別環境に Android 開発環境を用意したい場合は (2a) へ
+　Eclipse が既に入っていて、既存の Eclipse に Android 環境を組み込みたい場合は (2b) へ
+※当開発塾では (2a) 環境を標準とします
+
+(2a) Android SDK のダウンロード
+　　http://developer.android.com/sdk/index.html
+　　→　「Download the SDK ADT Bundle for Windows」ボタンを押す
+　　→　「 I have read and agree with the above terms and conditions」チェックボタンを押す
+　　→　 (1-2) の環境に合わせて「32bit」または「64bit」ラジオボタンを押す
+　　→　「Download the SDK ADT Bundle for Windows」ボタンを押す
+　　→　ダウンロードされた「adt-bundle-windows-xxx.zip」を ZIP 解凍
+　　→　“C:\Android”というフォルダを作って、上記 ZIP の中身をコピーしておく
+　　※ (2b) は不要です
+
+(2b) ADT plugin のインストール
+　　Eclipse を起動する
+　　→　メニューの「Help」→「Install New Software...」を選択
+　　→　「Add」ボタンを押す
+　　→　“Name”に『Android plug-in』と入力
+　　→　“Location”に『https://dl-ssl.google.com/android/eclipse/』と入力
+　　→　「OK」ボタンを押す
+　　→　“Work with”で「Android plug-in」を選択し「Developer Tools」チェックボタンを押す
+　　→　「Next」ボタンを押す
+　　→　プラグイン確認画面はそのまま「Next」ボタンを押す
+　　→　ライセンス画面で「I accept ...」ラジオボタンを選択し「Finish」ボタンを押す
+　　　　インストールの途中で続行確認ダウあログが出たら「OK」ボタンを押す
+　　→　“... restart now?”ダイアログが出たら「Yes」ボタンを押す
+　　　　再起動後に Android SDK のインストーラが起動した場合は「Cancel」ボタンを押す
+　　※ (2a) は不要です
+
+※なお、Java をインストールすることにより Java のセキュリティ脆弱性のリスクを背負うことになります
+　☆（必須）セキュリティソフトを併用する
+　☆（必須）Java のバージョンを最新に保つ
+　△（気にされる方に推奨）ブラウザ上での Java の実行を無効化する（コントロールパネルから設定出来ます）
+　△（気にされる方に推奨）セキュリティリスクの高いデータを扱う PC とは共存させない（VM 内のみの実行にする）
+などの対策を実行することをされることをお奨めします。

@@ -1,0 +1,138 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 10 - スレッド
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトでスレッドについて勉強しましょう。
+
+★ 参考サイト
+http://www.tohoho-web.com/java/thread.htm
+
+---
+◆スレッド
+
+プログラムの基本的な実行単位をプロセスと呼びます。
+OS はプロセスごとにメモリ空間を割り当て、実行します。
+多くの OS が複数のプロセスを同時に起動することができ、あたかも同時に動いているかのように見せています。
+ひとつのプロセスが CPU を占有しないように調停し、必要があれば不正な処理を行うプロセスを強制終了させます。
+
+プロセスは C 言語系でいうところの main 関数から始まり、条件分岐したり関数コールをしたりしながら一つの流れを実行します。
+そして、main 関数の終端に来るとプロセスを終了します。
+（多くのプロセス（プログラム）が実行をし続けているのは、main 関数内やその呼び先のどこかに無限ループを持っており、勝手にプロセスが終了しないようにしているからです。）
+
+しかし、一つの流れだけでは不都合が発生することがあります。
+何かの処理に時間がかかってしまうと、ユーザーの操作に応答できず、あたかもプロセスが反応しなくなってしまったかのようになってしまうためです。
+また通信プログラムなども、１つの対象としか通信を行うことができなくなってしまいます。
+（そのため、古い Linux プログラムなどでは通信のために多くのプロセスを起動します。）
+
+そこで、プロセス内でも複数のプログラムの流れを作れるようにしたものがスレッドです。
+スレッドはプロセスの中であたかも同時に実行され、重い処理中にも別のスレッドでユーザーの操作に反応したり、多くの通信対象と同時に通信したりできます。
+あたかも、表現としたのは、厳密には頻繁にプログラムの実行を切り替えているためです。従って、（１つの論理 CPU につき）同時に実行されているプログラムは１本のみです。
+（複数の CPU にスレッドを分散させる場合は真に同時といえます。しかし、画面出力などは同時に実行できるのは１本のみと考えてよいでしょう。）
+
+スレッドの管理はプログラマーに任されますが、その動作は非常に複雑で理解が難しいといえます。
+
+以下のプログラムを実行してみましょう。
+↓↓↓↓
+		class A
+		{
+			public int _a = 0;
+		}
+		class CustomThread extends Thread
+		{
+			Integer _id;
+			A _dst;
+			
+			public CustomThread(int id, A dst)
+			{
+				_id = id;
+				_dst = dst;
+			}
+			
+			public void run()
+			{
+				for(int i = 0; i < 10; i++)
+				{
+					_dst._a++;
+					System.out.println("Thread[" + _id + "] i=" + i + ", _dst._a=" + _dst._a);
+				}
+				//try { sleep(1); } catch(Exception e) {}
+			}
+		}
+		A a = new A();
+		CustomThread ct1 = new CustomThread(1, a);
+		CustomThread ct2 = new CustomThread(2, a);
+		CustomThread ct3 = new CustomThread(3, a);
+		ct1.start();
+		ct2.start();
+		ct3.start();
+↑↑↑↑
+
+スレッド内のプログラムはスレッド間で頻繁に切り替わりながら実行されています。
+そのため、上記のプログラムでは、
+	_dst._a++;
+のあとに必ずしもすぐに（他のスレッドに実行チャンスを与えず）
+	System.out.println("[" + _id + "] i=" + i + ", _dst._a=" + _dst._a);
+が実行されるとは限りません。
+
+※コメントアウトされた sleep 文を有効化してみましょう。また実行結果が変わるはずです
+
+ある範囲を排他的に実行するには、synchronized を使用します。
+
+以下のプログラムを実行してみましょう。
+↓↓↓↓
+		class A
+		{
+			public int _a = 0;
+		}
+		class CustomThread extends Thread
+		{
+			Integer _id;
+			A _dst;
+			
+			public CustomThread(int id, A dst)
+			{
+				_id = id;
+				_dst = dst;
+			}
+			
+			public void run()
+			{
+				for(int i = 0; i < 10; i++)
+				{
+					synchronized(_dst)
+					{
+						_dst._a++;
+						System.out.println("Thread[" + _id + "] i=" + i + ", _dst._a=" + _dst._a);
+					}
+					//try { sleep(1); } catch(Exception e) {}
+				}
+			}
+		}
+		A a = new A();
+		CustomThread ct1 = new CustomThread(1, a);
+		CustomThread ct2 = new CustomThread(2, a);
+		CustomThread ct3 = new CustomThread(3, a);
+		ct1.start();
+		ct2.start();
+		ct3.start();
+↑↑↑↑
+
+これで、
+	_dst._a++;
+	System.out.println("[" + _id + "] i=" + i + ", _dst._a=" + _dst._a);
+は必ずセットで実行され、１つのスレッドが実行中は他のスレッドが synchronized ブロックを実行しません。
+
+
+（メモ）
+					//synchronized(_id)					// NG
+					//synchronized("")					// OK
+					//synchronized(CustomThread.class)	// OK
+					synchronized(_dst)					// OK
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

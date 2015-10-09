@@ -1,0 +1,166 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 9 - 例外処理
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトで例外処理について勉強しましょう。
+
+★ 参考サイト
+http://www.javadrive.jp/start/exception/
+
+---
+◆例外処理
+
+例外処理は、失敗しうる処理のプログラム内を煩雑にしないようにしながら、記述・処理する構文です。
+考え方によってはあらゆる場面でも使えますが、あくまでも例外的なエラー処理に対して使うべきです。
+
+例外が発生した時の処理は、
+・メッセージボックスなどでエラー内容をプログラム実行者に知らせる
+・エラーログを記録する（後のエラー解析で利用する）
+などですが、プログラムを終了せずにそのままエラーを回復しつつ続行できるのが好ましいでしょう。
+
+書き方は以下の通りです。
+
+try
+{
+	// ここに例外（エラー）が発生しうる処理を記述する
+}
+catch(Exception ex)
+{
+	// ここに例外時の処理を記述する
+}
+
+Exception は例外処理時に発生するオブジェクトですが、
+様々な種類があり、try に対して複数記述できる（catch 文を連続して記述する）ため、例外の種類によって例外時の処理を変えることができます。
+
+例：
+IndexOutOfBoundsException
+　→ ある種のインデックス (配列、文字列、ベクトルなど) が範囲外であることを示されたときに発生する例外
+ArrayIndexOutOfBoundsException
+　→ 配列のインデックスが範囲外であることを示されたときに発生する例外
+Exception
+　→ 全ての例外の基底クラスで、全ての例外をキャッチできる
+※詳しくは「Java クラス リファレンス」を参照
+
+また中には、例外処理を書かなければ使用できないクラスやメソッドも存在します。
+
+例外を発生されるには throw を使い、例外を発生しうるメソッドには throws を使用します。
+※今回の講義では throw は省略します。
+　詳しく知りたい方は、
+　http://www.atmarkit.co.jp/ait/articles/1111/01/news131.html
+　http://www.atmarkit.co.jp/ait/articles/1112/20/news131.html
+　を読むと良いでしょう。
+
+----
+【問 1】難易度：☆
+
+筆記問題です。
+ソースを見て解答をし、最後にプログラムを実行して答えを確認しましょう。
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）（※まだ実行はしません）
+
+↓↓↓↓
+		String str = "A";
+		for(int i = 0; i < 3; i++)
+		{
+			try
+			{
+				try
+				{
+					try
+					{
+						switch(i)
+						{
+						case 0:
+							System.out.println("case 0:");	
+							System.out.println(str.charAt(999));
+							break;
+						case 1:
+							System.out.println("case 1:");	
+							{
+								byte[] bstr = str.getBytes("ArienaiTekitounaCharSet");
+								System.out.println((char)bstr[0]);	
+							}
+							break;
+						case 2:
+							System.out.println("case 2:");
+							{
+								byte[] bstr = str.getBytes("ASCII");
+								System.out.println((char)bstr[999]);	
+							}
+							break;
+						}
+					}
+					catch(ArrayIndexOutOfBoundsException ex)
+					{
+						System.out.println(" error 1");	
+					}
+					str += "B";
+				}
+				catch(IndexOutOfBoundsException ex)
+				{
+					System.out.println(" error 2");	
+				}
+				str += "C";
+			}
+			catch(Exception ex)
+			{
+				System.out.println(" error 3");
+			}
+			str += "D";
+		}
+		System.out.println("str=" + str);
+↑↑↑↑
+
+----
+【問 2】難易度：☆☆
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）
+
+↓↓↓↓
+		File file = new File("src/Main.java");
+		if(file.exists())	// 存在するか確認
+		{
+			if(file.canRead())	// 読み込めるか確認
+			{
+				FileInputStream stm = new FileInputStream(file);
+	            InputStreamReader in = new InputStreamReader(stm, "UTF-8");
+	            while (true)
+	            {
+	            	int c = in.read();
+	            	if(c == -1)	{ break; }
+	                System.out.print((char)c);
+	            }
+	            in.close();
+			}
+		}
+↑↑↑↑
+
+このプログラムを以下のような形でエラーを修正しましょう。
+・ファイルの有無、読み込めるかどうかは予め if でチェックせず、try catch で失敗時の例外処理を行う
+・Exception クラスを使わない（Exception の派生クラスは使ってよい）
+
+＜ヒント１＞
+catch は複数書くことができます。
+例：
+try
+{
+}
+catch(FileNotFoundException ex)
+{
+}
+catch(UnsupportedEncodingException ex)
+{
+}
+
+＜ヒント２＞
+import java.io.*;
+でファイル読み書き系のパッケージをインポートできます。
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

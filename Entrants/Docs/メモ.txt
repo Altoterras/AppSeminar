@@ -1,0 +1,45 @@
+////////////////////////////////////////////////////////////////////////////
+＜Android の練習問題のリポジトリ＞
+
+svn+ssh://kishinet@kishinet.sakura.ne.jp/home/kishinet/svn/repos/App/Exercises/Android
+
+
+////////////////////////////////////////////////////////////////////////////
+＜Android の基本的なボタンによる画面遷移の仕方のヒント＞
+
+・移行先の新しいアクティビティを作成する
+・AndroidManifest.xml を編集し、作成したアクティビティを登録する
+・activity_title.xml を編集し、ボタンを設置する
+・TitleActivity でボタンの応答を得る（setOnClickListener する）
+・TitleActivity で View.OnClickListener を implements する
+・TitleActivity に onClick を実装する
+・onClick 内で、view が該当ボタンかを判定する
+・該当ボタンで合ったら、intent を作り startActivity で新しいアクティビティに移行する
+
+
+////////////////////////////////////////////////////////////////////////////
+＜新しい Android プロジェクトの作成＞
+
+・File -> New -> Android Application Project
+・New Android Application (Enter an application name) 画面
+	・Application Name: （プロジェクト名）
+	・Minumum Required SDK: （プロジェクトで相談）
+	-> Next
+・New Android Application (Configure Project) 画面
+	・Create Project in Workspace: （チェックを外し Location: に SVN 配下のパスを入力）
+	-> Next
+・Configure Launcher Icon 画面
+	-> Next
+・Create Activity 画面
+	-> Next
+・New Blank Activity 画面
+	・Activity Name: （プロジェクトの起動アクティビティ名 = TitleActivity）
+	-> Finish
+
+
+////////////////////////////////////////////////////////////////////////////
+＜Android Intel シミュレータ＞
+
+http://www.webtech.co.jp/blog/developer-news/5966/
+
+

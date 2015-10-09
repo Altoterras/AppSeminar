@@ -1,0 +1,64 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(1)基礎編 - Java言語 1-補講 - ビットフラグ
+----------------------------------------------------------------------------
+
+まずは、以下の参考サイトで数値とビット演算子について勉強しましょう。
+
+★ 参考サイト
+http://www.javadrive.jp/start/ope/index8.html
+http://www.javadrive.jp/start/num/index6.html
+
+
+---
+◆ビットフラグ
+
+整数の定型的な使い方でビットフラグというものがあります。
+これは、boolean のように真偽値を扱うためのものですが、boolean の場合は 1 バイトのメモリを消費するのに対して、ビットフラグの場合は 1 ビットのメモリで表現されます。
+1 ビットの変数というものは存在しないので、一般的には int 値に対して 32 個のフラグを詰め込んで複数の値を少ない変数で扱います。
+この手法は、プログラム言語に基本的には依存しませんが、C 言語系のプログラミング言語で好んで使用されます。
+判定や操作にはビット演算子を使用します。
+複数の値を一度にマスクして判定したりもできるので、速度面でも有利になるケースがあります。
+
+
+----
+【問 1】
+
+「はじめに」を参考に (A) の状態を作りましょう。
+次に、//X の下に以下のソースを記述しましょう。（コピペ可。）
+↓↓↓↓
+final int FLAG_SAMPLE01	= 0x00000001;
+final int FLAG_SAMPLE02	= 0x00000002;
+final int FLAG_SAMPLE03	= 0x00000004;
+final int FLAG_SAMPLE04	= 0x00000008;
+final int FLAG_SAMPLE05	= 0x00000010;
+final int FLAG_SAMPLE06	= 0x00000020;
+final int FLAG_OTHER	= 0x00010000;
+int a = 0;
+int b = a | FLAG_SAMPLE01 | FLAG_SAMPLE02 | FLAG_SAMPLE03 | FLAG_SAMPLE04 | FLAG_SAMPLE05 | FLAG_SAMPLE06 | FLAG_OTHER;
+int c = b & ~(FLAG_SAMPLE05 | FLAG_SAMPLE06);
+boolean r1 = (a & FLAG_SAMPLE05) != 0;
+boolean r2 = (b & FLAG_SAMPLE05) != 0;
+boolean r3 = (c & FLAG_SAMPLE05) != 0;
+System.out.println("# 1# a = " + Integer.toHexString(a));
+System.out.println("# 2# b = " + Integer.toHexString(b));
+System.out.println("# 3# c = " + Integer.toHexString(c));
+System.out.println("# 4# r1 = " + r1);
+System.out.println("# 5# r2 = " + r2);
+System.out.println("# 6# r3 = " + r3);
+↑↑↑↑
+
+それぞれの出力結果を実行せず予想して、テキストエディタや紙などに解答を書きましょう。
+解答を書いたら実行してみましょう（デバッグボタンをクリックし Console を確認）。
+
+上記が、ビットフラグの一般的な使い方です。
+ビットフラグは、32bit の int であれば、32 個のフラグを持たせられるため、メモリが節約できます。
+
+※間違えた場合は間違えた原因をしっかり確認しよう！
+
+
+----------------------------------------------------------------------------
+■スマホアプリ開発塾の Facebookページ
+https://www.facebook.com/SmaphoAppDevJuku
+Facebookページを作成しました！
+セミナー（イベント）の参加連絡などはこちらからも行えます。
+----------------------------------------------------------------------------

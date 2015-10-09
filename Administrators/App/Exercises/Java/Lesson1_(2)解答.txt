@@ -1,0 +1,29 @@
+----
+【問 1】
+
+# 1# c = 13
+# 2# d = 7
+# 3# e = 30
+# 4# f = 3
+# 5# g = 1
+# 6# h = 10
+# 7# i = 12
+# 8# j = false
+# 9# k = true
+#10# l = true
+#11# m = false
+#12# n = true
+#13# r = 3.3333333
+
+
+----
+【問 2】
+
+int a = (11 + 3) * 4 / 2;
+boolean b = (true || false) && !false;
+double c = (3.0 + 4.0) / 2.0;
+System.out.println("# 1# a = " + a);
+System.out.println("# 2# b = " + b);
+System.out.println("# 3# c = " + c);
+
+

@@ -1,0 +1,43 @@
+----
+【問 1】
+
+case 0:
+ error 2
+case 1:
+ error 3
+case 2:
+ error 1
+str=ACDDBCD
+
+
+----
+【問 2】
+
+※以下は解答の一例である
+
+		try
+		{
+			File file = new File("src/Main.java");
+			FileInputStream stm = new FileInputStream(file);
+			InputStreamReader in = new InputStreamReader(stm, "UTF-8");
+			while (true)
+			{
+				int c = in.read();
+				if(c == -1)	{ break; }
+				System.out.print((char)c);
+			}
+			in.close();
+		}
+		catch(FileNotFoundException ex)
+		{
+			System.out.println(ex.getMessage());	
+		}
+		catch(UnsupportedEncodingException ex)
+		{
+			System.out.println(ex.getMessage());	
+		}
+		catch(IOException ex)
+		{
+			System.out.println(ex.getMessage());	
+		}
+

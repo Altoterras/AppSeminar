@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".IngameActivity" >
+
+    <ImageView
+        android:id="@+id/imageSamplel"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="87dp"
+        android:src="@drawable/figure_circleblue" />
+
+    <ImageButton
+        android:id="@+id/btnLeft"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="37dp"
+        android:layout_marginLeft="35dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/figure_circleblack" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageSamplel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="同じ色はどっち？" />
+
+    <ImageButton
+        android:id="@+id/btnRight"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btnLeft"
+        android:layout_marginRight="30dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/figure_circlegreen" />
+
+    <ImageView
+        android:id="@+id/imageAnswer"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/maru"
+        android:visibility="invisible" />
+
+</RelativeLayout>

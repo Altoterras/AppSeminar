@@ -1,0 +1,63 @@
+
+
+【問題】mycss.css内に書いてください。
+
+（1）レイアウト.jpgを参考に、class名「example」「example2」に下記の通り設定して下さい。
+	・マージン: 0
+	・パッディング: 0
+	・マーカーの種類: none
+
+（2）class名「example」のli要素に下記の通り設定して下さい。	
+	・フロート: left
+	・幅: 8em
+	・マージン: 右に5px
+	・パディング: 上下左右2px
+	・枠線: 1px #ffb366 実線
+	・背景色: #fffdee
+	・水平方向の表示位置: center
+	
+（3）class名「clearB」にどちらの回り込みも解除する指定を入れてください。
+	
+（4）class名「example2」のli要素に下記の通り設定して下さい。
+	・表示形式: inline
+	・マージン: 右に20px
+	・水平方向の表示位置: center
+	
+	
+	
+	
+
+【参考サイト】
+TAG index
+http://www.tagindex.com/stylesheet/list/index.html
+横並びのリスト
+
+
+
+【このレッスンで解説されている処理の概要は以下のとおりです。】
+（1）リストタグを使ったメニューレイアウト2種について
+　・floatを使ったレイアウト
+　・display: inlineを使ったレイアウト
+
+
+
+
+【補足】
+使用例ではul要素に対し、list-style-typeプロパティを使ってリストのマーカーを消して、
+margin: 0 padding: 0 にしています。
+メニューレイアウトでリストタグを使う際は、必ずセットで使います。
+
+わからないタグが出てきたら、調べてください。
+TAG index
+http://www.tagindex.com/index.html　にあるサイト内検索
+
+でも良いですし、
+
+google
+https://www.google.com/?hl=ja
+
+から、
+“css　display: inline”
+
+といったように、キーワード検索をしてもよいかと思います。
+

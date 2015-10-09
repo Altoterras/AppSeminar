@@ -1,0 +1,91 @@
+----
+【問 1】
+
+b[1]=111
+b.length=2
+c[0]._f1=1000, c[0]._f2=10000
+c.length=3
+
+
+----
+【問 2】
+
+try
+{
+	int[] a = { 1, 10, 100, 1000 };
+	int w = 0;
+	for(int i = 0; i < a.length; i++)
+	{
+		w += a[i];
+	}
+	System.out.println("w=" + w);	// w=1111 としたい
+}
+catch(ArrayIndexOutOfBoundsException ex)	// 配列外アクセスの例外をキャッチ
+{
+	System.out.println("<ERROR!> " + ex);	// エラー
+}
+
+
+----
+【問 3】
+
+※以下は解答の一例である
+
+int[][] m = new int[2][2];
+m[0][0] = 4;
+m[0][1] = 30;
+m[1][0] = 200;
+m[1][1] = 1000;
+int w = 0;
+for(int i = 0; i < 2; i++)
+{
+	for(int j = 0; j < 2; j++)
+	{
+		w += m[i][j];
+	}
+}
+System.out.println(w);
+
+
+----
+【問 4】
+
+class A
+{
+	private int _f1;
+	public A(int n) { _f1 = n; }
+	public A clone() { return new A(_f1); }
+	public void clear() { _f1 = 0; }
+	public void print() { System.out.print("" + _f1); }
+}
+A[][] arr1 = new A[3][];
+for(int i = 0; i < arr1.length; i++)
+{
+	arr1[i] = new A[3];
+	for(int j = 0; j < arr1[i].length; j++)
+	{
+		arr1[i][j] = new A(i + j);
+	}
+}
+A[][] arr2 = new A[arr1.length][];
+for(int i = 0; i < arr2.length; i++)
+{
+	arr2[i] = new A[arr1[i].length];
+	for(int j = 0; j < arr2[i].length; j++)
+	{
+		arr2[i][j] = arr1[i][j].clone();
+		arr1[i][j].clear();
+	}
+}
+for(int i = 0; i < arr1.length; i++)
+{
+	for(int j = 0; j < arr1[i].length; j++)
+	{
+		arr1[i][j].print();
+		System.out.print("-");
+		arr2[i][j].print();
+		System.out.print(" ");
+	}
+	System.out.print("\n");
+}
+

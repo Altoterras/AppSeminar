@@ -1,0 +1,97 @@
+----
+【問 1】
+
+s3=cdefg (5)
+b1=false, b2=true, b3=true
+
+
+----
+【問 2】
+
+※以下は解答の一例である
+
+String str = "http://altoterras.co.jp/img/logo_ja.png";
+do
+{
+	String[] ss1 = str.split("/");
+	if(ss1.length <= 2)	{	break;	}
+	String domain = ss1[2];
+	String filename = ss1[ss1.length - 1];
+	int idxExt = filename.lastIndexOf('.');
+	if(idxExt < 0)		{	break;	}		
+	String ext = filename.substring(idxExt, filename.length());
+	System.out.println("domain=" + domain);
+	System.out.println("filename=" + filename);
+	System.out.println("ext=" + ext);
+}
+while(false);
+
+
+----
+【課題 1】
+
+※以下は解答の一例である
+
+String str = "http://altoterras.co.jp/img/logo_ja.png";
+byte[] bstr = str.getBytes();
+
+String domain, filename, ext;
+domain = filename = ext = "";
+int idxCur, idxPrev, cntSlash, cntDot;
+idxCur = idxPrev = cntSlash = cntDot = 0;
+for(int i = 0; i < bstr.length; i++)
+{
+	switch(bstr[i])
+	{
+	case '/':
+		cntSlash++;
+		break;
+	case '.':
+		cntDot++;
+		break;
+	}
+}
+int totalSlash = cntSlash;
+int totalDot = cntDot;
+cntSlash = 0;
+cntDot = 0;
+for(int i = 0; i < bstr.length; i++)
+{
+	switch(bstr[i])
+	{
+	case '/':
+		cntSlash++;
+		idxPrev = idxCur;
+		idxCur = i;
+		if(cntSlash == 3)
+		{
+			for(int j = idxPrev + 1; j < idxCur; j++)
+			{
+				domain += (char)bstr[j];
+			}
+		}
+		else if(cntSlash == totalSlash)
+		{
+			for(int j = idxCur + 1; j < bstr.length; j++)
+			{
+				filename += (char)bstr[j];
+			}
+			break;
+		}
+		break;
+	case '.':
+		cntDot++;
+		if(cntDot == totalDot)
+		{
+			for(int j = i; j < bstr.length; j++)
+			{
+				ext += (char)bstr[j];
+			}
+		}
+		break;
+	}
+}
+System.out.println("domain=" + domain);
+System.out.println("filename=" + filename);
+System.out.println("ext=" + ext);
+

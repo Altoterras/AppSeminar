@@ -1,0 +1,92 @@
+----
+【問 1】
+
+if-3: n=240
+if-4: s=null
+switch-1: n=3
+switch-4: n=3
+?-1: s=def
+for-1: n=240
+for-2: n=340
+while-1: s=A
+while-2: s=Aaaaaa
+dowhile-1: n=701
+
+
+----
+【問 2】
+
+※以下は解答の一例である
+
+		int n = 1 + (int)(Math.random() * 5);
+		switch(n)
+		{
+		case 1:
+			System.out.println("Abc");
+			break;
+		case 2:
+			System.out.println("defg");
+			break;
+		case 3:
+		case 4:
+			System.out.println("Hijklmn");
+			break;
+		default:
+			System.out.println("op");
+			break;
+		}
+
+
+----
+【問 3】
+
+※以下は解答の一例である
+
+		for(int count = 0; count < 100; count++)
+		{
+			int n = (int)(Math.random() * 1000);
+			if(n >= 900)
+			{
+				break;
+			}
+		}
+
+		int count = 0;
+		while(count < 100)
+		{
+			int n = (int)(Math.random() * 1000);
+			if(n >= 900)
+			{
+				break;
+			}
+			count++;
+		}
+
+		count = 0;
+		do
+		{
+			int n = (int)(Math.random() * 1000);
+			if(n >= 900)
+			{
+				break;
+			}
+			count++;
+		}
+		while(count <= 100);
+
+
+----
+【課題 1】
+
+A
+B
+a=101
+C
+B
+X
+C
+B
+Y
+a=101.
+
+

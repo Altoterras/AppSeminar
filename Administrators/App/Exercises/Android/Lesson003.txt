@@ -1,0 +1,44 @@
+----------------------------------------------------------------------------
+スマホアプリ開発塾(2)実践編 - Android 初級 3
+----------------------------------------------------------------------------
+
+http://test-oth01.sigrest.co.jp/seminar/saj_q003.zip
+をダウンロード、解凍しましょう
+
+
+【問１】
+Fortune プロジェクトに HistoryActivity を追加して、
+StartActivity からボタン遷移させましょう
+
+	＜ヒント＞
+		HistoryActivity.java
+		HistoryStorage.java
+		を src 下に、
+		activity_history.xml
+		を res 下に追加しましょう
+		AndroidManifest.xml
+		に Activity が増えたことを追記するのをお忘れなく！
+		上記の追加が終わったら、
+		(1) activity_start.xml に「履歴」ボタンを追加
+		(2) StartActivity の onClick に HistoryActivity への画面遷移を追加
+		しましょう。
+
+
+【問２】
+占い結果の履歴を保存し、HistoryActivity を機能させましょう
+また、HistoryStorage の未完成な部分（読み込み部分など）を完成させましょう
+
+	＜ヒント＞
+		ResultActivity の updateResult() に HistoryStorage を実装しましょう。
+		HistoryStorage の使い方は、HistoryActivity の updateHistory() が参考になります。
+		ここでは、占い結果を保存する必要があるので、
+		(1) HistoryStorage のインスタンスを new する
+		(2) readFromFile() を使用して、既存の占い結果をファイルから読み込む
+		(3) appendHistory() を使用して、新しい占い結果を追加する
+		(4) writeToFile() を使用して、占い結果をファイルに保存する
+		という手順になります。		
+
+
+【課題１】
+HistoryActivity の GridView の見た目を色々と変えてみましょう
+
