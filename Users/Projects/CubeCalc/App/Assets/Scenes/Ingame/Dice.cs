@@ -233,4 +233,9 @@ public class Dice : MonoBehaviour
 	{
 		return (t > (v - _validMargin) && t < (v + _validMargin));
 	}
+
+	public Vector3 getPosition()
+	{
+		return this.transform.position;
+	}
 }
