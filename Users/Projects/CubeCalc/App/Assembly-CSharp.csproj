@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scenes\Ingame\Dice.cs" />
      <Compile Include="Assets\Scenes\Ingame\Scene.cs" />
+     <Compile Include="Assets\Scenes\Ingame\Stage.cs" />
      <None Include="Assets\Dice\-Read-Me-.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.5/UnityEngine.UI.dll</HintPath>
