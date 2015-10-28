@@ -30,7 +30,7 @@ public class Scene : MonoBehaviour
 	private int _valueCur = 0;
 	private int _valueResult = 0;
 	private string _msgDuty = "+";
-	private string _msgMsg = "Answer try to be RES <= 1000";
+	private string _msgMsg = "Answer try to be RES >= 1000";
 
 	// 初期化処理
 	void Start ()
