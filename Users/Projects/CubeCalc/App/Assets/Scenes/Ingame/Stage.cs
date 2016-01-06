@@ -53,22 +53,91 @@ public class Stage
 		nodeListText = doc.SelectNodes("stage");	// テキストの配列の読み込み
 			
 		// 表示
-		Debug.Log(nodeListText[0].InnerText);
+		Debug.Log("ORG: " + nodeListText[0].InnerText);
 
 
 
 
 
+		_numCellX = 0;
+		_numCellY = 0;
 
+		string[] lines = nodeListText [0].InnerText.Split ('\n');
+		for (int il = 0; il < lines.Length; il++)
+		{
+			string line = lines[il];
+			int cnt = 0;
+			foreach(char c in line)
+			{
+				if(c != '\r') { cnt++; }
+			}
+			if(cnt <= 0) { continue; }
 
+			_numCellY++;
+			if(_numCellX < cnt) { _numCellX = cnt; }
+		}
 
+		
+		_cells = new Cell[_numCellX][];
+		for (int i = 0; i < _numCellX; i++)
+		{
+			_cells [i] = new Cell[_numCellY];
+			for (int j = 0; j < _numCellY; j++)
+			{
+				_cells [i] [j] = new Cell ();
+				_cells[i][j]._go = (GameObject)UnityEngine.Object.Instantiate (floorBlockPrehab, new Vector3(i - (_numCellX / 2), -1.0f, j - (_numCellY / 2)), Quaternion.identity);
+			}
+		}
+		
+		{
+			int j = 0;
+			for (int il = 0; il < lines.Length; il++)
+			{
+				string line = lines[il];
 
+				int i = 0;
+				foreach(char c in line)
+				{
+					if(c == '\r') { continue; }
 
+					Cell cell = _cells [i] [j];
+					Debug.Log(string.Format("[{0}][{1}] c={2}, {3}", i, j, c, (int)c));
+				
 
+					switch(c)
+					{
+					case '+':	cell._duty = Cell.Duty.Plus;	break;
+					case '-':	cell._duty = Cell.Duty.Minus;	break;
+					case '*':	cell._duty = Cell.Duty.Mult;	break;
+					case '/':	cell._duty = Cell.Duty.Div;		break;
+					default:	cell._duty = Cell.Duty.Null;	break;
+					}
+					
+					// 床テクスチャの読み込み
+					string texname = "";
+					switch(cell._duty)
+					{
+					case Cell.Duty.Null:	texname = "normal";		break;
+					case Cell.Duty.Plus:	texname = "plus";		break;
+					case Cell.Duty.Minus:	texname = "minus";		break;
+					case Cell.Duty.Mult:	texname = "mult";		break;
+					case Cell.Duty.Div:		texname = "div";		break;
+					case Cell.Duty.Equal:	texname = "equal";		break;
+					}
+					cell._go.GetComponent<Renderer>().material.mainTexture = Resources.Load("Floor/" + texname) as Texture2D;
 
+					i++;
+				}
 
-
-
+				if(i > 0 ) { j++; }
+			}
+		}		
+		
+		
+		
+		
+		
+#if false
 		_cells = new Cell[_numCellX][];
 		for (int i = 0; i < _numCellX; i++)
 		{
@@ -101,13 +170,27 @@ public class Stage
 				case Cell.Duty.Div:		texname = "div";		break;
 				case Cell.Duty.Equal:	texname = "equal";		break;
 				}
-				_cells[i][j]._go.renderer.material.mainTexture = Resources.Load("Floor/" + texname) as Texture2D;
+				_cells[i][j]._go.GetComponent<Renderer>().material.mainTexture = Resources.Load("Floor/" + texname) as Texture2D;
 			}
 		}
+#endif
 
 		return true;
 	}
+	
+	public bool ValidMovingDirection(Vector3 pos, Vector3 dir)
+	{
+		pos += dir;
+		int ix = PosXToIndexX (pos.x);
+		int iy = PosZToIndexY (pos.z);
+		if ((0 <= ix) && (ix < _numCellX) && (0 <= iy) && (iy < _numCellY))
+		{
+			return true;
+		}
 
+		return false;
+	}
+	
 	public Cell GetCellFromPosition(Vector3 pos)
 	{
 		int ix = PosXToIndexX (pos.x);

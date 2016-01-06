@@ -6,20 +6,22 @@ public class Dice : MonoBehaviour
 	//====
 	// 型定義
 
+	public delegate bool validMovingDirectionFunc(Vector3 dir);
 	public delegate void onStopEvent(int value);
-	
+
 	//====
 	// フィールド変数
 	
 	private const float MOVE_SEC = 0.5f;
 	private const float MOVE_SPD = 1.0f / MOVE_SEC;
 	private const float ROT_SPD = 90.0f / MOVE_SEC;
-	private const float SCALE_DICE = 0.5f;
+	private const float SCALE_DICE = 1.0f;
 
 	private float _cntMove;
 	private Vector3 _dirMove;
 	private Vector3 _rotMove;
-	private onStopEvent _onStop;
+	private validMovingDirectionFunc _validMovingDirectionFunc;
+	private onStopEvent _onStopFunc;
 
 	private int _value = 0;	
 	private Vector3 _localHitNormalized;
@@ -29,8 +31,9 @@ public class Dice : MonoBehaviour
 	// プロパティ
 
 	public int value { get { return _value; } }
-	public onStopEvent onStop { set { _onStop = value; } }
-	
+	public validMovingDirectionFunc validMovingDirection { set { _validMovingDirectionFunc = value; } }
+	public onStopEvent onStop { set { _onStopFunc = value; } }
+
 	//====
 	// メソッド
 
@@ -43,7 +46,7 @@ public class Dice : MonoBehaviour
 	void Update ()
 	{
 		// サイコロの値チェック
-		if(checkLocalHit()) { acquireValue (); }
+		if(CheckLocalHit()) { AcquireValue (); }
 
 		// タッチパネルによる操作
 		if (Input.touchCount > 0) {
@@ -51,32 +54,48 @@ public class Dice : MonoBehaviour
 			if(((Screen.height / 4) <= touch.position.y) && (touch.position.y <= (Screen.height / 4 * 3)))
 			{
 				if(touch.position.x <= (Screen.width / 2)) {
-					Move(Vector3.left, Vector3.forward);
+					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.left)) {
+						Move(Vector3.left, Vector3.forward);
+					}
 				} else {
-					Move(Vector3.right, Vector3.back);
+					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.right)) {
+						Move(Vector3.right, Vector3.back);
+					}
 				}
 			}
 			if(((Screen.width / 4) <= touch.position.x) && (touch.position.x <= (Screen.width / 4 * 3)))
 			{
 				if(touch.position.y <= (Screen.height / 2)) {
-					Move(Vector3.back, Vector3.left);
+					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.back)) {
+						Move(Vector3.back, Vector3.left);
+					}
 				} else {
-					Move(Vector3.forward, Vector3.right);
+					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.forward)) {
+						Move(Vector3.forward, Vector3.right);
+					}
 				}
 			}
 		}
 		// キーボードによる操作
 		if (Input.GetKey ("right")) {
-			Move(Vector3.right, Vector3.back);
+			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.right)) {
+				Move(Vector3.right, Vector3.back);
+			}
 		}
 		if (Input.GetKey ("left")) {
-			Move(Vector3.left, Vector3.forward);
+			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.left)) {
+				Move(Vector3.left, Vector3.forward);
+			}
 		}
 		if (Input.GetKey ("up")) {
-			Move(Vector3.forward, Vector3.right);
+			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.forward)) {
+				Move(Vector3.forward, Vector3.right);
+			}
 		}
 		if (Input.GetKey ("down")) {
-			Move(Vector3.back, Vector3.left);
+			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.back)) {
+				Move(Vector3.back, Vector3.left);
+			}
 		}
 
 		if (_cntMove > 0.0f) {
@@ -87,14 +106,14 @@ public class Dice : MonoBehaviour
 				_cntMove = 0.0f;
 
 				// 直角補正
-				this.transform.eulerAngles = new Vector3(adjustRightAngle(this.transform.eulerAngles.x), adjustRightAngle(this.transform.eulerAngles.y), adjustRightAngle(this.transform.eulerAngles.z));
+				this.transform.eulerAngles = new Vector3(AdjustRightAngle(this.transform.eulerAngles.x), AdjustRightAngle(this.transform.eulerAngles.y), AdjustRightAngle(this.transform.eulerAngles.z));
 				// 位置補正
 				this.transform.position = new Vector3(Mathf.Round(this.transform.position.x), 0.0f, Mathf.Round(this.transform.position.z));
 
 				// onStopEvent デリゲートでイベントをコールする
-				if(_onStop != null)
+				if(_onStopFunc != null)
 				{
-					_onStop(_value);
+					_onStopFunc(_value);
 				}
 			}
 
@@ -126,7 +145,7 @@ public class Dice : MonoBehaviour
 	}
 
 	// 直角補正
-	float adjustRightAngle(float ang)
+	float AdjustRightAngle(float ang)
 	{
 		/*
 		// まず　-180 から +180 の範囲に角度をおさめる
@@ -161,13 +180,14 @@ public class Dice : MonoBehaviour
 	// - - - -
 	// サイコロの値チェックメソッド
 
-	protected bool checkLocalHit()
+	// ヒットチェック
+	protected bool CheckLocalHit()
 	{
 		// create a Ray from straight above this Die , moving downwards
 		Ray ray = new Ray(transform.position + (new Vector3(0, 2, 0) * transform.localScale.magnitude), Vector3.up * -1);
 		RaycastHit hit = new RaycastHit();
 		// cast the ray and validate it against this die's collider
-		if (collider.Raycast(ray, out hit, 3 * transform.localScale.magnitude))
+		if (GetComponent<Collider>().Raycast(ray, out hit, 3 * transform.localScale.magnitude))
 		{
 			// we got a hit so we determine the local normalized vector from the die center to the face that was hit.
 			// because we are using local space, each die side will have its own local hit vector coordinates that will always be the same.
@@ -178,7 +198,8 @@ public class Dice : MonoBehaviour
 		return false;
 	}
 
-	protected void acquireValue()
+	// サイコロの値の取得
+	protected void AcquireValue()
 	{
 		// value = 0 -> undetermined or invalid
 		_value = 0;
@@ -191,13 +212,13 @@ public class Dice : MonoBehaviour
 		{
 			// get testHitVector from current side, HitVector is a overriden method in the dieType specific Die subclass
 			// eacht dieType subclass will expose all hitVectors for its sides,
-			testHitVector = hitVector(side);
+			testHitVector = HitVector(side);
 			if (testHitVector != Vector3.zero)
 			{
 				// this side has a hitVector so validate the x,y and z value against the local normalized hitVector using the margin.
-				if (valid(_localHitNormalized.x, testHitVector.x) &&
-				    valid(_localHitNormalized.y, testHitVector.y) &&
-				    valid(_localHitNormalized.z, testHitVector.z))
+				if (ValidHitMargin(_localHitNormalized.x, testHitVector.x) &&
+				    ValidHitMargin(_localHitNormalized.y, testHitVector.y) &&
+				    ValidHitMargin(_localHitNormalized.z, testHitVector.z))
 				{
 					// this side is valid within the margin, check the x,y, and z delta to see if we can set this side as this die's value
 					// if more than one side is within the margin (especially with d10, d12, d20 ) we have to use the closest as the right side
@@ -215,7 +236,8 @@ public class Dice : MonoBehaviour
 		} while (testHitVector != Vector3.zero);
 	}
 
-	protected Vector3 hitVector(int side)
+	// ヒットベクトルの取得
+	protected Vector3 HitVector(int side)
 	{
 		switch (side)
 		{
@@ -229,7 +251,8 @@ public class Dice : MonoBehaviour
 		return Vector3.zero;
 	}
 
-	protected bool valid(float t, float v)
+	// ヒットマージンチェック
+	protected bool ValidHitMargin(float t, float v)
 	{
 		return (t > (v - _validMargin) && t < (v + _validMargin));
 	}

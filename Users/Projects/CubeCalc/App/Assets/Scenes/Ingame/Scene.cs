@@ -19,8 +19,8 @@ public class Scene : MonoBehaviour
 		_stage = new Stage ();
 		_stage.Load (_floorBlockPrehab);
 
-		// 停止イベントハンドラを設定する
-		_dice.onStop = OnDiceStop;
+		_dice.validMovingDirection = ValidMovingDirection;	// サイコロの移動可否確認関数
+		_dice.onStop = OnDiceStop;	// 停止イベントハンドラを設定する
 	}
 	
 	// Update is called once per frame
@@ -33,6 +33,12 @@ public class Scene : MonoBehaviour
 	{
 		// デバッグ表示
 		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg));
+	}
+	
+	// サイコロの移動可否確認関数
+	public bool ValidMovingDirection(Vector3 dir)
+	{
+		return _stage.ValidMovingDirection (_dice.transform.position, dir);
 	}
 
 	// サイコロが停止したときのイベントハンドラ
