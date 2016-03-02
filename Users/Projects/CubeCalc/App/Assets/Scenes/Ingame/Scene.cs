@@ -14,27 +14,33 @@ public class Scene : MonoBehaviour
 	public Dice _dice;
 
 	private Stage _stage;
-	private int _valuePrev = 0;
-	private int _valueCur = 0;
-	private int _valueResult = 0;
-	private State _stat = State.STAT_RUN;
-	private string _msgDuty = "+";
-	private string _msgMsg = "Answer try to be RES >= 1000";
+	private int _clearNum;
+	private int _valuePrev;
+	private int _valueCur;
+	private int _valueResult;
+	private State _stat;
+	private string _msgDuty;
+	private string _msgMsg;
 
 	// 画面表示 20160203mori
-	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 	public Text _scoreText; // Text 用変数
+	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 
     // 初期化処理
     void Start ()
 	{
-		_stage = new Stage ();
-		_stage.Load (_floorBlockPrehab);
+		_clearNum = (int)Random.Range(0, 1000);
+		_valuePrev = 0;
+		_valueCur = 0;
+		_valueResult = 0;
+		_msgDuty = "+";
+		_msgMsg = "Answer try to be RES >= " + _clearNum;
 
-		_dice.validMovingDirection = ValidMovingDirection;	// サイコロの移動可否確認関数
+		_stage = new Stage();
+		_stage.Load(_floorBlockPrehab);
+
+		_dice.validMovingDirection = ValidMovingDirection;  // サイコロの移動可否確認関数
 		_dice.onStop = OnDiceStop;  // 停止イベントハンドラを設定する
-
-		_stat = State.STAT_RUN;
 	}
 
 	// Update is called once per frame
@@ -105,14 +111,24 @@ public class Scene : MonoBehaviour
 				}
 				
 				// クリア判定
-				if (_valueResult >= 1000)
+				if (_valueResult >= _clearNum)
 				{
 					_stat = State.STAT_CLEAR;
 					_msgMsg = "Clear!!";
+
+					//Destroy(this);
+					//Start();
 				}
 
-				break;
+					break;
 			}
 		}
 	}
+
+	/*
+	void Reload()
+	{
+		DontDestroyOnLoad(this); // シーン読み込みの際に破棄されなくなる
+	}
+	*/
 }
