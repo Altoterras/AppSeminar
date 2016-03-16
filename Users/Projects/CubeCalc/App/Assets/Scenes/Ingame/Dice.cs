@@ -4,7 +4,7 @@ using System.Collections;
 public class Dice : MonoBehaviour
 {
 	//====
-	// 型定義
+	// 定数・型定義
 
 	public delegate bool validMovingDirectionFunc(Vector3 dir);
 	public delegate void onStopEvent(int value);
@@ -27,10 +27,13 @@ public class Dice : MonoBehaviour
 	private Vector3 _localHitNormalized;
 	private float _validMargin = 0.45F;
 
+	private bool _active = true;
+
 	//====
 	// プロパティ
 
 	public int value { get { return _value; } }
+	public bool active { get { return _active; } set { _active = value; } }
 	public validMovingDirectionFunc validMovingDirection { set { _validMovingDirectionFunc = value; } }
 	public onStopEvent onStop { set { _onStopFunc = value; } }
 
@@ -45,6 +48,8 @@ public class Dice : MonoBehaviour
 	// 毎フレーム処理
 	void Update ()
 	{
+		if(!_active) { return; }
+
 		// サイコロの値チェック
 		if(CheckLocalHit()) { AcquireValue (); }
 

@@ -4,11 +4,17 @@ using System.Collections;
 
 public class Scene : MonoBehaviour
 {
+	//====
+	// 定数・型定義
+
 	enum State
 	{
-		STAT_RUN,
-		STAT_CLEAR,
+		RUN,
+		CLEAR,
 	}
+
+	//====
+	// フィールド変数
 
 	public GameObject _floorBlockPrehab;
 	public Dice _dice;
@@ -19,6 +25,7 @@ public class Scene : MonoBehaviour
 	private int _valueCur;
 	private int _valueResult;
 	private State _stat;
+	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
 
@@ -26,8 +33,18 @@ public class Scene : MonoBehaviour
 	public Text _scoreText; // Text 用変数
 	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 
-    // 初期化処理
-    void Start ()
+	//====
+	// メソッド
+
+	// 初期化処理
+	void Start ()
+	{
+		_stage = new Stage();
+		Restart();
+	}
+
+	// 再開処理
+	void Restart()
 	{
 		_clearNum = (int)Random.Range(0, 1000);
 		_valuePrev = 0;
@@ -36,17 +53,33 @@ public class Scene : MonoBehaviour
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
 
-		_stage = new Stage();
 		_stage.Load(_floorBlockPrehab);
 
 		_dice.validMovingDirection = ValidMovingDirection;  // サイコロの移動可否確認関数
 		_dice.onStop = OnDiceStop;  // 停止イベントハンドラを設定する
+		_dice.active = true;
+
+		_stat = State.RUN;
+		_secStat = 0.0f;
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		_secStat += Time.deltaTime;
+
+		// 次のステージへの処理
+		if (_stat == State.CLEAR)
+		{
+			_msgMsg = "Clear! ... " + (int)_secStat + " / 3";
+			if (_secStat >= 3.0f)
+			{
+				_stage.Unload();
+				Restart();
+			}
+		}
+
+
 	}
 
 	// GUI 処理
@@ -55,17 +88,18 @@ public class Scene : MonoBehaviour
 		// デバッグ表示
 		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg));
 
-		// 20151028mori 追加
-		if (_stat == State.STAT_CLEAR)
+		// 表示処理
+		if (_stat == State.CLEAR)
 		{
-			// 20151104mori 追加
+			_dice.active = false;
 			_scoreText.fontSize = 50;
 			_scoreText.color = _ccoler;
 			_scoreText.alignment = TextAnchor.MiddleCenter;
 			//
 			_scoreText.text = _msgMsg;
 		}
-		else {
+		else
+		{
 			_scoreText.text = string.Format("合計：{0}", _valueResult);
 		}
     }
@@ -113,22 +147,13 @@ public class Scene : MonoBehaviour
 				// クリア判定
 				if (_valueResult >= _clearNum)
 				{
-					_stat = State.STAT_CLEAR;
-					_msgMsg = "Clear!!";
-
-					//Destroy(this);
-					//Start();
+					_stat = State.CLEAR;
+					_secStat = 0.0f;
+					_msgMsg = "Clear!";
 				}
 
-					break;
+				break;
 			}
 		}
 	}
-
-	/*
-	void Reload()
-	{
-		DontDestroyOnLoad(this); // シーン読み込みの際に破棄されなくなる
-	}
-	*/
 }

@@ -12,6 +12,9 @@ using System.Xml;
 
 public class Stage
 {
+	//====
+	// 定数・型定義
+
 	public class Cell
 	{
 		public enum Duty
@@ -28,9 +31,15 @@ public class Stage
 		public Duty _duty;
 	}
 
+	//====
+	// フィールド変数
+
 	private Cell[][] _cells;
 	private int _numCellX = 10;
 	private int _numCellY = 10;
+
+	//====
+	// メソッド
 
 	public Stage ()
 	{
@@ -208,6 +217,19 @@ public class Stage
 	private int PosZToIndexY(float z)
 	{
 		return (int)(z + (_numCellY * 0.5f));
+	}
+
+	public void Unload()
+	{
+		for (int i = 0; i < _numCellX; i++)
+		{
+			for (int j = 0; j < _numCellY; j++)
+			{
+				GameObject.Destroy(_cells[i][j]._go);
+				_cells[i][j]._go = null;
+				_cells[i][j] = null;
+			}
+		}
 	}
 }
 
