@@ -1,6 +1,8 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 		INJECTED from AndroidManifest.xml:0:0
@@ -11,11 +13,8 @@ ADDED from AndroidManifest.xml:2:1
 		ADDED from AndroidManifest.xml:4:5
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 uses-sdk
 ADDED from AndroidManifest.xml:7:5
-MERGED from com.android.support:support-v4:20.0.0:16:5
 	android:targetSdkVersion
 		ADDED from AndroidManifest.xml:9:9
 		INJECTED from AndroidManifest.xml:0:0
@@ -26,7 +25,6 @@ MERGED from com.android.support:support-v4:20.0.0:16:5
 		INJECTED from AndroidManifest.xml:0:0
 application
 ADDED from AndroidManifest.xml:11:5
-MERGED from com.android.support:support-v4:20.0.0:17:5
 	android:label
 		ADDED from AndroidManifest.xml:14:9
 	android:allowBackup
@@ -35,7 +33,7 @@ MERGED from com.android.support:support-v4:20.0.0:17:5
 		ADDED from AndroidManifest.xml:13:9
 	android:theme
 		ADDED from AndroidManifest.xml:15:9
-activity#com.example.jadex01.TitleActivity
+activity#com.learmens.danmen1.TitleActivity
 ADDED from AndroidManifest.xml:16:9
 	android:label
 		ADDED from AndroidManifest.xml:18:13
@@ -51,15 +49,15 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:21:17
 	android:name
 		ADDED from AndroidManifest.xml:21:27
-activity#com.example.jadex01.SelectActivity
+activity#com.learmens.danmen1.SelectActivity
 ADDED from AndroidManifest.xml:24:9
 	android:name
-		ADDED from AndroidManifest.xml:24:19
-activity#com.example.jadex01.ActionActivity
-ADDED from AndroidManifest.xml:25:9
-	android:name
-		ADDED from AndroidManifest.xml:25:19
-activity#com.example.jadex01.ManualActivity
+		ADDED from AndroidManifest.xml:25:13
+activity#com.learmens.danmen1.ActionActivity
 ADDED from AndroidManifest.xml:26:9
 	android:name
-		ADDED from AndroidManifest.xml:26:19
+		ADDED from AndroidManifest.xml:27:4
+activity#com.learmens.danmen1.ManualActivity
+ADDED from AndroidManifest.xml:28:9
+	android:name
+		ADDED from AndroidManifest.xml:29:13

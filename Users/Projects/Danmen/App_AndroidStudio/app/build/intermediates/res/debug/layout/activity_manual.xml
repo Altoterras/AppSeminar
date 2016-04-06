@@ -14,9 +14,11 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:padding="10dp"
+	        android:layout_centerHorizontal="true"
 	        android:maxLines="100"
 	        android:textSize="16sp"
 	        android:textStyle="bold"
+	        android:textColor="@color/stdtxt" 
 	        android:text="@string/manual_title" />
         
         <TextView
@@ -27,26 +29,18 @@
 	        android:padding="10dp"
 	        android:maxLines="100"
 	        android:textSize="16sp"
+	        android:textColor="@color/stdtxt"
 	        android:text="@string/manual_contents_01" />
-
-	    <ImageView
-	        android:id="@+id/imageviewManualImage01"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-			android:layout_below="@id/textviewManualContents01"
-	        android:layout_centerHorizontal="true"
-	        android:background="@null"
-	        android:contentDescription="@string/empty_string"
-	        android:src="@drawable/manual_title" />
         
         <TextView
 	        android:id="@+id/textviewManualContents02"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-			android:layout_below="@id/imageviewManualImage01"
+			android:layout_below="@id/textviewManualContents01"
 	        android:padding="10dp"
 	        android:maxLines="100"
 	        android:textSize="16sp"
+	        android:textColor="@color/stdtxt" 
 	        android:text="@string/manual_contents_02" />
 
 	    <ImageView
@@ -67,6 +61,7 @@
 	        android:padding="10dp"
 	        android:maxLines="100"
 	        android:textSize="16sp"
+	        android:textColor="@color/stdtxt" 
 	        android:text="@string/manual_contents_03" />
 
 	    <ImageView
@@ -87,6 +82,7 @@
 	        android:padding="10dp"
 	        android:maxLines="100"
 	        android:textSize="16sp"
+	        android:textColor="@color/stdtxt" 
 	        android:text="@string/manual_contents_04" />
 	    	    	    	
 		<ImageButton
@@ -104,4 +100,4 @@
 	</RelativeLayout>
 
 </ScrollView>
-<!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/layout/activity_manual.xml -->
+<!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/layout/activity_manual.xml -->

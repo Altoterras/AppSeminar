@@ -1,4 +1,1 @@
-D:\Works\AppSeminar\SvnWorks\App\Team\Yakimanju\Projects\Danmen\Programs\AppAs\app\build\intermediates\classes\debug
-D:\Works\AppSeminar\SvnWorks\App\Team\Yakimanju\Projects\Danmen\Programs\AppAs\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-8fafaaec16aae4321ac795e8e4378ab1a6906572.jar
-D:\Works\AppSeminar\SvnWorks\App\Team\Yakimanju\Projects\Danmen\Programs\AppAs\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-2ead4f9a179f766d06877bafa1110d69b413778c.jar
-D:\Works\AppSeminar\SvnWorks\App\Team\Yakimanju\Projects\Danmen\Programs\AppAs\app\build\intermediates\pre-dexed\debug\classes-e926dd06d40f8fd6bb430ab5817b35c8007e82a8.jar
+C:\Users\ryouta\Documents\Works\AppSeminar\GitHubWorks\AppSeminar\Users\Projects\Danmen\App_AndroidStudio\app\build\intermediates\classes\debug

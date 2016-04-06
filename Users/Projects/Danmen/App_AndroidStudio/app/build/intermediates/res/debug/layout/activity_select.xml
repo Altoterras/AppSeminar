@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:splitMotionEvents="false"
     android:background="#fad7aa" >
     
     <TextView
@@ -13,25 +14,20 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:textSize="16sp"
+        android:textColor="@color/stdtxt"
         android:text="@string/select_label" />
 
     <GridView
         android:id="@+id/gridviewArticleSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:splitMotionEvents="false"
    		android:layout_below="@id/textviewSelectLabel"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="100dp" />
-    
-    <com.example.jadex01.HorizontalScrollExView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/hsvArticleSelect"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
- 		android:layout_below="@id/textviewSelectLabel"
-        android:layout_marginTop="50dp" />
+        android:layout_marginBottom="100dp"
+        android:background="#ffffff" />
 
     <ImageButton
         android:id="@+id/buttonReturn"
@@ -44,4 +40,4 @@
 		android:contentDescription="@string/empty_string"
         android:src="@drawable/button_back" />
 
-</RelativeLayout><!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/layout/activity_select.xml -->
+</RelativeLayout><!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/layout/activity_select.xml -->

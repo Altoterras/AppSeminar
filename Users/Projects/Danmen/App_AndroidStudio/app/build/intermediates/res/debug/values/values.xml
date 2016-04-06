@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="red">#FF0000</color>
+    <color name="stdtxt">#000000</color>
+    <!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">ざくざく！だんめん</string>
     <string name="cut_button_title">復活！</string>
@@ -16,20 +20,22 @@
     <string name="manual_contents_02">
 「はじめる」ボタン：アプリをはじめます\n
 「つかいかた」ボタン：ざくざくだんめんのそうさせつめいをひょうじします\n
+\n
 ■２．どれをきる？\n
 いろいろなものがでてくるよ。きりたいものをえらんでタッチしてみよう！
 	</string>
     <string name="manual_contents_03">
+\n
 ■３．ざくっときってね♪\n
 まえのがめんでえらんだものがひょうじされるよ。ものをたて、よこになぞってだんめんをのぞいてみよう！
 	</string>
     <string name="manual_contents_04">
 「もどる」ボタン：どれをきる？にもどります。
 	</string>
-    <string name="manual_title">―　さくざくだんめん つかいかた　―</string>
+    <string name="manual_title">―　ざくざくだんめん つかいかた　―</string>
     <string name="return_button_title">もどる</string>
     <string name="select_label">きるものをえらんでね！</string>
-    <!-- From: file:/D:/Works/AppSeminar/SvnWorks/App/Team/Yakimanju/Projects/Danmen/Programs/AppAs/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/ryouta/Documents/Works/AppSeminar/GitHubWorks/AppSeminar/Users/Projects/Danmen/App_AndroidStudio/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
