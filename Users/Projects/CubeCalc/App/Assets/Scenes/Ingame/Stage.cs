@@ -25,8 +25,9 @@ public class Stage
 			Mult,
 			Div,
 			Equal,
+			Wall,
 		}
-		
+
 		public GameObject _go;
 		public Duty _duty;
 	}
@@ -48,22 +49,19 @@ public class Stage
 
 	}
 
-	public bool Load(GameObject floorBlockPrehab)
+	public bool Load(GameObject floorBlockPrehab, int stageCnt, ref int diceX, ref int diceZ)
 	{
-		XmlDocument xdoc = new XmlDocument();		        // XMLオブジェクトを生成
- //		xdoc.Load("http://hakuhou.space/__tmp__/test.xml");	// XMLファイルを読み込む
-		TextAsset textAsset = Resources.Load("Stages/n001") as TextAsset;
-		xdoc.LoadXml(textAsset.text);
+		XmlDocument xdoc = new XmlDocument();               // XMLオブジェクトを生成
+//		xdoc.Load("http://hakuhou.space/__tmp__/test.xml");	// XMLファイルを読み込む
+//		TextAsset textAsset = Resources.Load("Stages/n001") as TextAsset;
+        TextAsset textAsset = Resources.Load("Stages/n" + stageCnt.ToString("000")) as TextAsset;
+        xdoc.LoadXml(textAsset.text);
 
 		// 全部配列
 		XmlNodeList nodeListText = xdoc.SelectNodes("stage");	// テキストの配列の読み込み
 			
 		// 表示
 		Debug.Log("ORG: " + nodeListText[0].InnerText);
-
-
-
-
 
 		_numCellX = 0;
 		_numCellY = 0;
@@ -83,7 +81,6 @@ public class Stage
 			if(_numCellX < cnt) { _numCellX = cnt; }
 		}
 
-		
 		_cells = new Cell[_numCellX][];
 		for (int i = 0; i < _numCellX; i++)
 		{
@@ -91,7 +88,8 @@ public class Stage
 			for (int j = 0; j < _numCellY; j++)
 			{
 				_cells [i] [j] = new Cell ();
-				_cells[i][j]._go = (GameObject)UnityEngine.Object.Instantiate (floorBlockPrehab, new Vector3(i - (_numCellX / 2), -1.0f, j - (_numCellY / 2)), Quaternion.identity);
+//				_cells[i][j]._go = (GameObject)UnityEngine.Object.Instantiate (floorBlockPrehab, new Vector3(i - (_numCellX / 2), -1.0f, j - (_numCellY / 2)), Quaternion.identity);
+				_cells[i][j]._go = (GameObject)UnityEngine.Object.Instantiate(floorBlockPrehab, new Vector3(i - (_numCellX / 2), -1.0f, - j + (_numCellY / 2)), Quaternion.identity);
 			}
 		}
 		
@@ -109,13 +107,14 @@ public class Stage
 					Cell cell = _cells [i] [j];
 					Debug.Log(string.Format("[{0}][{1}] c={2}, {3}", i, j, c, (int)c));
 				
-
 					switch(c)
 					{
-					case '+':	cell._duty = Cell.Duty.Plus;	break;
+                    case '#':	diceX = i - (_numCellX / 2); diceZ = - j + (_numCellY / 2);	break;  // サイコロの位置
+                    case '+':	cell._duty = Cell.Duty.Plus;	break;
 					case '-':	cell._duty = Cell.Duty.Minus;	break;
 					case '*':	cell._duty = Cell.Duty.Mult;	break;
 					case '/':	cell._duty = Cell.Duty.Div;		break;
+					case '|':	cell._duty = Cell.Duty.Wall;	break;
 					default:	cell._duty = Cell.Duty.Null;	break;
 					}
 					
@@ -129,6 +128,7 @@ public class Stage
 					case Cell.Duty.Mult:	texname = "mult";		break;
 					case Cell.Duty.Div:		texname = "div";		break;
 					case Cell.Duty.Equal:	texname = "equal";		break;
+					case Cell.Duty.Wall:	texname = "wall";		break;
 					}
 					cell._go.GetComponent<Renderer>().material.mainTexture = Resources.Load("Floor/" + texname) as Texture2D;
 
@@ -139,10 +139,7 @@ public class Stage
 			}
 		}		
 		
-		
-		
-		
-		
+        		
 #if false
 		_cells = new Cell[_numCellX][];
 		for (int i = 0; i < _numCellX; i++)
@@ -184,14 +181,17 @@ public class Stage
 		return true;
 	}
 	
-	public bool ValidMovingDirection(Vector3 pos, Vector3 dir)
+	public bool ValidMovingDirection(Vector3 pos)
 	{
-		pos += dir;
 		int ix = PosXToIndexX (pos.x);
 		int iy = PosZToIndexY (pos.z);
 		if ((0 <= ix) && (ix < _numCellX) && (0 <= iy) && (iy < _numCellY))
 		{
-			return true;
+			Cell cell = _cells[ix][iy];
+			if (cell._duty != Cell.Duty.Wall)
+			{
+				return true;
+			}
 		}
 
 		return false;
@@ -209,14 +209,14 @@ public class Stage
 		return null;
 	}
 	
-	private int PosXToIndexX(float x)
+	public int PosXToIndexX(float x)
 	{
-		return (int)(x + (_numCellX * 0.5f));
+		return (int)Mathf.Round(x + (_numCellX / 2));
 	}
-	
-	private int PosZToIndexY(float z)
+
+	public int PosZToIndexY(float z)
 	{
-		return (int)(z + (_numCellY * 0.5f));
+		return (int)Mathf.Round(- z + (_numCellY / 2));
 	}
 
 	public void Unload()

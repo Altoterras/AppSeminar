@@ -54,52 +54,55 @@ public class Dice : MonoBehaviour
 		if(CheckLocalHit()) { AcquireValue (); }
 
 		// タッチパネルによる操作
+		Vector3 dir = Vector3.zero;
+		Vector3 rot = Vector3.zero;
 		if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch(0);
 			if(((Screen.height / 4) <= touch.position.y) && (touch.position.y <= (Screen.height / 4 * 3)))
 			{
 				if(touch.position.x <= (Screen.width / 2)) {
-					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.left)) {
-						Move(Vector3.left, Vector3.forward);
-					}
+					dir = Vector3.left;
+					rot = Vector3.forward;
 				} else {
-					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.right)) {
-						Move(Vector3.right, Vector3.back);
-					}
+					dir = Vector3.right;
+					rot = Vector3.back;
 				}
 			}
 			if(((Screen.width / 4) <= touch.position.x) && (touch.position.x <= (Screen.width / 4 * 3)))
 			{
 				if(touch.position.y <= (Screen.height / 2)) {
-					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.back)) {
-						Move(Vector3.back, Vector3.left);
-					}
-				} else {
-					if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.forward)) {
-						Move(Vector3.forward, Vector3.right);
-					}
+					dir = Vector3.back;
+					rot = Vector3.left;
+				}
+				else {
+					dir = Vector3.forward;
+					rot = Vector3.right;
 				}
 			}
 		}
 		// キーボードによる操作
 		if (Input.GetKey ("right")) {
-			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.right)) {
-				Move(Vector3.right, Vector3.back);
-			}
+			dir = Vector3.right;
+			rot = Vector3.back;
 		}
 		if (Input.GetKey ("left")) {
-			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.left)) {
-				Move(Vector3.left, Vector3.forward);
-			}
+			dir = Vector3.left;
+			rot = Vector3.forward;
 		}
 		if (Input.GetKey ("up")) {
-			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.forward)) {
-				Move(Vector3.forward, Vector3.right);
-			}
+			dir = Vector3.forward;
+			rot = Vector3.right;
 		}
 		if (Input.GetKey ("down")) {
-			if((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(Vector3.back)) {
-				Move(Vector3.back, Vector3.left);
+			dir = Vector3.back;
+			rot = Vector3.left;
+		}
+		if((dir != Vector3.zero) && (rot != Vector3.zero))
+		{
+			Vector3 pos = transform.position + dir * SCALE_DICE;
+			if ((_validMovingDirectionFunc == null) || _validMovingDirectionFunc(pos))
+			{
+				Move(dir, rot);
 			}
 		}
 
@@ -107,28 +110,31 @@ public class Dice : MonoBehaviour
 			_cntMove -= Time.deltaTime;
 
 			// 回転アニメーション終了判定
-			if(_cntMove < 0.0f) {
+			if (_cntMove < 0.0f)
+			{
 				_cntMove = 0.0f;
 
 				// 直角補正
 				this.transform.eulerAngles = new Vector3(AdjustRightAngle(this.transform.eulerAngles.x), AdjustRightAngle(this.transform.eulerAngles.y), AdjustRightAngle(this.transform.eulerAngles.z));
 				// 位置補正
-				this.transform.position = new Vector3(Mathf.Round(this.transform.position.x), 0.0f, Mathf.Round(this.transform.position.z));
+				this.transform.position = new Vector3((int)Mathf.Round(this.transform.position.x * SCALE_DICE), 0.0f, (int)Mathf.Round(this.transform.position.z * SCALE_DICE));
 
 				// onStopEvent デリゲートでイベントをコールする
-				if(_onStopFunc != null)
+				if (_onStopFunc != null)
 				{
 					_onStopFunc(_value);
 				}
 			}
-
-			// 平行移動
-			this.transform.Translate(_dirMove * MOVE_SPD * SCALE_DICE * Time.deltaTime, Space.World);
-			// 回転
-			this.transform.Rotate(_rotMove, ROT_SPD * SCALE_DICE * Time.deltaTime, Space.World);
-			// 床めり込み防止
-			const float JUMP_HIGH = 0.5f;
-			this.transform.position = new Vector3(this.transform.position.x, JUMP_HIGH * Mathf.Sin(Mathf.PI * _cntMove / MOVE_SEC), this.transform.position.z);
+			else
+			{
+				// 平行移動
+				this.transform.Translate(_dirMove * MOVE_SPD * SCALE_DICE * Time.deltaTime, Space.World);
+				// 回転
+				this.transform.Rotate(_rotMove, ROT_SPD * SCALE_DICE * Time.deltaTime, Space.World);
+				// 床めり込み防止
+				const float JUMP_HIGH = 0.5f;
+				this.transform.position = new Vector3(this.transform.position.x, JUMP_HIGH * Mathf.Sin(Mathf.PI * _cntMove / MOVE_SEC), this.transform.position.z);
+			}
 		}
 	}
 

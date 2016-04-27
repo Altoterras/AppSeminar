@@ -28,6 +28,11 @@ public class Scene : MonoBehaviour
 	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
+    private int _stageMax = 2;
+    private int _stageCnt = 0;
+    private int _diceX;
+    private int _diceZ;
+	private int _moveCnt = 0;   //手数カウント
 
 	// 画面表示 20160203mori
 	public Text _scoreText; // Text 用変数
@@ -40,7 +45,7 @@ public class Scene : MonoBehaviour
 	void Start ()
 	{
 		_stage = new Stage();
-		Restart();
+        Restart();
 	}
 
 	// 再開処理
@@ -53,9 +58,14 @@ public class Scene : MonoBehaviour
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
 
-		_stage.Load(_floorBlockPrehab);
+        // ステージを読み込む
+        if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
+        _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 
-		_dice.validMovingDirection = ValidMovingDirection;  // サイコロの移動可否確認関数
+        // ダイスの設定
+        _dice.transform.position = new Vector3(_diceX, 0.0f, _diceZ);   //　位置補正
+        _dice.transform.rotation = Quaternion.Euler(-90, -180, 0);      //　回転補正(上１、正面２)
+        _dice.validMovingDirection = ValidMovingDirection;  // サイコロの移動可否確認関数
 		_dice.onStop = OnDiceStop;  // 停止イベントハンドラを設定する
 		_dice.active = true;
 
@@ -86,7 +96,7 @@ public class Scene : MonoBehaviour
 	void OnGUI()
 	{
 		// デバッグ表示
-		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg));
+		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}\nPOS = [{5}][{6}]\nIDX = [{7}][{8}]", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg, _dice.transform.position.x, _dice.transform.position.z, _stage.PosXToIndexX(Mathf.Round(_dice.transform.position.x)), _stage.PosZToIndexY(Mathf.Round(_dice.transform.position.z))));
 
 		// 表示処理
 		if (_stat == State.CLEAR)
@@ -100,19 +110,21 @@ public class Scene : MonoBehaviour
 		}
 		else
 		{
-			_scoreText.text = string.Format("合計：{0}", _valueResult);
+//			_scoreText.text = string.Format("合計：{0}", _valueResult);
+			_scoreText.text = string.Format("{0} {1} {2} = {3}\n{4}手目", _valuePrev, _msgDuty, _valueCur, _valueResult, _moveCnt);
 		}
-    }
+	}
 
     // サイコロの移動可否確認関数
-    public bool ValidMovingDirection(Vector3 dir)
+    public bool ValidMovingDirection(Vector3 pos)
 	{
-		return _stage.ValidMovingDirection (_dice.transform.position, dir);
+		return _stage.ValidMovingDirection (pos);
 	}
 
 	// サイコロが停止したときのイベントハンドラ
 	private void OnDiceStop(int value)
 	{
+		_moveCnt++;
 		Stage.Cell cell = _stage.GetCellFromPosition (_dice.transform.position);
 		if (cell != null)
 		{
