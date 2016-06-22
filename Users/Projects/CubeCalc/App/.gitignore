@@ -1,2 +1,41 @@
-Library/
-Temp/
+# Unity generated
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+/[Ll]ibrary/
+/Assets/AssetStoreTools*
+sysinfo.txt
+*.stackdump
+*.pidb.meta
+*.apk
+*.unitypackage
+
+# Visual Studio / MonoDevelop generated
+[Ee]xported[Oo]bj/
+.vs/
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln*
+*.user
+*.unityproj
+*.booproj
+*.svd
+*.tmp
+*.userprefs
+ 
+# OS generated
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Others
+*.pyc
+*.log
+
