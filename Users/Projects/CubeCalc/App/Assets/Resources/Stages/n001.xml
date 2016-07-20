@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<stagedata>
 <stage>
 + ++
 -|#-
 *  *
 // /
 </stage>
+<gov>
+345
+</gov>
+<clear>
+=
+-123
+</clear>
+</stagedata>

@@ -38,6 +38,9 @@ public class Stage
 	private Cell[][] _cells;
 	private int _numCellX = 10;
 	private int _numCellY = 10;
+	private int _govCnt;    //20160518mori
+	private int _clearCnt;  //20160518mori
+	private string _clearOperator;  //20160525mori
 
 	//====
 	// メソッド
@@ -58,8 +61,9 @@ public class Stage
         xdoc.LoadXml(textAsset.text);
 
 		// 全部配列
-		XmlNodeList nodeListText = xdoc.SelectNodes("stage");	// テキストの配列の読み込み
-			
+		//XmlNodeList nodeListText = xdoc.SelectNodes("stage");   // テキストの配列の読み込み
+		XmlNodeList nodeListText = xdoc.SelectNodes("stagedata/stage"); // テキストの配列の読み込み	//20160518mori
+
 		// 表示
 		Debug.Log("ORG: " + nodeListText[0].InnerText);
 
@@ -137,9 +141,20 @@ public class Stage
 
 				if(i > 0 ) { j++; }
 			}
-		}		
-		
-        		
+		}
+
+		//クリア・ゲームオーバー条件読み込み
+		XmlNodeList govList = xdoc.SelectNodes("stagedata/gov"); // ゲームオーバー条件の読み込み	//20160518mori
+		_govCnt = int.Parse(govList[0].InnerText);
+
+		XmlNodeList clearList = xdoc.SelectNodes("stagedata/clear"); // クリア条件の読み込み	//20160518mori
+		string[] clearLines = clearList[0].InnerText.Split('\n');
+		Debug.Log("クリア条件1: " + clearLines[1]);
+		Debug.Log("クリア条件2: " + clearLines[2]);
+		_clearOperator = clearLines[1];
+		_clearCnt = int.Parse(clearLines[2]);
+
+
 #if false
 		_cells = new Cell[_numCellX][];
 		for (int i = 0; i < _numCellX; i++)
@@ -230,6 +245,23 @@ public class Stage
 				_cells[i][j] = null;
 			}
 		}
+	}
+
+	//ゲームオーバー条件取得
+	public int getgovCnt()  //20160518mori
+	{
+		return _govCnt;
+	}
+
+	//クリア条件1を取得
+	public int getclearCnt()  //20160518mori
+	{
+		return _clearCnt;
+	}
+	//クリア条件2を取得
+	public string getclearOperator()  //20160525mori
+	{
+		return _clearOperator;
 	}
 }
 

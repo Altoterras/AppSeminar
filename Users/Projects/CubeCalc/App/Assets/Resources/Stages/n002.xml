@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<stagedata>
 <stage>
 + -   
  -  - 
@@ -6,3 +7,11 @@
  ||     #*
 // /
 </stage>
+<gov>
+100
+</gov>
+<clear>
++
+3000
+</clear>
+</stagedata>

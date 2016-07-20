@@ -49,6 +49,10 @@
      <Compile Include="Assets\Scenes\Ingame\Scene.cs" />
      <Compile Include="Assets\Scenes\Ingame\Stage.cs" />
      <None Include="Assets\Dice\-Read-Me-.txt" />
+     <None Include="Assets\Resources\Stages\bk\n001.xml" />
+     <None Include="Assets\Resources\Stages\n002.xml" />
+     <None Include="Assets\Resources\Stages\n001.xml" />
+     <None Include="Assets\Resources\Stages\bk\n002.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
