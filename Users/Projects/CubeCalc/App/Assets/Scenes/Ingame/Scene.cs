@@ -56,10 +56,11 @@ public class Scene : MonoBehaviour
 	// 再開処理
 	void Restart()
 	{
-		//_clearNum = (int)Random.Range(0, 1000);
+		//初期値設定
 		_valuePrev = 0;
 		_valueCur = 0;
 		_valueResult = 0;
+		_moveCnt = 0;
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
 
@@ -70,22 +71,19 @@ public class Scene : MonoBehaviour
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
 
-		// クリア時のメッセージ
-		switch (_clearCom)
-			{
-			case "=":
+		// クリア条件表示
+		switch (_clearCom[0])
+		{
+			case '=':
 				_clearStr = "と一致させてください。";
 				break;
-			case "+":
+			case '+':
 				_clearStr = "より大きくしてください。";
 				break;
-			case "-":
-				Debug.Log("まいなす");
+			case '-':
 				_clearStr = "より小さくしてください。";
 				break;
 		}
-		Debug.Log(_clearStr);
-		Debug.Log("おわり");
 		
 		// ダイスの設定
 		_dice.transform.position = new Vector3(_diceX, 0.0f, _diceZ);   //　位置補正
@@ -127,17 +125,19 @@ public class Scene : MonoBehaviour
 		if (_stat == State.CLEAR)
 		{
 			_dice.active = false;
-			_scoreText.fontSize = 50;
-			_scoreText.color = _ccoler;
-			_scoreText.alignment = TextAnchor.MiddleCenter;
-			//
-			_scoreText.text = _msgMsg;
+
+			//_scoreText.fontSize = 50;
+			//_scoreText.color = _ccoler;
+			//_scoreText.alignment = TextAnchor.MiddleCenter;
+			//_scoreText.text = _msgMsg;
+			_clearText.text = _msgMsg;
 		}
 		else
 		{
 //			_scoreText.text = string.Format("合計：{0}", _valueResult);
 //			_scoreText.text = string.Format("{0} {1} {2} = {3}\n{4}手目", _valuePrev, _msgDuty, _valueCur, _valueResult, _moveCnt);
 			_scoreText.text = string.Format("{0} {1} {2} = {3}", _valuePrev, _msgDuty, _valueCur, _valueResult);
+//			_scoreText.text = string.Format("{0}", _valueResult);
 			_scoreText2.text = string.Format("{0}/{1}手目", _moveCnt, _govCnt);
 			_clearText.text = string.Format("{0}{1}", _clearNum, _clearStr);
 		}
@@ -185,39 +185,33 @@ public class Scene : MonoBehaviour
 				}
 
 					// クリア判定
-					switch (_clearCom)
+					//switch (_clearCom.ToString())
+					switch (_clearCom[0])
 					{
-						case "=":
-							Debug.Log("イコール判定");
+						case '=':
+							//"イコール判定"
 							if (_valueResult == _clearNum)
 							{
 								_stat = State.CLEAR;
-								_secStat = 0.0f;
-								_msgMsg = "Clear!";
 							}
 							break;
-						case "+":
-							Debug.Log("プラス判定");
+						case '+':
+							//"プラス判定"
 							if (_valueResult >= _clearNum)
 							{
 								_stat = State.CLEAR;
-								_secStat = 0.0f;
-								_msgMsg = "Clear!";
 							}
 							break;
-						case "-":
-							Debug.Log("マイナス判定");
+						case '-':
+							//"マイナス判定"
 							if (_valueResult <= _clearNum)
 							{
-								Debug.Log("マイナスクリア判定");
 								_stat = State.CLEAR;
-								_secStat = 0.0f;
-								_msgMsg = "Clear!";
 							}
 							break;
 					}
-					Debug.Log("判定終わり " + _clearCom);
-
+					_secStat = 0.0f;
+					_msgMsg = "Clear!";
 					break;
 			}
 		}
