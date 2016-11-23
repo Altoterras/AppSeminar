@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+			 xmlns:controls="clr-namespace:DanmenX.Controls;assembly=DanmenX"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="DanmenX.Views.MainPage"
+             Title="MainPage"
+			 BackgroundColor="#d6f9a9">
+
+	<RelativeLayout>
+		<Image
+			VerticalOptions="Center"
+			HorizontalOptions="Center" 
+			Source="title_logo.png" />
+		<Button BackgroundColor="#d6f9a9" Image="button_start.png" Command="{Binding NavigateSecondCommand}" 
+			RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0,Constant=525}"
+			RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=0}"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=0.55,Constant=0}"
+			RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0,Constant=50}"  />
+		<Button BackgroundColor="#d6f9a9" Image="button_manual.png" Command="{Binding NavigateManualCommand}" 
+			RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0,Constant=525}"
+			RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=0}"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=0.55,Constant=0}"
+			RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0,Constant=50}"  />
+	</RelativeLayout>
+
+</ContentPage>
