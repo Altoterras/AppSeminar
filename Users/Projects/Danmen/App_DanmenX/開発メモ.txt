@@ -1,0 +1,25 @@
+▼ NuGet エラーが出る場合
+
+DanmenX.csproj(125,5): error : This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is ..\..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets.
+
+というエラーが出たら、
+
+Tools > NuGet Package Manager > Manage NuGet Package for Solution...
+
+を実行
+
+NuGet-Solution タブの上部に
+
+Some NuGet packages are mission from this solution. Click to restore from your online package sources.
+
+と表示されるので、その右端の Restore ボタンを押す
+
+
+▼ パスが長すぎるというエラーが出る場合
+
+(1) mklink で C 直下などにリンクを張る
+(2) .sln ファイルのショートカットを作る
+(3) ショートカットのリンク先と作業フォルダをリンク後の短いパスに設定
+(4) ショートカットから .sln を起動して作業する
+
+
