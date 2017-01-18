@@ -43,6 +43,9 @@ public class Scene : MonoBehaviour
 	public Text _clearText;		//クリア条件表示用
 	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 
+	// 計算値保存用配列 20161019mori
+	private int[] myNum;
+
 	//====
 	// メソッド
 
@@ -70,6 +73,9 @@ public class Scene : MonoBehaviour
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
+
+		//20161019 mori
+		myNum = new int[_govCnt];
 
 		// クリア条件表示
 		switch (_clearCom[0])
@@ -152,6 +158,25 @@ public class Scene : MonoBehaviour
 	// サイコロが停止したときのイベントハンドラ
 	private void OnDiceStop(int value)
 	{
+		//20161207 mori 座標格納クラス（ゲームオーバー手数分用意）
+		Position[] plist = new Position[_govCnt];	//20170118 ←ここでは配列を定義しただけ
+		plist[_moveCnt] = new Position();           //20170118 ←こちらで実際に格納するクラスをNewする
+		plist[_moveCnt].xposi = (int)_dice.transform.position.x;
+		plist[_moveCnt].yposi = (int)_dice.transform.position.z;
+
+		Debug.Log("現在のX座標：" + (int)_dice.transform.position.x);
+		Debug.Log("現在のY座標：" + (int)_dice.transform.position.z);
+		Debug.Log("現在の手数：" + _moveCnt);
+		Debug.Log("ポジションクラスに格納したX座標：" + plist[_moveCnt].xposi);
+		Debug.Log("ポジションクラスに格納したY座標：" + plist[_moveCnt].yposi);
+
+		//20170118 戻ったか確認
+
+
+		// 計算結果を配列に保存 20161019mori
+		myNum[_moveCnt] = _valueResult;
+		Debug.Log("配列[" + _moveCnt + "]の値：" + myNum[_moveCnt]);
+
 		_moveCnt++;
 		Stage.Cell cell = _stage.GetCellFromPosition (_dice.transform.position);
 		if (cell != null)
@@ -215,5 +240,13 @@ public class Scene : MonoBehaviour
 					break;
 			}
 		}
+
+		//20160907mori
+//		Vector3 lastMove;
+//		lastMove = _dice.getlastMove();
+//		if (lastMove == Vector3.forward) {
+//			Debug.Log("↑");
+//		}
+
 	}
 }
