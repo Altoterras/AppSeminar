@@ -46,6 +46,8 @@ public class Scene : MonoBehaviour
 	// 計算値保存用配列 20161019mori
 	private int[] myNum;
 
+	public Position[] plist;		//座標格納クラス
+
 	//====
 	// メソッド
 
@@ -100,6 +102,12 @@ public class Scene : MonoBehaviour
 
 		_stat = State.RUN;
 		_secStat = 0.0f;
+
+		//20161207 mori 座標格納クラス（ゲームオーバー手数分用意）
+		plist = new Position[_govCnt];		//20170118 ←ここでは配列を定義しただけ
+		plist[_moveCnt] = new Position();	//20170118 ←こちらで実際に格納するクラスをNewする
+		plist[_moveCnt].xposi = (int)_dice.transform.position.x;
+		plist[_moveCnt].yposi = (int)_dice.transform.position.z;
 	}
 
 	// Update is called once per frame
@@ -155,22 +163,33 @@ public class Scene : MonoBehaviour
 		return _stage.ValidMovingDirection (pos);
 	}
 
+	// サイコロの戻り判定関数
+	public bool retCheck(int x, int y) {
+		//20170215 戻ったか確認(1手前の座標と現在の座標を比較
+		if (_moveCnt > 1)
+		{
+			if (plist[_moveCnt].xposi.Equals(plist[_moveCnt - 2].xposi) && plist[_moveCnt].yposi.Equals(plist[_moveCnt - 2].yposi))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// サイコロが停止したときのイベントハンドラ
 	private void OnDiceStop(int value)
 	{
-		//20161207 mori 座標格納クラス（ゲームオーバー手数分用意）
-		Position[] plist = new Position[_govCnt];	//20170118 ←ここでは配列を定義しただけ
-		plist[_moveCnt] = new Position();           //20170118 ←こちらで実際に格納するクラスをNewする
+		plist[_moveCnt] = new Position();
 		plist[_moveCnt].xposi = (int)_dice.transform.position.x;
 		plist[_moveCnt].yposi = (int)_dice.transform.position.z;
 
 		Debug.Log("現在のX座標：" + (int)_dice.transform.position.x);
 		Debug.Log("現在のY座標：" + (int)_dice.transform.position.z);
-		Debug.Log("現在の手数：" + _moveCnt);
-		Debug.Log("ポジションクラスに格納したX座標：" + plist[_moveCnt].xposi);
-		Debug.Log("ポジションクラスに格納したY座標：" + plist[_moveCnt].yposi);
 
-		//20170118 戻ったか確認
+		if (retCheck(plist[_moveCnt].xposi, plist[_moveCnt].yposi)) {
+			Debug.Log("1手戻った");
+		}
+
 
 
 		// 計算結果を配列に保存 20161019mori
