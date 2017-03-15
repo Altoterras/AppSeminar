@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=480, user-scalable=no" />
+	<title>Molcol</title>
+	<script src="js/jafw.js"></script>
+	<script src="game.js"></script>
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+			font-size: 12px;
+		}
+		body {
+			background: #fff;
+			width:480px;
+			-webkit-user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="game_canvas" width="480" height="600">
+		ゲームキャンバス
+	</canvas>
+	<div id="game_log"></div>
+	<div id="game_fps"></div>
+	<script>
+		var game = new Game(480, 600);
+		game.start();
+	</script>
+	<p style="text-align: right;">
+		<a href="index.html">ルール</a>
+	</p>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	  ga('create', 'UA-41088170-1', 'altoterras.co.jp');
+	  ga('send', 'pageview');
+	</script>
+</body>
+</html>
+  
