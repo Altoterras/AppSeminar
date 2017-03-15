@@ -2,13 +2,13 @@
 
 /*---------------------------------------------------------------------*//**
  *	ステージ クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Stage = function(widthStage, heightStage)
 {
 	//======================================================================
 	// Stage メンバ変数
-	
+
 	this.WIDTH = widthStage;
 	this.HEIGHT = heightStage;
 
@@ -27,7 +27,7 @@ Stage.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	要素クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Element = function(src)
 {
@@ -58,7 +58,7 @@ var Element = function(src)
 	}
 };
 
-Element.prototype = 
+Element.prototype =
 {
 	//======================================================================
 	// Element 定数
@@ -70,13 +70,13 @@ Element.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	キャノン クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Cannon = function(widthStage, numColShell)
 {
 	//======================================================================
 	// Cannon メンバ変数
-	
+
 	// カラーテーブル作成
 	this.COL_TABLE = [ new Color(), new Color(), new Color(), new Color() ];
 	this.COL_TABLE[0]._r = 191;
@@ -92,7 +92,7 @@ var Cannon = function(widthStage, numColShell)
 	this._col = this.COL_TABLE[this._colidx];
 	this._arrShell = new Array(10);
 	this._arrCntCol = new Array(this.NUM_COL_TABLE);
-	
+
 	// 残弾数セット
 	for(var i = 0; i < this.NUM_COL_TABLE; i++)
 	{
@@ -100,7 +100,7 @@ var Cannon = function(widthStage, numColShell)
 	}
 };
 
-Cannon.prototype = 
+Cannon.prototype =
 {
 	//======================================================================
 	// Cannon 定数
@@ -113,7 +113,7 @@ Cannon.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	演出クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Perform = function()
 {
@@ -128,7 +128,7 @@ var Perform = function()
 	this._flags = 0;
 };
 
-Perform.prototype = 
+Perform.prototype =
 {
 	//======================================================================
 	// Perform 定数
@@ -142,7 +142,7 @@ Perform.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	ソフトウェア キーボード ボタン クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var SoftkbdBtn = function()
 {
@@ -164,7 +164,7 @@ SoftkbdBtn.prototype =
 {
 	//======================================================================
 	// SoftkbdBtn メソッド
-	
+
 	/*-----------------------------------------------------------------*//**
 		セット
 	**//*-----------------------------------------------------------------*/
@@ -182,7 +182,7 @@ SoftkbdBtn.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	ソフトウェア キーボード クラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Softkbd = function(xBase, yBase)
 {
@@ -192,7 +192,7 @@ var Softkbd = function(xBase, yBase)
 	this._xBase = xBase;
 	this._yBase = yBase;
 	this._arrBtn = new Array(this.NUM_KEY);
-	
+
 	// ボタン作成
 	for(var i = 0; i < this.NUM_KEY; i++)
 	{
@@ -207,17 +207,17 @@ var Softkbd = function(xBase, yBase)
 	this._arrBtn[this.KEY_ESC	].set( 6 * s,  1 * s, s, s, "ESC");
 };
 
-Softkbd.prototype = 
+Softkbd.prototype =
 {
 	//======================================================================
 	// Softkbd 定数
 
-	KEY_LEFT : 0,		// ← 
-	KEY_UP : 1,			// ↑ 
-	KEY_RIGHT : 2,		// → 
-	KEY_DOWN : 3,		// ↓ 
-	KEY_SPACE : 4,		// Space 
-	KEY_ESC : 5,		// Esc 
+	KEY_LEFT : 0,		// ←
+	KEY_UP : 1,			// ↑
+	KEY_RIGHT : 2,		// →
+	KEY_DOWN : 3,		// ↓
+	KEY_SPACE : 4,		// Space
+	KEY_ESC : 5,		// Esc
 	NUM_KEY : 6,
 
 	//======================================================================
@@ -236,7 +236,7 @@ Softkbd.prototype =
 			{
 				this._arrBtn[i]._cntOn += frameDelta;
 			}
-			
+
 			// マウスクリック判定
 			if((mouse._xClick != null) && (mouse._yClick != null) && this._arrBtn[i]._rect.isPointIn(mouse._xClick - this._xBase, mouse._yClick - this._yBase))
 			{
@@ -251,14 +251,14 @@ Softkbd.prototype =
 				this._arrBtn[i]._swOnCur = false;
 				this._arrBtn[i]._cntOn = -1;
 			}
-			
+
 			// フレームのフラグの更新
 			this._arrBtn[i]._onPush = (this._arrBtn[i]._swOnCur && !this._arrBtn[i]._swOnPrev);
 			this._arrBtn[i]._onRelease = (!this._arrBtn[i]._swOnCur && this._arrBtn[i]._swOnPrev);
 			this._arrBtn[i]._onRepeat = (this._arrBtn[i]._cntOn == 0);
 		}
-		
-		// キーボード入力除法に伝達	
+
+		// キーボード入力除法に伝達
 		if(this._arrBtn[this.KEY_LEFT]._onRepeat)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_LEFT] = true;	}
 		if(this._arrBtn[this.KEY_UP]._onPush)		{	kbd._onkey[KeybordIf.prototype.KEYCODE_UP] = true;		}
 		if(this._arrBtn[this.KEY_RIGHT]._onRepeat)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_RIGHT] = true;	}
@@ -279,7 +279,7 @@ Softkbd.prototype =
 			ctx.beginPath();
 			ctx.fillRect(this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], this._arrBtn[i]._rect._v[2] - 1, this._arrBtn[i]._rect._v[3] - 1);
 		}
-		ctx.font = "12px Arial";
+		ctx.font = "12px Nico Moji";
 		ctx.fillStyle = 'rgb(0, 0, 0)';
 		for(var i = 0; i < this.NUM_KEY; i++)
 		{
@@ -293,7 +293,7 @@ Softkbd.prototype =
 
 /*---------------------------------------------------------------------*//**
  *	ゲームクラス
- *	
+ *
 **//*---------------------------------------------------------------------*/
 var Game = function(width, height)
 {
@@ -386,14 +386,14 @@ Game.prototype.startLv = function()
 	{
 		this._cannon._arrCntCol[i] = this.NUM_INIT_SHELL;
 	}
-	
+
 	// レベル 21 以上は最大速度変更
 	this._velMax = this.VEL_MAX_DEFAULT;
 	if(this._lv > 20)
 	{
 		this._velMax += this.VEL_MAX_DEFAULT * (this._lv * 0.025);
 	}
-	
+
 	// 要素配置
 	for(var i = 0; i < this._arrElm.length; i++)
 	{
@@ -411,12 +411,12 @@ Game.prototype.startLv = function()
 		this._arrElm[i]._col._g = Math.round(Math.random() * 255);
 		this._arrElm[i]._col._b = Math.round(Math.random() * 255);
 		this._arrElm[i]._col._a = 255;
-		
+
 		for(var cnt = 0; cnt < 100; cnt++)
 		{
 			this._arrElm[i]._pos._v[0] = radius + (Math.random() * (this._stage.WIDTH - (radius * 2)));
 			this._arrElm[i]._pos._v[1] =radius + (Math.random() * (this._stage.HEIGHT - (radius * 2)));
-		
+
 			// 重複回避
 			var ok = true;
 			for(var j = 0; j < i; j++)
@@ -433,7 +433,7 @@ Game.prototype.startLv = function()
 			if(ok)	{	break;	}
 		}
 	}
-	
+
 	// 開始演出
 	if(this._lv <= 1)
 	{
@@ -445,7 +445,7 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
 	}
-	
+
 	/* test1 * /
 	if(this._lv >= 2)
 	{
@@ -475,17 +475,17 @@ Game.prototype.startLv = function()
 Game.prototype.updateFrame = function(frameDelta)
 {
 	GameBody.prototype.updateFrame.call(this, frameDelta);
-	
+
 	// ソフトウェアキーボードの更新
 	this._softkbd.updateFrame(this._mouse, this._kbd, frameDelta);
-	
+
 	// 要素更新
 	var cntValidElm = 0;
 	for(var i = 0; i < this._arrElm.length; i++)
 	{
 		if(this._arrElm[i] === undefined)	{	continue;	}
 		cntValidElm++;
-		
+
 		// アニメーション処理
 		if((this._arrElm[i]._cntUnionAnim > 0) && (this._arrElm[i]._elmAnimStart != null) && (this._arrElm[i]._elmAnimEnd != null))
 		{
@@ -511,7 +511,7 @@ Game.prototype.updateFrame = function(frameDelta)
 			}
 			continue;
 		}
-		
+
 		// 色が白になったらクリア
 		if(	(this._arrElm[i]._col._r >= 245) &&
 			(this._arrElm[i]._col._g >= 245) &&
@@ -551,7 +551,7 @@ Game.prototype.updateFrame = function(frameDelta)
 			}
 			continue;
 		}
-		
+
 		// 速度による位置更新
 		this._arrElm[i]._pos._v[0] += this._arrElm[i]._vel._v[0] / this.FPS_STD * frameDelta;
 		this._arrElm[i]._pos._v[1] += this._arrElm[i]._vel._v[1] / this.FPS_STD * frameDelta;
@@ -560,7 +560,7 @@ Game.prototype.updateFrame = function(frameDelta)
 		{
 			this._arrElm[i]._vel._v[1] += this.GRAVITY;
 		}
-		
+
 		// 跳ね返り
 		if((this._arrElm[i]._pos._v[0] + this._arrElm[i]._r) > this._stage.WIDTH)
 		{
@@ -590,16 +590,16 @@ Game.prototype.updateFrame = function(frameDelta)
 			if(this._arrElm[i]._vel._v[1] > this._velMax)	{	this._arrElm[i]._vel._v[1] = this._velMax;		}
 			this._arrElm[i]._vel._v[0] += ((Math.random() * 2.0) - 1.0) * this.VEL_STAGE_COL_RANDOM;
 		}
-		
+
 		// 衝突
 		for(var j = i + 1; j < this._arrElm.length; j++)
 		{
 			if(this._arrElm[j] === undefined)	{	continue;	}
-			
+
 			var vDif = this._arrElm[j]._pos.sub(this._arrElm[i]._pos);
 			var distSq = vDif.lengthSq();
 			var rSq = (this._arrElm[i]._r + this._arrElm[j]._r) * (this._arrElm[i]._r + this._arrElm[j]._r);
-			
+
 			if(distSq < rSq)	// 衝突した
 			{
 				// 注視ベクトル
@@ -610,7 +610,7 @@ Game.prototype.updateFrame = function(frameDelta)
 				vColPos._v[1] = this._arrElm[i]._pos._v[1] + (vAim._v[1] * this._arrElm[i]._r);
 				// 合計半径
 				var rSum = this._arrElm[i]._r + this._arrElm[j]._r;
-				
+
 				// 色が近ければくっつく、色が遠ければ跳ね返る
 				if(	(rSum < (this._stage.WIDTH / 4)) && (rSum < (this._stage.HEIGHT / 4)) &&	// ただし、ステージサイズの 25% の半径まで
 					( ((this._arrElm[i]._col._r - this.COLOR_NEAR) <= this._arrElm[j]._col._r) && (this._arrElm[j]._col._r < (this._arrElm[i]._col._r + this.COLOR_NEAR)) ) &&
@@ -643,7 +643,7 @@ Game.prototype.updateFrame = function(frameDelta)
 					this._arrElm[i]._pos._v[1] = vColPos._v[1] - (vAim._v[1] * this._arrElm[i]._r * 1.01);
 					this._arrElm[j]._pos._v[0] = vColPos._v[0] + (vAim._v[0] * this._arrElm[j]._r * 1.01);
 					this._arrElm[j]._pos._v[1] = vColPos._v[1] + (vAim._v[1] * this._arrElm[j]._r * 1.01);
-					
+
 					// 接線ベクトル
 					var vTan = new Vector2();
 					vTan._v[0] = vAim._v[1];
@@ -656,7 +656,7 @@ Game.prototype.updateFrame = function(frameDelta)
 					mtxAffine._m[1][1] = vAim._v[1];
 					// アフィン逆行列
 					var mtxAffineInv = mtxAffine.inverse();
-					
+
 					// 速度ベクトルのアフィン変換
 					var vIa = mtxAffine.multVector(this._arrElm[i]._vel);
 					var vJa = mtxAffine.multVector(this._arrElm[j]._vel);
@@ -697,7 +697,7 @@ Game.prototype.updateFrame = function(frameDelta)
 		this._lv++;
 		this.startLv();
 	}
-	
+
 	// キャノンの更新
 	if(this._kbd._onkey[KeybordIf.prototype.KEYCODE_LEFT] || this._kbd._onkey[KeybordIf.prototype.KEYCODE_RIGHT])
 	{
@@ -793,12 +793,12 @@ Game.prototype.updateFrame = function(frameDelta)
 			}
 		}
 	}
-	
+
 	// 弾丸の更新
 	for(var i = 0; i < this._cannon._arrShell.length; i++)
 	{
 		if(this._cannon._arrShell[i] === undefined)	{	continue;	}
-		
+
 		// 速度による位置更新
 		this._cannon._arrShell[i]._pos._v[0] += this._cannon._arrShell[i]._vel._v[0] / this.FPS_STD * frameDelta;
 		this._cannon._arrShell[i]._pos._v[1] += this._cannon._arrShell[i]._vel._v[1] / this.FPS_STD * frameDelta;
@@ -810,25 +810,25 @@ Game.prototype.updateFrame = function(frameDelta)
 			delete this._cannon._arrShell[i];
 			continue;
 		}
-		
+
 		// 衝突
 		for(var j = 0; j < this._arrElm.length; j++)
 		{
 			if(this._arrElm[j] === undefined)	{	continue;	}
-			
+
 			var vDif = this._arrElm[j]._pos.sub(this._cannon._arrShell[i]._pos);
 			var distSq = vDif.lengthSq();
 			var rSq = this._arrElm[j]._r * this._arrElm[j]._r;
-			
+
 			if(distSq <= rSq)	// 衝突した
 			{
 				var eI, eJ, rrI, rrJ;
-				
+
 				// 注視ベクトル
 				var vAim = vDif.normalize();
 				// 合計半径
 				var rSum = this._cannon._arrShell[i]._r + this._arrElm[j]._r;
-				
+
 				// 色の合成
 				rrI = this._cannon._arrShell[i]._r / rSum * 2.0 * this.COLOR_RATIO_SHELL;
 				rrJ = this._arrElm[j]._r / rSum * 2.0 * this.COLOR_RATIO_ELM;
@@ -845,7 +845,7 @@ Game.prototype.updateFrame = function(frameDelta)
 				eJ = this._arrElm[j]._col._b * rrJ;
 				this._arrElm[j]._col._b = eI + eJ - (eI * eJ / 255.0);
 				if(this._arrElm[j]._col._b > 255)	{	this._arrElm[j]._col._b = 255;	}
-				
+
 				// 接線ベクトル
 				var vTan = new Vector2();
 				vTan._v[0] = vAim._v[1];
@@ -858,7 +858,7 @@ Game.prototype.updateFrame = function(frameDelta)
 				mtxAffine._m[1][1] = vAim._v[1];
 				// アフィン逆行列
 				var mtxAffineInv = mtxAffine.inverse();
-					
+
 				// 速度ベクトルのアフィン変換
 				var vIa = mtxAffine.multVector(this._cannon._arrShell[i]._vel);
 				var vJa = mtxAffine.multVector(this._arrElm[j]._vel);
@@ -870,21 +870,21 @@ Game.prototype.updateFrame = function(frameDelta)
 				else if(vJa._v[1] > this._velMax)	{	vJa._v[1] = this._velMax;	}
 				// 速度ベクトルのアフィン逆変換
 				this._arrElm[j]._vel.copy(mtxAffineInv.multVector(vJa));
-				
+
 				// 弾丸消滅
 				delete this._cannon._arrShell[i];
 				break;
 			}
 		}
 	}
-	
+
 	// 演出を更新
 	for(var i = 0; i < this._arrPfm.length; i++)
 	{
 		if(this._arrPfm[i] === undefined)	{	continue;	}
 
 		this._arrPfm[i]._r += this.R_CLEAR_ELM_ANIM_INC;
-		
+
 		// アニメーションフレームカウンタ更新
 		this._arrPfm[i]._cntAnim -= frameDelta;
 		if(this._arrPfm[i]._cntAnim <= 0)
@@ -902,9 +902,9 @@ Game.prototype.drawFrame = function()
 	var x, y, w, h;
 	this._ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 	this._ctx.lineWidth = 1;
-	
+
 	// スコアとレベル表示
-	this._ctx.font = "italic 20px 'Times New Roman'";
+	this._ctx.font = "italic 20px 'Nico Moji";
 	this._ctx.fillStyle = 'rgb(127, 127, 127)';
 	///this._ctx.fillText("SCORE: " + this._score + ",  LV: " + this._lv + " / " + this.LV_MAX + ((this._esc == 0) ? "" : (", ESC: " + this._esc)), this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE - 10);
 	this._ctx.fillText("SCORE: " + this._score + ",  LV: " + this._lv + " / " + this.LV_MAX, this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE - 10);
@@ -976,7 +976,7 @@ Game.prototype.drawFrame = function()
 		this._ctx.fillStyle = 'rgb(' + this._cannon.COL_TABLE[i]._r + ', ' + this._cannon.COL_TABLE[i]._g + ', ' + this._cannon.COL_TABLE[i]._b + ')';
 		this._ctx.arc(x + this.R_SHELL + 5, y + (h / 2), this.R_SHELL, 0, 2 * Math.PI, true);
 		this._ctx.fill();
-		this._ctx.font = "18px 'Times New Roman'";
+		this._ctx.font = "18px 'context.rect";
 		if(i == Cannon.prototype.COLIDX_BLACK)	{	this._ctx.fillText("∞", x + this.R_SHELL + 15, y + (h / 2) + 5);	}
 		else									{	this._ctx.fillText("" + this._cannon._arrCntCol[i], x + this.R_SHELL + 15, y + (h / 2) + 5);	}
   		y += h + (h / 4);
@@ -995,13 +995,12 @@ Game.prototype.drawFrame = function()
 			this._ctx.arc(this.PADDING_LEFT_STAGE + this._arrPfm[i]._pos._v[0], this.PADDING_TOP_STAGE + this._arrPfm[i]._pos._v[1], this._arrPfm[i]._r / (j + 1), 0, 2 * Math.PI, true);
 			this._ctx.stroke();
 		}
-		this._ctx.font = "20px Arial";
+		this._ctx.font = "20px Nico Moji";
 		this._ctx.fillStyle = 'rgba(255, 0, 0, ' + a + ')';
 		w = this._ctx.measureText(this._arrPfm[i]._msg).width;
 		this._ctx.fillText(this._arrPfm[i]._msg, this.PADDING_LEFT_STAGE + this._arrPfm[i]._pos._v[0] - (w / 2), this.PADDING_TOP_STAGE + this._arrPfm[i]._pos._v[1]);
 	}
-	
+
 	// ソフトウェアキーボード描画
 	this._softkbd.drawFrame(this._ctx);
 };
-
