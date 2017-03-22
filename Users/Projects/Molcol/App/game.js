@@ -444,7 +444,21 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._msg = 'GAME START!';
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
+
+		// データの取得
+		//スコア
+		this._score = localStorage.getItem('count_sco');
+		this._score = window.localStorage.getItem('count_sco');
+		this._score = localStorage.count_sco
+		//レベル
+		this._lv = localStorage.getItem('count_lv');
+		this._lv = window.localStorage.getItem('count_lv');
+		this._lv = localStorage.count_lv
 	}
+
+
+
+
 
 	/* test1 * /
 	if(this._lv >= 2)
@@ -675,6 +689,7 @@ Game.prototype.updateFrame = function(frameDelta)
 			}
 		}
 	}
+
 	// レベルクリア
 	if(cntValidElm <= 0)
 	{
@@ -693,9 +708,20 @@ Game.prototype.updateFrame = function(frameDelta)
 				break;
 			}
 		}
+
 		// 次のレベルへ
 		this._lv++;
 		this.startLv();
+
+		/* データの保存 */
+		//スコア
+		localStorage.setItem('count_sco', this._score);
+		window.localStorage.setItem('count_sco', this._score);
+		localStorage.count = this._score
+		//レベル
+		localStorage.setItem('count_lv', this._lv);
+		window.localStorage.setItem('count_lv', this._lv);
+		localStorage.count = this._lv
 	}
 
 	// キャノンの更新
@@ -1003,4 +1029,5 @@ Game.prototype.drawFrame = function()
 
 	// ソフトウェアキーボード描画
 	this._softkbd.drawFrame(this._ctx);
+
 };
