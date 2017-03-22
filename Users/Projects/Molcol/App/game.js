@@ -271,13 +271,14 @@ Softkbd.prototype =
 		フレーム描画
 	**//*-----------------------------------------------------------------*/
 	drawFrame : function(ctx)
-	{
+	{ var img = new Image();
+		img.src = 'img/btn01.jpg'
 		for(var i = 0; i < this.NUM_KEY; i++)
 		{
 			if(this._arrBtn[i]._swOnCur)	{	ctx.fillStyle = 'rgb(255, 255, 63)';	}
 			else							{	ctx.fillStyle = 'rgb(191, 191, 191)';	}
 			ctx.beginPath();
-			ctx.fillRect(this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], this._arrBtn[i]._rect._v[2] - 1, this._arrBtn[i]._rect._v[3] - 1);
+			ctx.drawImage(img, this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], this._arrBtn[i]._rect._v[2] - 1, this._arrBtn[i]._rect._v[3] - 1);
 		}
 		ctx.font = "12px Nico Moji";
 		ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -939,14 +940,14 @@ Game.prototype.drawFrame = function()
 
 	// キャノン描画
 var img = new Image();
-img.src = 'img/mushroom_01.png';
+img.src = 'img/tank.jpg';
 
 	this._ctx.fillStyle = 'rgb(' + this._cannon._col._r + ', ' + this._cannon._col._g + ', ' + this._cannon._col._b + ')';
 	x = this.PADDING_LEFT_STAGE + this._cannon._x;
 	y = this.PADDING_TOP_STAGE + this._stage.HEIGHT;
 	this._ctx.beginPath();
 	this._ctx.moveTo(x, y);
-	this._ctx.drawImage(img, x-18, y, 35, 35);
+	this._ctx.drawImage(img, x-10, y+2, 20, 30);
 	this._ctx.closePath();
 	this._ctx.fill();
 	// Chrome bug ?
