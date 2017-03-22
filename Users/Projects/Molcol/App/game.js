@@ -938,13 +938,15 @@ Game.prototype.drawFrame = function()
 	}
 
 	// キャノン描画
+var img = new Image();
+img.src = 'img/mushroom_01.png';
+
 	this._ctx.fillStyle = 'rgb(' + this._cannon._col._r + ', ' + this._cannon._col._g + ', ' + this._cannon._col._b + ')';
 	x = this.PADDING_LEFT_STAGE + this._cannon._x;
 	y = this.PADDING_TOP_STAGE + this._stage.HEIGHT;
 	this._ctx.beginPath();
 	this._ctx.moveTo(x, y);
-	this._ctx.lineTo(x - 10, y + 20);
-	this._ctx.lineTo(x + 10, y + 20);
+	this._ctx.drawImage(img, x-18, y, 35, 35);
 	this._ctx.closePath();
 	this._ctx.fill();
 	// Chrome bug ?
@@ -956,6 +958,8 @@ Game.prototype.drawFrame = function()
 	w = this.PADDING_LEFT_STAGE - (x * 2);
 	h = 25;
 	y = this.PADDING_TOP_STAGE + this._stage.HEIGHT - (this._cannon.NUM_COL_TABLE * (h + (h / 4)));
+
+
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
 		if(i == this._cannon._colidx)
