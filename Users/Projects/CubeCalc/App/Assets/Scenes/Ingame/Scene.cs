@@ -21,9 +21,9 @@ public class Scene : MonoBehaviour
 
 	private Stage _stage;
 	private int _clearNum;
-	private int _valuePrev;
-	private int _valueCur;
-	private int _valueResult;
+	private int _valuePrev;		//計算結果退避
+	private int _valueCur;		//現在のサイコロの値
+	private int _valueResult;	//計算結果
 	private State _stat;
 	private float _secStat;
 	private string _msgDuty;
@@ -36,6 +36,7 @@ public class Scene : MonoBehaviour
 	private int _govCnt;        //ゲームオーバー条件　20160518mori
 	private string _clearCom;    //クリア条件比較条件格納　20160518mori
 	private string _clearStr;
+	//private string retDice;		//サイコロが戻ったか判定フラグ
 
 	// 画面表示 20160203mori
 	public Text _scoreText; // Text 用変数
@@ -44,9 +45,9 @@ public class Scene : MonoBehaviour
 	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 
 	// 計算値保存用配列 20161019mori
-	private int[] myNum;
+//	private int[] myNum;
 
-	public Position[] plist;		//座標格納クラス
+	public Step[] slist;		//座標格納クラス
 
 	//====
 	// メソッド
@@ -68,16 +69,17 @@ public class Scene : MonoBehaviour
 		_moveCnt = 0;
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
+		//retDice = "0";
 
-        // ステージを読み込む
-        if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
+		// ステージを読み込む
+		if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
         _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
 
 		//20161019 mori
-		myNum = new int[_govCnt];
+//		myNum = new int[_govCnt];
 
 		// クリア条件表示
 		switch (_clearCom[0])
@@ -103,11 +105,15 @@ public class Scene : MonoBehaviour
 		_stat = State.RUN;
 		_secStat = 0.0f;
 
-		//20161207 mori 座標格納クラス（ゲームオーバー手数分用意）
-		plist = new Position[_govCnt];		//20170118 ←ここでは配列を定義しただけ
-		plist[_moveCnt] = new Position();	//20170118 ←こちらで実際に格納するクラスをNewする
-		plist[_moveCnt].xposi = (int)_dice.transform.position.x;
-		plist[_moveCnt].yposi = (int)_dice.transform.position.z;
+		//ステップ情報格納クラス（ゲームオーバー手数分用意）
+		slist = new Step[_govCnt];      //20170118 ←ここでは配列を定義しただけ
+		slist[_moveCnt] = new Step();   //20170118 ←こちらで実際に格納するクラスをNewする
+		slist[_moveCnt].xposi = (int)_dice.transform.position.x;
+		slist[_moveCnt].zposi = (int)_dice.transform.position.z;
+		slist[_moveCnt].ans = _valueResult;
+		slist[_moveCnt].dnum = _valuePrev;
+		slist[_moveCnt].duty = _msgDuty;
+
 	}
 
 	// Update is called once per frame
@@ -148,14 +154,20 @@ public class Scene : MonoBehaviour
 		}
 		else
 		{
-//			_scoreText.text = string.Format("合計：{0}", _valueResult);
-//			_scoreText.text = string.Format("{0} {1} {2} = {3}\n{4}手目", _valuePrev, _msgDuty, _valueCur, _valueResult, _moveCnt);
-			_scoreText.text = string.Format("{0} {1} {2} = {3}", _valuePrev, _msgDuty, _valueCur, _valueResult);
-//			_scoreText.text = string.Format("{0}", _valueResult);
+			// 計算結果、手数を表示
+//			if (retDice=="1")
+//			{
+//				_scoreText.text = string.Format("1手もどりました。現在の値は{0}です。", _valueResult);
+//			} else {
+				_scoreText.text = string.Format("{0} {1} {2} = {3}", _valuePrev, _msgDuty, _valueCur, _valueResult);
+//			}
 			_scoreText2.text = string.Format("{0}/{1}手目", _moveCnt, _govCnt);
 			_clearText.text = string.Format("{0}{1}", _clearNum, _clearStr);
 		}
 	}
+
+
+
 
     // サイコロの移動可否確認関数
     public bool ValidMovingDirection(Vector3 pos)
@@ -164,11 +176,12 @@ public class Scene : MonoBehaviour
 	}
 
 	// サイコロの戻り判定関数
-	public bool retCheck(int x, int y) {
-		//20170215 戻ったか確認(1手前の座標と現在の座標を比較
-		if (_moveCnt > 1)
+	public bool retCheck() {
+		//20170215 mori 戻ったか確認(1手前の座標と現在の座標を比較)
+		if (_moveCnt > 0)
 		{
-			if (plist[_moveCnt].xposi.Equals(plist[_moveCnt - 2].xposi) && plist[_moveCnt].yposi.Equals(plist[_moveCnt - 2].yposi))
+			//2手目から判定
+			if (_dice.transform.position.x.Equals(slist[_moveCnt - 1].xposi) && _dice.transform.position.z.Equals(slist[_moveCnt - 1].zposi))
 			{
 				return true;
 			}
@@ -179,58 +192,148 @@ public class Scene : MonoBehaviour
 	// サイコロが停止したときのイベントハンドラ
 	private void OnDiceStop(int value)
 	{
-		plist[_moveCnt] = new Position();
-		plist[_moveCnt].xposi = (int)_dice.transform.position.x;
-		plist[_moveCnt].yposi = (int)_dice.transform.position.z;
-
-		Debug.Log("現在のX座標：" + (int)_dice.transform.position.x);
-		Debug.Log("現在のY座標：" + (int)_dice.transform.position.z);
-
-		if (retCheck(plist[_moveCnt].xposi, plist[_moveCnt].yposi)) {
-			Debug.Log("1手戻った");
-		}
-
-
-
-		// 計算結果を配列に保存 20161019mori
-		myNum[_moveCnt] = _valueResult;
-		Debug.Log("配列[" + _moveCnt + "]の値：" + myNum[_moveCnt]);
-
-		_moveCnt++;
-		Stage.Cell cell = _stage.GetCellFromPosition (_dice.transform.position);
-		if (cell != null)
+		// サイコロが戻ったかチェック
+		if (retCheck())
 		{
-			switch (cell._duty)
+			// 戻った場合
+			Debug.Log("戻った");
+			_moveCnt--;
+			if (_moveCnt > 0)
 			{
-			case Stage.Cell.Duty.Null:
-			case Stage.Cell.Duty.Equal:
-				break;
-			default:
-				_valuePrev = _valueResult;
-				_valueCur = value;
+				_valuePrev = slist[_moveCnt - 1].ans;
+			} else {
+				_valuePrev = 0;
+			}			
+			_msgDuty = slist[_moveCnt].duty;
+			_valueCur = slist[_moveCnt].dnum;
+			_valueResult = slist[_moveCnt].ans;
+			//retDice = "1";
+		} else {
+			// 戻らなかった場合
+			Debug.Log("移動した");
+			_moveCnt++;
+
+			slist[_moveCnt] = new Step();
+			slist[_moveCnt].xposi = (int)_dice.transform.position.x;
+			slist[_moveCnt].zposi = (int)_dice.transform.position.z;
+
+			Stage.Cell cell = _stage.GetCellFromPosition(_dice.transform.position);		// 現在止まっているステージを取得
+
+			if (cell != null) {
 				switch (cell._duty)
 				{
-				case Stage.Cell.Duty.Plus:
-					_msgDuty = "+";
-					_valueResult += value;
-					break;
-				case Stage.Cell.Duty.Minus:
-					_msgDuty = "-";
-					_valueResult -= value;
-					break;
-				case Stage.Cell.Duty.Mult:
-					_msgDuty = "*";
-					_valueResult *= value;
-					break;
-				case Stage.Cell.Duty.Div:
-					_msgDuty = "/";
-					_valueResult /= value;
-					break;
+					case Stage.Cell.Duty.Null:
+					case Stage.Cell.Duty.Equal:
+						break;
+					default:
+						// retDice = "0";							//サイコロ戻りフラグを戻す
+						_valuePrev = slist[_moveCnt - 1].ans;	//計算前の値を退避　計算描画にて使用
+						_valueCur = value;						//現在のサイコロの値を退避　計算描画にて使用
+						switch (cell._duty)
+						{
+							case Stage.Cell.Duty.Plus:
+								_msgDuty = "+";
+								_valueResult += value;
+								break;
+							case Stage.Cell.Duty.Minus:
+								_msgDuty = "-";
+								_valueResult -= value;
+								break;
+							case Stage.Cell.Duty.Mult:
+								_msgDuty = "*";
+								_valueResult *= value;
+								break;
+							case Stage.Cell.Duty.Div:
+								_msgDuty = "/";
+								_valueResult /= value;
+								break;
+						}
+						break;
 				}
+			}
 
-					// クリア判定
-					//switch (_clearCom.ToString())
-					switch (_clearCom[0])
+			// 計算結果を配列に保存
+			//myNum[_moveCnt] = _valueResult;
+			//Debug.Log("配列[" + _moveCnt + "]の値：" + myNum[_moveCnt]);
+			slist[_moveCnt].dnum = _valueCur;
+			slist[_moveCnt].duty = _msgDuty;
+			slist[_moveCnt].ans = _valueResult;
+
+			//クリア判定
+			switch (_clearCom[0])
+			{
+				case '=':
+					//"イコール判定"
+					if (_valueResult == _clearNum)
+					{
+						_stat = State.CLEAR;
+					}
+					break;
+				case '+':
+					//"プラス判定"
+					if (_valueResult >= _clearNum)
+					{
+						_stat = State.CLEAR;
+					}
+					break;
+				case '-':
+					//"マイナス判定"
+					if (_valueResult <= _clearNum)
+					{
+						_stat = State.CLEAR;
+					}
+					break;
+			}
+			_secStat = 0.0f;
+
+			/*
+
+						if (cell != null)
+					{
+							switch (cell._duty)
+							{
+								case Stage.Cell.Duty.Null:
+								case Stage.Cell.Duty.Equal:
+									break;
+								default:
+									// サイコロが戻ったか確認		//0301 複数手戻すようにするので、演算子パネル以外のところで止まった際も判定の必要あり。外出しにする
+									if (retCheck())
+									{
+										// 戻った場合
+
+									} else {
+										// 戻らなかった場合
+										retDice = "0";  //サイコロ戻りフラグを戻す
+										_valuePrev = _valueResult;  //計算前の値を退避　計算描画にて使用
+										_valueCur = value;			//現在のサイコロの値を退避　計算描画にて使用
+										switch (cell._duty)
+										{
+											case Stage.Cell.Duty.Plus:
+												_msgDuty = "+";
+												_valueResult += value;
+												break;
+											case Stage.Cell.Duty.Minus:
+												_msgDuty = "-";
+												_valueResult -= value;
+												break;
+											case Stage.Cell.Duty.Mult:
+												_msgDuty = "*";
+												_valueResult *= value;
+												break;
+											case Stage.Cell.Duty.Div:
+												_msgDuty = "/";
+												_valueResult /= value;
+												break;
+										}
+									}
+
+								// 計算結果を配列に保存 20161019mori
+								myNum[_moveCnt] = _valueResult;
+								Debug.Log("配列[" + _moveCnt + "]の値：" + myNum[_moveCnt]);
+
+
+			//クリア判定
+			switch (_clearCom[0])
 					{
 						case '=':
 							//"イコール判定"
@@ -254,18 +357,11 @@ public class Scene : MonoBehaviour
 							}
 							break;
 					}
-					_secStat = 0.0f;
-					_msgMsg = "Clear!";
-					break;
-			}
+
+			_secStat = 0.0f;
+						_msgMsg = "Clear!";
+						break;
+						*/
 		}
-
-		//20160907mori
-//		Vector3 lastMove;
-//		lastMove = _dice.getlastMove();
-//		if (lastMove == Vector3.forward) {
-//			Debug.Log("↑");
-//		}
-
 	}
 }

@@ -122,17 +122,17 @@ public class Dice : MonoBehaviour
 				this.transform.eulerAngles = new Vector3(AdjustRightAngle(this.transform.eulerAngles.x), AdjustRightAngle(this.transform.eulerAngles.y), AdjustRightAngle(this.transform.eulerAngles.z));
 				// 位置補正
 				this.transform.position = new Vector3((int)Mathf.Round(this.transform.position.x * SCALE_DICE), 0.0f, (int)Mathf.Round(this.transform.position.z * SCALE_DICE));
-				Debug.Log("移動");
 				// onStopEvent デリゲートでイベントをコールする
 				if (_onStopFunc != null)
 				{
 					_onStopFunc(_value);
 				}
-
+/*
 				//20160907mori　移動方向
 				lastMove = dir;
 				//20161116mori `現在の座標を取得
 				lastPos = new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z);
+*/
 			}
 			else
 			{
@@ -277,6 +277,7 @@ public class Dice : MonoBehaviour
 		return (t > (v - _validMargin) && t < (v + _validMargin));
 	}
 
+
 	//20160907mori 移動方向を取得
 	public Vector3 getlastMove() {
 		return lastMove;
@@ -287,5 +288,6 @@ public class Dice : MonoBehaviour
 	{
 		return lastPos;
 	}
+
 
 }
