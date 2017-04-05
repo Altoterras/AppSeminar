@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=480, user-scalable=no" />
+	<body>
+	<title>Molcol</title>
+	<script src="js/jafw.js"></script>
+	<script src="game.js"></script>
+	<style type="text/css">
+		@import url(https://fonts.googleapis.com/earlyaccess/nicomoji.css);
+		* {
+			padding: 0;
+			margin: 0;
+			font-size: 12px;
+		}
+		body {
+			background: #fff;
+			width:480px;
+			text-align:center;
+			-webkit-user-select: none;
+		}
+		p {
+			margin-top: 10px;
+		}
+		h1, p, li {
+			font-family: 'Nico Moji', cursive;
+		}
+	</style>
+</head>
+<body>
+	<h1>HTML5 なゲーム（フタバ組版）</h1>
+
+	<p>
+		<img src="img/image.png" />
+	</p>
+
+	<p>
+		ルール：
+		<ul style="list-style: disc inside; text-align: left; width: 360px; margin-left: auto; margin-right: auto;">
+			<li>SHOT ボタンで弾が出るよ</li>
+			<li>弾の色が球体に加算されるよ</li>
+			<li>球体は白になったら消えるよ</li>
+			<li>球体を消すとスコアが加算されて残弾数も増えるよ</li>
+			<li>全ての球体を消すとレベルクリアだよ</li>
+			<li>←→ ボタンで SHOT の位置が変わるよ</li>
+			<li>↑↓ ボタンで弾の色が変わるよ</li>
+			<li>似た色の球体は合体するよ</li>
+			<li>大きい球体は白にするまで多くの弾が必要だよ</li>
+			<li>大きい球体は消すとハイスコアだよ</li>
+			<li>黒の弾は無限個だよ</li>
+			<li>ESC ボタンを押すとスコアを消費して残弾数が増やせるよ</li>
+		</ul>
+	</p>
+
+	<p>
+		<a href="game.html" style="font-size: 200%;">ゲーム開始</a>
+	</p>
+
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	  ga('create', 'UA-41088170-1', 'altoterras.co.jp');
+	  ga('send', 'pageview');
+	</script>
+</body>
+</html>
