@@ -14,10 +14,8 @@ if (param != null){
             if (1 < document.location.search.length) {
                 // 最初の1文字 (?記号) を除いた文字列を取得する
                 var query = document.location.search.substring(1);
-
                 // クエリの区切り記号 (&) で文字列を配列に分割する
                 var parameters = query.split('&');
-
                 var result = new Object();
                 for (var i = 0; i < parameters.length; i++) {
                     // パラメータ名とパラメータ値に分割する
@@ -357,7 +355,6 @@ if (dbgmode === "1") {
   }
 }
 
-
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
 };
@@ -405,6 +402,7 @@ Game.prototype.FRAME_CLEAR_LV_ANIM = 180;
 Game.prototype.SCORE_FROM_R = 1;
 Game.prototype.SCORE_SHELL_MAX = 999;
 Game.prototype.NUM_INIT_SHELL = 50;
+
 Game.prototype.LV_MAX = 20;
 
 //==========================================================================
@@ -437,7 +435,14 @@ Game.prototype.startLv = function()
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
 		this._cannon._arrCntCol[i] = this.NUM_INIT_SHELL;
-	}
+    if (dbgmode === "1") {
+      if(param.bullet != null){
+      this._cannon._arrCntCol[i] = Number(param.bullet);
+      }
+    }
+  }
+
+
 
 	// レベル 21 以上は最大速度変更
 	this._velMax = this.VEL_MAX_DEFAULT;
