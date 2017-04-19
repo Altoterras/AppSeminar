@@ -42,22 +42,8 @@
 
 
 	<script>
-		/* ロード確認用の変数 */
-		var lordcnt = 0;
-
 		var game = new Game(480, 600);
 		game.start();
-
-		/* ロード機能　データの取得 */
-		function lordGame() {
-			if (localStorage.count_lv > 1 && lordcnt === 0) {
-				lordcnt = 1;
-				game.start();
-			}
-			else {
-				alert("ロード済みか、ロードするデータがありません");
-			}
-		}
 	</script>
 
 	<p style="text-align: right;">

@@ -376,6 +376,16 @@ Game.prototype.start = function()
 	this.startLv();
 }
 
+function lordGame() {
+	var lord =JSON.parse(localStorage.getItem("lv2"));
+	console.log(lord);
+
+	this._lv = lord.lv;
+	this._score = lord.score;
+
+	game.start();
+}
+
 /*---------------------------------------------------------------------*//**
 	レベル開始
 **//*---------------------------------------------------------------------*/
@@ -444,37 +454,6 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._msg = 'GAME START!';
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
-
-
-		/* ロード機能　データの取得 */
-		if (lordcnt === 1) {
-
-		 var lord =JSON.parse(localStorage.getItem("lv2"));
-			console.log(lord);
-
-			this._lv = lord.lv;
-			this._score = lord.score;
-
-			/*
-			var lord = JSON.parse(localStorage.getItem("save"));
-			console.log(lord.lv2);
-
-			this._lv = 2;
-			this._score = lord.lv2;
-			*/
-
-			/*
-			//スコア
-			this._score = localStorage.getItem('count_sco');
-			this._score = window.localStorage.getItem('count_sco');
-			this._score = localStorage.count_sco
-			//レベル
-			this._lv = localStorage.getItem('count_lv');
-			this._lv = window.localStorage.getItem('count_lv');
-			this._lv = localStorage.count_lv
-			*/
-		}
-
 	}
 
 	/* test1 * /
