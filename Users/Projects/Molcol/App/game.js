@@ -1,5 +1,40 @@
 ////////////////////////////////////////////////////////////////////////////
 
+// デバック用
+var dbgmode = 0;
+var param = GetQueryString();
+
+if (param != null){
+  if(param.dbgmode !=null){
+ dbgmode = param.dbgmode;
+  }
+}
+
+        function GetQueryString() {
+            if (1 < document.location.search.length) {
+                // 最初の1文字 (?記号) を除いた文字列を取得する
+                var query = document.location.search.substring(1);
+
+                // クエリの区切り記号 (&) で文字列を配列に分割する
+                var parameters = query.split('&');
+
+                var result = new Object();
+                for (var i = 0; i < parameters.length; i++) {
+                    // パラメータ名とパラメータ値に分割する
+                    var element = parameters[i].split('=');
+
+                    var paramName = decodeURIComponent(element[0]);
+                    var paramValue = decodeURIComponent(element[1]);
+
+                    // パラメータ名をキーとして連想配列に追加する
+                    result[paramName] = decodeURIComponent(paramValue);
+                }
+                return result;
+            }
+            return null;
+        }
+
+
 /*---------------------------------------------------------------------*//**
  *	ステージ クラス
  *
@@ -291,10 +326,12 @@ Softkbd.prototype =
 
 ////////////////////////////////////////////////////////////////////////////
 
+
 /*---------------------------------------------------------------------*//**
  *	ゲームクラス
  *
 **//*---------------------------------------------------------------------*/
+
 var Game = function(width, height)
 {
 	GameBody.call(this, width, height);
@@ -312,11 +349,19 @@ var Game = function(width, height)
 	this._softkbd = new Softkbd(30, this.PADDING_TOP_STAGE + this._stage.HEIGHT + 30);
 	this._score = 0;
 	this._arrPfm = new Array(this.LV_MAX);
-	this._lv = 1;//this.LV_MAX;
+  this._lv =1;
+
+if (dbgmode === "1") {
+  if(param.LEVEL != null) {
+  this._lv = Number(param.LEVEL);//this.LV_MAX;
+  }
+}
+
+
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
 };
-Game.prototype = new GameBody();
+  Game.prototype = new GameBody();
 
 //==========================================================================
 // Game 定数
@@ -365,6 +410,10 @@ Game.prototype.LV_MAX = 20;
 //==========================================================================
 // Game メソッド
 
+
+
+
+
 /*---------------------------------------------------------------------*//**
 	開始処理
 **//*---------------------------------------------------------------------*/
@@ -375,6 +424,9 @@ Game.prototype.start = function()
 	// レベル開始
 	this.startLv();
 }
+
+
+
 
 /*---------------------------------------------------------------------*//**
 	レベル開始
