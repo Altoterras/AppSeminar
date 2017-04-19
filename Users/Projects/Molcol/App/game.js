@@ -445,20 +445,37 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
 
-		// データの取得
-		//スコア
-		this._score = localStorage.getItem('count_sco');
-		this._score = window.localStorage.getItem('count_sco');
-		this._score = localStorage.count_sco
-		//レベル
-		this._lv = localStorage.getItem('count_lv');
-		this._lv = window.localStorage.getItem('count_lv');
-		this._lv = localStorage.count_lv
+
+		/* ロード機能　データの取得 */
+		if (lordcnt === 1) {
+
+		 var lord =JSON.parse(localStorage.getItem("lv2"));
+			console.log(lord);
+
+			this._lv = lord.lv;
+			this._score = lord.score;
+
+			/*
+			var lord = JSON.parse(localStorage.getItem("save"));
+			console.log(lord.lv2);
+
+			this._lv = 2;
+			this._score = lord.lv2;
+			*/
+
+			/*
+			//スコア
+			this._score = localStorage.getItem('count_sco');
+			this._score = window.localStorage.getItem('count_sco');
+			this._score = localStorage.count_sco
+			//レベル
+			this._lv = localStorage.getItem('count_lv');
+			this._lv = window.localStorage.getItem('count_lv');
+			this._lv = localStorage.count_lv
+			*/
+		}
+
 	}
-
-
-
-
 
 	/* test1 * /
 	if(this._lv >= 2)
@@ -713,16 +730,49 @@ Game.prototype.updateFrame = function(frameDelta)
 		this._lv++;
 		this.startLv();
 
-		/* データの保存 */
+
+		/* オートセーブ機能　データの保存 */
+
+		var savedata = function(lv, score) {
+    	this.lv = lv;
+    	this.score = score;
+		};
+		if (this._lv === 2) {
+			var lv2 = new savedata(this._lv, this._score);
+			localStorage.setItem("lv2", JSON.stringify(lv2));
+			console.log(lv2);
+		}
+		else if (this._lv === 3) {
+			var lv3 = new savedata(this._lv, this._score);
+			localStorage.setItem("lv3", JSON.stringify(lv3));
+			console.log(lv3);
+		}
+
+
+
+		/*
+		var save = {
+			'lv1': 0
+		}
+			save['lv2'] = this._score;
+			save['lv3'] = this._score;
+
+		localStorage.setItem("save", JSON.stringify(save));
+		console.log(save);
+		*/
+
+		/*
 		//スコア
 		localStorage.setItem('count_sco', this._score);
 		window.localStorage.setItem('count_sco', this._score);
-		localStorage.count = this._score
+		localStorage.count_sco = this._score
 		//レベル
 		localStorage.setItem('count_lv', this._lv);
 		window.localStorage.setItem('count_lv', this._lv);
-		localStorage.count = this._lv
+		localStorage.count_lv = this._lv
+		*/
 	}
+
 
 	// キャノンの更新
 	if(this._kbd._onkey[KeybordIf.prototype.KEYCODE_LEFT] || this._kbd._onkey[KeybordIf.prototype.KEYCODE_RIGHT])
