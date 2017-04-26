@@ -315,6 +315,7 @@ var Game = function(width, height)
 	this._lv = 1;//this.LV_MAX;
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
+	this._saveData = new Object;
 };
 Game.prototype = new GameBody();
 
@@ -448,14 +449,14 @@ Game.prototype.startLv = function()
 
 		/* ロード機能　データの取得 */
 		if (lordcnt === 1) {
+			/*
 
 		 var lord =JSON.parse(localStorage.getItem("lv2"));
-			console.log(lord);
+
 
 			this._lv = lord.lv;
 			this._score = lord.score;
 
-			/*
 			var lord = JSON.parse(localStorage.getItem("save"));
 			console.log(lord.lv2);
 
@@ -463,7 +464,6 @@ Game.prototype.startLv = function()
 			this._score = lord.lv2;
 			*/
 
-			/*
 			//スコア
 			this._score = localStorage.getItem('count_sco');
 			this._score = window.localStorage.getItem('count_sco');
@@ -472,7 +472,13 @@ Game.prototype.startLv = function()
 			this._lv = localStorage.getItem('count_lv');
 			this._lv = window.localStorage.getItem('count_lv');
 			this._lv = localStorage.count_lv
-			*/
+			
+			if (!this._score) {
+			this._score = 0;
+			}
+			if (!this._lv) {
+			this._lv = 1;
+			}
 		}
 
 	}
@@ -728,11 +734,19 @@ Game.prototype.updateFrame = function(frameDelta)
 
 		// 次のレベルへ
 		this._lv++;
-		this.startLv();
+		
+		var lvData = new Object;
+		
+		lvData._score = this._score;
+		lvData._col = this._col;
+		this._saveData[this._lv] = lvData;
 
-
+		localStorage.setItem("molcolsaveData", JSON.stringify(this._saveData));
+		console.log(JSON.stringify(this._saveData))
+		
 		/* オートセーブ機能　データの保存 */
 
+		/*
 		var savedata = function(lv, score) {
     	this.lv = lv;
     	this.score = score;
@@ -748,9 +762,6 @@ Game.prototype.updateFrame = function(frameDelta)
 			console.log(lv3);
 		}
 
-
-
-		/*
 		var save = {
 			'lv1': 0
 		}
@@ -761,7 +772,7 @@ Game.prototype.updateFrame = function(frameDelta)
 		console.log(save);
 		*/
 
-		/*
+/*
 		//スコア
 		localStorage.setItem('count_sco', this._score);
 		window.localStorage.setItem('count_sco', this._score);
@@ -770,7 +781,19 @@ Game.prototype.updateFrame = function(frameDelta)
 		localStorage.setItem('count_lv', this._lv);
 		window.localStorage.setItem('count_lv', this._lv);
 		localStorage.count_lv = this._lv
-		*/
+		}
+				*/
+		
+		
+		
+		
+		
+		
+		
+		
+		this.startLv();
+
+
 	}
 
 
