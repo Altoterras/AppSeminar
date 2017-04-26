@@ -368,6 +368,7 @@ Game.prototype.LV_MAX = 20;
 /*---------------------------------------------------------------------*//**
 	開始処理
 **//*---------------------------------------------------------------------*/
+
 Game.prototype.start = function()
 {
 	GameBody.prototype.start.call(this);
@@ -376,21 +377,23 @@ Game.prototype.start = function()
 	this.startLv();
 }
 
-function lordGame() {
-	var lord =JSON.parse(localStorage.getItem("lv2"));
-	console.log(lord);
-
-	this._lv = lord.lv;
-	this._score = lord.score;
-
-	game.start();
-}
 
 /*---------------------------------------------------------------------*//**
 	レベル開始
 **//*---------------------------------------------------------------------*/
 Game.prototype.startLv = function()
 {
+
+	function lordGame() {
+		var lord = JSON.parse(localStorage.getItem("lv2"));
+		console.log(lord);
+
+		this._lv = lord.lv;
+		this._score = lord.score;
+
+		//game.start();
+	}
+
 	// 弾丸数初期化
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
@@ -1059,4 +1062,17 @@ Game.prototype.drawFrame = function()
 	// ソフトウェアキーボード描画
 	this._softkbd.drawFrame(this._ctx);
 
+	// セーブ＆ロード　ボタン
+		var canvas = document.getElementById('game_canvas');
+		/*
+		canvas.addEventListener('mousedown', test);
+		function test(e) {
+			this._ctx.fillStyle = "rgb(250, 250, 0)";
+			this._ctx.fillRect(200, 610, 80, 50);
+		}
+		*/
+		this._ctx.font = "20px 'Hiragino Kaku Gothic Pro', sans-serif";
+		this._ctx.fillText("ロード", 200, 620);
+		this._ctx.fillStyle = "rgb(200, 150, 150)";
+		this._ctx.fillRect(200, 610, 80, 50);
 };

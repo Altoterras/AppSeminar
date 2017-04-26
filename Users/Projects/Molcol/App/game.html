@@ -28,18 +28,11 @@
 	</style>
 </head>
 <body>
-	<canvas id="game_canvas" width="480" height="600">
+	<canvas id="game_canvas" width="480" height="640">
 		ゲームキャンバス
 	</canvas>
 	<div id="game_log"></div>
 	<div id="game_fps"></div>
-
-	<!-- ロード機能　ボタン -->
-	<div class="btn">
-		<input type="button" value="セーブ" onclick="saveGame()">
-		<input type="button" value="ロード" onclick="lordGame()">
-	</div>
-
 
 	<script>
 		var game = new Game(480, 600);
