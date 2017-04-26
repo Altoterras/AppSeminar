@@ -1,37 +1,31 @@
 ////////////////////////////////////////////////////////////////////////////
+// デバックパラメータ取得
 
-// デバック用
 var dbgmode = 0;
-var param = GetQueryString();
-
-if (param != null){
-  if(param.dbgmode !=null){
- dbgmode = param.dbgmode;
-  }
+var getparam = getQueryString();
+function getQueryString() {
+	if (1 < document.location.search.length) {
+		var query = document.location.search.substring(1);	// 最初の1文字 (?記号) を除いた文字列を取得する
+		var parameters = query.split('&');					// クエリの区切り記号 (&記号) で文字列を配列に分割する
+		var result = new Object();
+		for (var i = 0; i < parameters.length; i++) {
+			var element = parameters[i].split('=');	// パラメータ名と値に分割する
+			var paramName = decodeURIComponent(element[0]);
+			var paramValue = decodeURIComponent(element[1]);
+			result[paramName] = decodeURIComponent(paramValue);	// パラメータ名をキーとして連想配列に追加する
+		}
+		return result;
+	}
+	return null;
 }
 
-        function GetQueryString() {
-            if (1 < document.location.search.length) {
-                // 最初の1文字 (?記号) を除いた文字列を取得する
-                var query = document.location.search.substring(1);
-                // クエリの区切り記号 (&) で文字列を配列に分割する
-                var parameters = query.split('&');
-                var result = new Object();
-                for (var i = 0; i < parameters.length; i++) {
-                    // パラメータ名とパラメータ値に分割する
-                    var element = parameters[i].split('=');
+if (getparam != null) {
+	if(getparam.dbgmode !=null) {
+		dbgmode = getparam.dbgmode;
+	}
+}
 
-                    var paramName = decodeURIComponent(element[0]);
-                    var paramValue = decodeURIComponent(element[1]);
-
-                    // パラメータ名をキーとして連想配列に追加する
-                    result[paramName] = decodeURIComponent(paramValue);
-                }
-                return result;
-            }
-            return null;
-        }
-
+////////////////////////////////////////////////////////////////////////////
 
 /*---------------------------------------------------------------------*//**
  *	ステージ クラス
@@ -348,13 +342,14 @@ var Game = function(width, height)
 	this._softkbd = new Softkbd(30, this.PADDING_TOP_STAGE + this._stage.HEIGHT + 30);
 	this._score = 0;
 	this._arrPfm = new Array(this.LV_MAX);
-  this._lv =1;
+	this._lv =1;
 
-if (dbgmode === "1") {
-  if(param.LEVEL != null) {
-  this._lv = Number(param.LEVEL);//this.LV_MAX;
-  }
-}
+	// デバッグ機能によるレベル直指定
+	if (dbgmode === "1") {
+		if(getparam.LEVEL != null) {
+			this._lv = Number(getparam.LEVEL);
+		}
+	}
 
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
@@ -436,14 +431,14 @@ Game.prototype.startLv = function()
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
 		this._cannon._arrCntCol[i] = this.NUM_INIT_SHELL;
-    if (dbgmode === "1") {
-      if(param.bullet != null){
-      this._cannon._arrCntCol[i] = Number(param.bullet);
-      }
-    }
-  }
-
-
+		
+		// デバッグ機能による弾数直指定
+		if (dbgmode === "1") {
+			if(getparam.bullet != null){
+				this._cannon._arrCntCol[i] = Number(getparam.bullet);
+			}
+		}
+	}
 
 	// レベル 21 以上は最大速度変更
 	this._velMax = this.VEL_MAX_DEFAULT;
