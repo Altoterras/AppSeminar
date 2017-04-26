@@ -349,7 +349,7 @@ var Game = function(width, height)
 	this._score = 0;
 	this._arrPfm = new Array(this.LV_MAX);
   this._lv =1;
-
+  
 if (dbgmode === "1") {
   if(param.LEVEL != null) {
   this._lv = Number(param.LEVEL);//this.LV_MAX;
@@ -358,7 +358,14 @@ if (dbgmode === "1") {
 
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
+  	// セーブ用の変数を定義
 	this._saveData = new Object;
+	this._saveData['1'] = {
+		"_score": 0,
+		"_cannon": [this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL]
+	};
+	
+	this.lvData = new Object;
 };
   Game.prototype = new GameBody();
 
@@ -420,7 +427,7 @@ Game.prototype.LV_MAX = 20;
 Game.prototype.start = function()
 {
 	GameBody.prototype.start.call(this);
-
+	
 	// レベル開始
 	this.startLv();
 }
@@ -793,64 +800,16 @@ Game.prototype.updateFrame = function(frameDelta)
 		// 次のレベルへ
 		this._lv++;
 		
-		var lvData = new Object;
-		
-		lvData._score = this._score;
-		lvData._col = this._col;
-		this._saveData[this._lv] = lvData;
-
+		// オートセーブ機能　データの保存
+		this.lvData._score = this._score;
+		this.lvData._cannon = this._cannon._arrCntCol;
+		this._saveData[this._lv] = this.lvData;
+		localStorage.removeItem("molcolsaveData");
+		console.log(JSON.stringify(this._saveData));
 		localStorage.setItem("molcolsaveData", JSON.stringify(this._saveData));
-		console.log(JSON.stringify(this._saveData))
 		
-		/* オートセーブ機能　データの保存 */
-
-		/*
-		var savedata = function(lv, score) {
-    	this.lv = lv;
-    	this.score = score;
-		};
-		if (this._lv === 2) {
-			var lv2 = new savedata(this._lv, this._score);
-			localStorage.setItem("lv2", JSON.stringify(lv2));
-			console.log(lv2);
-		}
-		else if (this._lv === 3) {
-			var lv3 = new savedata(this._lv, this._score);
-			localStorage.setItem("lv3", JSON.stringify(lv3));
-			console.log(lv3);
-		}
-
-		var save = {
-			'lv1': 0
-		}
-			save['lv2'] = this._score;
-			save['lv3'] = this._score;
-
-		localStorage.setItem("save", JSON.stringify(save));
-		console.log(save);
-		*/
-
-/*
-		//スコア
-		localStorage.setItem('count_sco', this._score);
-		window.localStorage.setItem('count_sco', this._score);
-		localStorage.count_sco = this._score
-		//レベル
-		localStorage.setItem('count_lv', this._lv);
-		window.localStorage.setItem('count_lv', this._lv);
-		localStorage.count_lv = this._lv
-		}
-				*/
-		
-		
-		
-		
-		
-		
-		
-		
+		//次のステージの開始
 		this.startLv();
-
 
 	}
 
