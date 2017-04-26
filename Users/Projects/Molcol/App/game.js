@@ -238,6 +238,8 @@ var Softkbd = function(xBase, yBase)
 	this._arrBtn[this.KEY_DOWN	].set( 1 * s,  2 * s, s, s, "↓");
 	this._arrBtn[this.KEY_SPACE	].set( 3.5 * s,  1 * s, s * 2, s, "SHOT");
 	this._arrBtn[this.KEY_ESC	].set( 6 * s,  1 * s, s, s, "ESC");
+  this._arrBtn[this.KEY_SAVE	].set( 4.9 * s, 2.46 * s, s, s / 2, "SAVE");
+  this._arrBtn[this.KEY_LOAD	].set( 6 * s,  2.46 * s, s, s / 2, "LOAD");
 };
 
 Softkbd.prototype =
@@ -251,7 +253,9 @@ Softkbd.prototype =
 	KEY_DOWN : 3,		// ↓
 	KEY_SPACE : 4,		// Space
 	KEY_ESC : 5,		// Esc
-	NUM_KEY : 6,
+  KEY_SAVE : 6,		// Save
+  KEY_LOAD : 7,		// Load
+	NUM_KEY : 8,
 
 	//======================================================================
 	// Softkbd メソッド
@@ -1128,18 +1132,4 @@ img.src = 'img/tank.png';
 
 	// ソフトウェアキーボード描画
 	this._softkbd.drawFrame(this._ctx);
-
-	// セーブ＆ロード　ボタン
-		var canvas = document.getElementById('game_canvas');
-		/*
-		canvas.addEventListener('mousedown', test);
-		function test(e) {
-			this._ctx.fillStyle = "rgb(250, 250, 0)";
-			this._ctx.fillRect(200, 610, 80, 50);
-		}
-		*/
-		this._ctx.font = "20px 'Hiragino Kaku Gothic Pro', sans-serif";
-		this._ctx.fillText("ロード", 200, 620);
-		this._ctx.fillStyle = "rgb(200, 150, 150)";
-		this._ctx.fillRect(200, 610, 80, 50);
 };
