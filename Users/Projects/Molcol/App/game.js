@@ -272,20 +272,20 @@ Softkbd.prototype =
 	**//*-----------------------------------------------------------------*/
 	drawFrame : function(ctx)
 	{ var img = new Image();
-		img.src = 'img/btn01.jpg'
+		img.src = 'img/btn01.png'
 		for(var i = 0; i < this.NUM_KEY; i++)
 		{
-			if(this._arrBtn[i]._swOnCur)	{	ctx.fillStyle = 'rgb(255, 255, 63)';	}
-			else							{	ctx.fillStyle = 'rgb(191, 191, 191)';	}
+			if(this._arrBtn[i]._swOnCur)	{ctx.drawImage(img, this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], (this._arrBtn[i]._rect._v[2] - 1)*0.8, (this._arrBtn[i]._rect._v[3] - 1)*0.8);}
+			else							{ctx.drawImage(img, this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], this._arrBtn[i]._rect._v[2] - 1, this._arrBtn[i]._rect._v[3] - 1);}
 			ctx.beginPath();
-			ctx.drawImage(img, this._xBase + this._arrBtn[i]._rect._v[0], this._yBase + this._arrBtn[i]._rect._v[1], this._arrBtn[i]._rect._v[2] - 1, this._arrBtn[i]._rect._v[3] - 1);
-		}
+					}
 		ctx.font = "12px Nico Moji";
-		ctx.fillStyle = 'rgb(0, 0, 0)';
+		ctx.fillStyle = 'rgb(255, 255, 255)';
 		for(var i = 0; i < this.NUM_KEY; i++)
 		{
 			var w = ctx.measureText(this._arrBtn[i]._name).width;
-			ctx.fillText(this._arrBtn[i]._name, this._xBase + this._arrBtn[i]._rect._v[0] + ((this._arrBtn[i]._rect._v[2] - 1 - w) / 2), this._yBase + this._arrBtn[i]._rect._v[1] + ((this._arrBtn[i]._rect._v[3] - 1) / 2) + 3);
+			if(this._arrBtn[i]._swOnCur){ctx.fillText(this._arrBtn[i]._name, this._xBase + this._arrBtn[i]._rect._v[0] + (((this._arrBtn[i]._rect._v[2] - 1 - w)*0.8) / 2), this._yBase + this._arrBtn[i]._rect._v[1] + (((this._arrBtn[i]._rect._v[3] - 1)*0.8)/ 2) + 3, w*0.8);}
+else{ctx.fillText(this._arrBtn[i]._name, this._xBase + this._arrBtn[i]._rect._v[0] + ((this._arrBtn[i]._rect._v[2] - 1 - w) / 2), this._yBase + this._arrBtn[i]._rect._v[1] + ((this._arrBtn[i]._rect._v[3] - 1) / 2) + 3);}
 		}
 	},
 };
@@ -901,14 +901,21 @@ Game.prototype.updateFrame = function(frameDelta)
 Game.prototype.drawFrame = function()
 {
 	var x, y, w, h;
-	this._ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+	var img = new Image();
+	img.src = 'img/desert.jpg'
+
+	this._ctx.drawImage(img, 0, 0, this.WIDTH, this.HEIGHT);
+	this._ctx.clearRect(this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE, this._stage.WIDTH, this._stage.HEIGHT);
+	this._ctx.clearRect(10,260,70,130);
 	this._ctx.lineWidth = 1;
 
 	// スコアとレベル表示
 	this._ctx.font = "italic 20px 'Nico Moji";
 	this._ctx.fillStyle = 'rgb(127, 127, 127)';
+	this._ctx.strokeStyle = 'rgb(255, 255, 255)';
 	///this._ctx.fillText("SCORE: " + this._score + ",  LV: " + this._lv + " / " + this.LV_MAX + ((this._esc == 0) ? "" : (", ESC: " + this._esc)), this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE - 10);
 	this._ctx.fillText("SCORE: " + this._score + ",  LV: " + this._lv + " / " + this.LV_MAX, this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE - 10);
+	this._ctx.strokeText("SCORE: " + this._score + ",  LV: " + this._lv + " / " + this.LV_MAX, this.PADDING_LEFT_STAGE, this.PADDING_TOP_STAGE - 10);
 
 	// ステージ枠描画
 	this._ctx.strokeStyle = 'rgb(63, 63, 63)';
@@ -940,7 +947,7 @@ Game.prototype.drawFrame = function()
 
 	// キャノン描画
 var img = new Image();
-img.src = 'img/tank.jpg';
+img.src = 'img/tank.png';
 
 	this._ctx.fillStyle = 'rgb(' + this._cannon._col._r + ', ' + this._cannon._col._g + ', ' + this._cannon._col._b + ')';
 	x = this.PADDING_LEFT_STAGE + this._cannon._x;
