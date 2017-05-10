@@ -369,6 +369,14 @@ if (dbgmode === "1") {
 
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
+  	// セーブ用の変数を定義
+	this._saveData = new Object;
+	this._saveData['1'] = {
+		"_score": 0,
+		"_cannon": [this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL]
+	};
+
+	this.lvData = new Object;
 };
   Game.prototype = new GameBody();
 
@@ -513,6 +521,40 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._msg = 'GAME START!';
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
+
+		/* ロード機能　データの取得 */
+		if (lordcnt === 1) {
+			/*
+
+		 var lord =JSON.parse(localStorage.getItem("lv2"));
+
+
+			this._lv = lord.lv;
+			this._score = lord.score;
+
+			var lord = JSON.parse(localStorage.getItem("save"));
+			console.log(lord.lv2);
+
+			this._lv = 2;
+			this._score = lord.lv2;
+			*/
+
+			//スコア
+			this._score = localStorage.getItem('count_sco');
+			this._score = window.localStorage.getItem('count_sco');
+			this._score = localStorage.count_sco
+			//レベル
+			this._lv = localStorage.getItem('count_lv');
+			this._lv = window.localStorage.getItem('count_lv');
+			this._lv = localStorage.count_lv
+
+			if (!this._score) {
+			this._score = 0;
+			}
+			if (!this._lv) {
+			this._lv = 1;
+			}
+		}
 	}
 
 	/* test1 * /
@@ -766,8 +808,17 @@ Game.prototype.updateFrame = function(frameDelta)
 
 		// 次のレベルへ
 		this._lv++;
-		this.startLv();
 
+		// オートセーブ機能　データの保存
+		this.lvData._score = this._score;
+		this.lvData._cannon = this._cannon._arrCntCol;
+		this._saveData[this._lv] = this.lvData;
+		localStorage.removeItem("molcolsaveData");
+		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
+		console.log(localStorage.getItem('molcolsaveData'));
+
+		//次のステージの開始
+		this.startLv();
 
 		/* オートセーブ機能　データの保存 */
     /*
