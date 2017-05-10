@@ -805,8 +805,8 @@ Game.prototype.updateFrame = function(frameDelta)
 		this.lvData._cannon = this._cannon._arrCntCol;
 		this._saveData[this._lv] = this.lvData;
 		localStorage.removeItem("molcolsaveData");
-		console.log(JSON.stringify(this._saveData));
-		localStorage.setItem("molcolsaveData", JSON.stringify(this._saveData));
+		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
+		console.log(localStorage.getItem('molcolsaveData'));
 		
 		//次のステージの開始
 		this.startLv();
