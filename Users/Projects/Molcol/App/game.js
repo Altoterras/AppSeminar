@@ -1,5 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
+// ロード用
+var loadBtn = 0;
+var loadOpen = 0;
+
 // デバック用
 var dbgmode = 0;
 var param = GetQueryString();
@@ -238,8 +242,8 @@ var Softkbd = function(xBase, yBase)
 	this._arrBtn[this.KEY_DOWN	].set( 1 * s,  2 * s, s, s, "↓");
 	this._arrBtn[this.KEY_SPACE	].set( 3.5 * s,  1 * s, s * 2, s, "SHOT");
 	this._arrBtn[this.KEY_ESC	].set( 6 * s,  1 * s, s, s, "ESC");
-  this._arrBtn[this.KEY_SAVE	].set( 4.9 * s, 2.46 * s, s, s / 2, "SAVE");
-  this._arrBtn[this.KEY_LOAD	].set( 6 * s,  2.46 * s, s, s / 2, "LOAD");
+  this._arrBtn[this.KEY_SAVE	].set( 4 * s, 2.55 * s, s * 1.5, s / 2.5, "SAVE");
+  this._arrBtn[this.KEY_LOAD	].set( 5.5 * s,  2.55 * s, s * 1.5, s / 2.5, "LOAD");
 };
 
 Softkbd.prototype =
@@ -302,6 +306,9 @@ Softkbd.prototype =
 		if(this._arrBtn[this.KEY_DOWN]._onPush)		{	kbd._onkey[KeybordIf.prototype.KEYCODE_DOWN] = true;	}
 		if(this._arrBtn[this.KEY_SPACE]._onRepeat)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_SPACE] = true;	}
 		if(this._arrBtn[this.KEY_ESC]._onRelease)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_ESC] = true;		}
+		if(this._arrBtn[this.KEY_LOAD]._onRelease) {
+      loadBtn = 1;   }
+      //kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = true;   }
 	},
 
 	/*-----------------------------------------------------------------*//**
@@ -436,17 +443,6 @@ Game.prototype.start = function()
 **//*---------------------------------------------------------------------*/
 Game.prototype.startLv = function()
 {
-
-	function lordGame() {
-		var lord = JSON.parse(localStorage.getItem("lv2"));
-		console.log(lord);
-
-		this._lv = lord.lv;
-		this._score = lord.score;
-
-		//game.start();
-	}
-
 	// 弾丸数初期化
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
@@ -774,8 +770,8 @@ Game.prototype.updateFrame = function(frameDelta)
 
 
 		/* オートセーブ機能　データの保存 */
-
-		var savedata = function(lv, score) {
+    /*
+    var savedata = function(lv, score) {
     	this.lv = lv;
     	this.score = score;
 		};
@@ -789,9 +785,14 @@ Game.prototype.updateFrame = function(frameDelta)
 			localStorage.setItem("lv3", JSON.stringify(lv3));
 			console.log(lv3);
 		}
-
-
-
+    */
+		var savedata = function(lv, score) {
+    	this.lv = lv;
+    	this.score = score;
+		};
+		var lvScore = new savedata(this._lv, this._score);
+		localStorage.setItem("lvScore", JSON.stringify(lvScore));
+		console.log(lvScore);
 		/*
 		var save = {
 			'lv1': 0
@@ -815,6 +816,16 @@ Game.prototype.updateFrame = function(frameDelta)
 		*/
 	}
 
+  //ロード設定
+  if (loadBtn === 1) {
+    var lordGame = JSON.parse(localStorage.getItem("lvScore"));
+    this._lv = lordGame.lv;
+    this._score = lordGame.score;
+    loadBtn = 0;
+    console.log(lordGame);
+
+    this.startLv();
+  }
 
 	// キャノンの更新
 	if(this._kbd._onkey[KeybordIf.prototype.KEYCODE_LEFT] || this._kbd._onkey[KeybordIf.prototype.KEYCODE_RIGHT])
