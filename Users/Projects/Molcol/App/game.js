@@ -5,8 +5,10 @@ var loadBtn = 0;
 var loadOpen = 0;
 var loadLv = 1;
 //起動時にセーブデータ読み込み
-var loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
-var clearLv = Object.keys(loadData).length;
+if (localStorage.getItem('molcolsaveData')) {
+  var loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+  var clearLv = Object.keys(loadData).length;
+}
 
 // デバック用
 var dbgmode = 0;
@@ -316,13 +318,13 @@ Softkbd.prototype =
     if(this._arrBtn[this.KEY_PREV]._onRelease) {
       if (loadLv > 1) {
         loadLv--;
-        console.log(loadData);
+        //console.log(loadData[loadLv]);
       }
     }
     if(this._arrBtn[this.KEY_NEXT]._onRelease) {
       if (loadLv < clearLv) {
         loadLv++;
-        console.log(loadData);
+        //console.log(loadData[loadLv]);
       }
     }
 		if(this._arrBtn[this.KEY_LOAD]._onRelease) {
@@ -798,11 +800,11 @@ Game.prototype.updateFrame = function(frameDelta)
 		if(JSON.parse(localStorage.getItem('molcolsaveData'))) {
 			this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'))
 		}
-		
+
 		this.lvData._score = this._score;
 		this.lvData._cannon = this._cannon._arrCntCol;
 		this._saveData[this._lv] = this.lvData;
-		
+
 		localStorage.removeItem("molcolsaveData");
 		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		console.log(localStorage.getItem('molcolsaveData'));
@@ -817,18 +819,21 @@ Game.prototype.updateFrame = function(frameDelta)
   this._ctx.strokeStyle = '#000';
   this._ctx.strokeText("LV: " + loadLv,272, 588);
   this._ctx.fillText("LV: " + loadLv, 272, 588);
-
   //ロード　ステージクリア時にセーブデータ更新
-  loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
-  clearLv = Object.keys(loadData).length;
+  if (localStorage.getItem('molcolsaveData')) {
+    loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+    clearLv = Object.keys(loadData).length;
+  }
   if (loadBtn === 1) {
-  //   for (var i = 1; i < loadLv; i++) {
-  //     this._lv = clearLv;
-  //     this._score = loadData['' + clearLv]._score;
-  //   }
-    this._lv = clearLv;
-    this._score = loadData['' + clearLv]._score;
-    console.log(loadData[clearLv]);
+    if (localStorage.getItem('molcolsaveData')) {
+      this._lv = loadLv;
+      this._score = loadData['' + loadLv]._score;
+      console.log(loadData[clearLv]);
+    }
+    else {
+      this._lv = 1;
+      this._score = 0;
+    }
     loadBtn = 0;
     this.startLv();
   }
