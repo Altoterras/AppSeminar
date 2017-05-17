@@ -1,5 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
 
+// ロード用
+var loadBtn = 0;
+var loadOpen = 0;
+var loadLv = 1;
+//起動時にセーブデータ読み込み
+if (localStorage.getItem('molcolsaveData')) {
+  var loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+  var clearLv = Object.keys(loadData).length;
+}
+
 // デバック用
 var dbgmode = 0;
 var param = GetQueryString();
@@ -238,7 +248,11 @@ var Softkbd = function(xBase, yBase)
 	this._arrBtn[this.KEY_DOWN	].set( 1 * s,  2 * s, s, s, "↓");
 	this._arrBtn[this.KEY_SPACE	].set( 3.5 * s,  1 * s, s * 2, s, "SHOT");
 	this._arrBtn[this.KEY_ESC	].set( 6 * s,  1 * s, s, s, "ESC");
+  this._arrBtn[this.KEY_PREV	].set( 3.5 * s, 2.55 * s, s / 2, s / 2.5, "←");
+  this._arrBtn[this.KEY_NEXT	].set( 5 * s, 2.55 * s, s / 2, s / 2.5, "→");
+  this._arrBtn[this.KEY_LOAD	].set( 6 * s,  2.55 * s, s * 1, s / 2.5, "LOAD");
 };
+
 
 Softkbd.prototype =
 {
@@ -251,7 +265,10 @@ Softkbd.prototype =
 	KEY_DOWN : 3,		// ↓
 	KEY_SPACE : 4,		// Space
 	KEY_ESC : 5,		// Esc
-	NUM_KEY : 6,
+  KEY_PREV : 6,		// Prev
+  KEY_NEXT : 7,		// Next
+  KEY_LOAD : 8,		// Load
+	NUM_KEY : 9,
 
 	//======================================================================
 	// Softkbd メソッド
@@ -298,6 +315,21 @@ Softkbd.prototype =
 		if(this._arrBtn[this.KEY_DOWN]._onPush)		{	kbd._onkey[KeybordIf.prototype.KEYCODE_DOWN] = true;	}
 		if(this._arrBtn[this.KEY_SPACE]._onRepeat)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_SPACE] = true;	}
 		if(this._arrBtn[this.KEY_ESC]._onRelease)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_ESC] = true;		}
+    if(this._arrBtn[this.KEY_PREV]._onRelease) {
+      if (loadLv > 1) {
+        loadLv--;
+        //console.log(loadData[loadLv]);
+      }
+    }
+    if(this._arrBtn[this.KEY_NEXT]._onRelease) {
+      if (loadLv < clearLv) {
+        loadLv++;
+        //console.log(loadData[loadLv]);
+      }
+    }
+		if(this._arrBtn[this.KEY_LOAD]._onRelease) {
+      loadBtn = 1;   }
+      //kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = true;   }
 	},
 
 	/*-----------------------------------------------------------------*//**
@@ -349,7 +381,7 @@ var Game = function(width, height)
 	this._score = 0;
 	this._arrPfm = new Array(this.LV_MAX);
   this._lv =1;
-  
+
 if (dbgmode === "1") {
   if(param.LEVEL != null) {
   this._lv = Number(param.LEVEL);//this.LV_MAX;
@@ -364,7 +396,7 @@ if (dbgmode === "1") {
 		"_score": 0,
 		"_cannon": [this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL]
 	};
-	
+
 	this.lvData = new Object;
 };
   Game.prototype = new GameBody();
@@ -424,14 +456,14 @@ Game.prototype.LV_MAX = 20;
 /*---------------------------------------------------------------------*//**
 	開始処理
 **//*---------------------------------------------------------------------*/
+
 Game.prototype.start = function()
 {
 	GameBody.prototype.start.call(this);
-	
+
 	// レベル開始
 	this.startLv();
 }
-
 
 
 
@@ -510,42 +542,6 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._msg = 'GAME START!';
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
-
-
-		/* ロード機能　データの取得 */
-		if (lordcnt === 1) {
-			/*
-
-		 var lord =JSON.parse(localStorage.getItem("lv2"));
-
-
-			this._lv = lord.lv;
-			this._score = lord.score;
-
-			var lord = JSON.parse(localStorage.getItem("save"));
-			console.log(lord.lv2);
-
-			this._lv = 2;
-			this._score = lord.lv2;
-			*/
-
-			//スコア
-			this._score = localStorage.getItem('count_sco');
-			this._score = window.localStorage.getItem('count_sco');
-			this._score = localStorage.count_sco
-			//レベル
-			this._lv = localStorage.getItem('count_lv');
-			this._lv = window.localStorage.getItem('count_lv');
-			this._lv = localStorage.count_lv
-			
-			if (!this._score) {
-			this._score = 0;
-			}
-			if (!this._lv) {
-			this._lv = 1;
-			}
-		}
-
 	}
 
 	/* test1 * /
@@ -822,12 +818,35 @@ Game.prototype.updateFrame = function(frameDelta)
 		localStorage.removeItem("molcolsaveData");
 		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		console.log(localStorage.getItem('molcolsaveData'));
-		
+
 		//次のステージの開始
 		this.startLv();
-
 	}
 
+  // ロード　レベル選択ボタン
+  this._ctx.font = 'bold 14px Nico Moji';
+  this._ctx.lineWidth = 4;
+  this._ctx.strokeStyle = '#000';
+  this._ctx.strokeText("LV: " + loadLv,272, 588);
+  this._ctx.fillText("LV: " + loadLv, 272, 588);
+  //ロード　ステージクリア時にセーブデータ更新
+  if (localStorage.getItem('molcolsaveData')) {
+    loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+    clearLv = Object.keys(loadData).length;
+  }
+  if (loadBtn === 1) {
+    if (localStorage.getItem('molcolsaveData')) {
+      this._lv = loadLv;
+      this._score = loadData['' + loadLv]._score;
+      console.log(loadData[clearLv]);
+    }
+    else {
+      this._lv = 1;
+      this._score = 0;
+    }
+    loadBtn = 0;
+    this.startLv();
+  }
 
 	// キャノンの更新
 	if(this._kbd._onkey[KeybordIf.prototype.KEYCODE_LEFT] || this._kbd._onkey[KeybordIf.prototype.KEYCODE_RIGHT])
@@ -1145,5 +1164,4 @@ img.src = 'img/tank.png';
 
 	// ソフトウェアキーボード描画
 	this._softkbd.drawFrame(this._ctx);
-
 };

@@ -28,36 +28,17 @@
 	</style>
 </head>
 <body>
-	<canvas id="game_canvas" width="480" height="600">
+	<canvas id="game_canvas" width="480" height="640">
 		ゲームキャンバス
 	</canvas>
 	<div id="game_log"></div>
 	<div id="game_fps"></div>
 
-	<!-- ロード機能　ボタン -->
-	<div class="btn">
-		<input type="button" value="セーブ" onclick="saveGame()">
-		<input type="button" value="ロード" onclick="lordGame()">
-	</div>
-
-
 	<script>
 		/* ロード確認用の変数 */
 		var lordcnt = 1;
-
 		var game = new Game(480, 600);
 		game.start();
-
-		/* ロード機能　データの取得 */
-		function lordGame() {
-			if (localStorage.count_lv > 1 && lordcnt === 0) {
-				lordcnt = 1;
-				game.start();
-			}
-			else {
-				alert("ロード済みか、ロードするデータがありません");
-			}
-		}
 	</script>
 
 	<p style="text-align: right;">
