@@ -795,9 +795,14 @@ Game.prototype.updateFrame = function(frameDelta)
 		this._lv++;
 
 		// オートセーブ機能　データの保存
+		if(JSON.parse(localStorage.getItem('molcolsaveData'))) {
+			this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'))
+		}
+		
 		this.lvData._score = this._score;
 		this.lvData._cannon = this._cannon._arrCntCol;
 		this._saveData[this._lv] = this.lvData;
+		
 		localStorage.removeItem("molcolsaveData");
 		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		console.log(localStorage.getItem('molcolsaveData'));
