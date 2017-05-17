@@ -3,6 +3,10 @@
 // ロード用
 var loadBtn = 0;
 var loadOpen = 0;
+var loadLv = 1;
+//起動時にセーブデータ読み込み
+var loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+var clearLv = Object.keys(loadData).length;
 
 // デバック用
 var dbgmode = 0;
@@ -242,9 +246,11 @@ var Softkbd = function(xBase, yBase)
 	this._arrBtn[this.KEY_DOWN	].set( 1 * s,  2 * s, s, s, "↓");
 	this._arrBtn[this.KEY_SPACE	].set( 3.5 * s,  1 * s, s * 2, s, "SHOT");
 	this._arrBtn[this.KEY_ESC	].set( 6 * s,  1 * s, s, s, "ESC");
-  this._arrBtn[this.KEY_SAVE	].set( 4 * s, 2.55 * s, s * 1.5, s / 2.5, "SAVE");
-  this._arrBtn[this.KEY_LOAD	].set( 5.5 * s,  2.55 * s, s * 1.5, s / 2.5, "LOAD");
+  this._arrBtn[this.KEY_PREV	].set( 3.5 * s, 2.55 * s, s / 2, s / 2.5, "←");
+  this._arrBtn[this.KEY_NEXT	].set( 5 * s, 2.55 * s, s / 2, s / 2.5, "→");
+  this._arrBtn[this.KEY_LOAD	].set( 6 * s,  2.55 * s, s * 1, s / 2.5, "LOAD");
 };
+
 
 Softkbd.prototype =
 {
@@ -257,9 +263,10 @@ Softkbd.prototype =
 	KEY_DOWN : 3,		// ↓
 	KEY_SPACE : 4,		// Space
 	KEY_ESC : 5,		// Esc
-  KEY_SAVE : 6,		// Save
-  KEY_LOAD : 7,		// Load
-	NUM_KEY : 8,
+  KEY_PREV : 6,		// Prev
+  KEY_NEXT : 7,		// Next
+  KEY_LOAD : 8,		// Load
+	NUM_KEY : 9,
 
 	//======================================================================
 	// Softkbd メソッド
@@ -306,6 +313,18 @@ Softkbd.prototype =
 		if(this._arrBtn[this.KEY_DOWN]._onPush)		{	kbd._onkey[KeybordIf.prototype.KEYCODE_DOWN] = true;	}
 		if(this._arrBtn[this.KEY_SPACE]._onRepeat)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_SPACE] = true;	}
 		if(this._arrBtn[this.KEY_ESC]._onRelease)	{	kbd._onkey[KeybordIf.prototype.KEYCODE_ESC] = true;		}
+    if(this._arrBtn[this.KEY_PREV]._onRelease) {
+      if (loadLv > 1) {
+        loadLv--;
+        console.log(loadData);
+      }
+    }
+    if(this._arrBtn[this.KEY_NEXT]._onRelease) {
+      if (loadLv < clearLv) {
+        loadLv++;
+        console.log(loadData);
+      }
+    }
 		if(this._arrBtn[this.KEY_LOAD]._onRelease) {
       loadBtn = 1;   }
       //kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = true;   }
@@ -521,40 +540,6 @@ Game.prototype.startLv = function()
 		this._arrPfm[0]._msg = 'GAME START!';
 		this._arrPfm[0]._cntAnim = this._arrPfm[0]._cntAnimMax = this.FRAME_GAME_START;
 		this._arrPfm[0]._flags = Perform.prototype.F_GAME_START;
-
-		/* ロード機能　データの取得 */
-		if (lordcnt === 1) {
-			/*
-
-		 var lord =JSON.parse(localStorage.getItem("lv2"));
-
-
-			this._lv = lord.lv;
-			this._score = lord.score;
-
-			var lord = JSON.parse(localStorage.getItem("save"));
-			console.log(lord.lv2);
-
-			this._lv = 2;
-			this._score = lord.lv2;
-			*/
-
-			//スコア
-			this._score = localStorage.getItem('count_sco');
-			this._score = window.localStorage.getItem('count_sco');
-			this._score = localStorage.count_sco
-			//レベル
-			this._lv = localStorage.getItem('count_lv');
-			this._lv = window.localStorage.getItem('count_lv');
-			this._lv = localStorage.count_lv
-
-			if (!this._score) {
-			this._score = 0;
-			}
-			if (!this._lv) {
-			this._lv = 1;
-			}
-		}
 	}
 
 	/* test1 * /
@@ -819,62 +804,27 @@ Game.prototype.updateFrame = function(frameDelta)
 
 		//次のステージの開始
 		this.startLv();
-
-		/* オートセーブ機能　データの保存 */
-    /*
-    var savedata = function(lv, score) {
-    	this.lv = lv;
-    	this.score = score;
-		};
-		if (this._lv === 2) {
-			var lv2 = new savedata(this._lv, this._score);
-			localStorage.setItem("lv2", JSON.stringify(lv2));
-			console.log(lv2);
-		}
-		else if (this._lv === 3) {
-			var lv3 = new savedata(this._lv, this._score);
-			localStorage.setItem("lv3", JSON.stringify(lv3));
-			console.log(lv3);
-		}
-    */
-		var savedata = function(lv, score) {
-    	this.lv = lv;
-    	this.score = score;
-		};
-		var lvScore = new savedata(this._lv, this._score);
-		localStorage.setItem("lvScore", JSON.stringify(lvScore));
-		console.log(lvScore);
-		/*
-		var save = {
-			'lv1': 0
-		}
-			save['lv2'] = this._score;
-			save['lv3'] = this._score;
-
-		localStorage.setItem("save", JSON.stringify(save));
-		console.log(save);
-		*/
-
-		/*
-		//スコア
-		localStorage.setItem('count_sco', this._score);
-		window.localStorage.setItem('count_sco', this._score);
-		localStorage.count_sco = this._score
-		//レベル
-		localStorage.setItem('count_lv', this._lv);
-		window.localStorage.setItem('count_lv', this._lv);
-		localStorage.count_lv = this._lv
-		*/
 	}
 
-  //ロード設定
-  if (loadBtn === 1) {
-    var lordGame = JSON.parse(localStorage.getItem("lvScore"));
-    this._lv = lordGame.lv;
-    this._score = lordGame.score;
-    loadBtn = 0;
-    console.log(lordGame);
+  // ロード　レベル選択ボタン
+  this._ctx.font = 'bold 14px Nico Moji';
+  this._ctx.lineWidth = 4;
+  this._ctx.strokeStyle = '#000';
+  this._ctx.strokeText("LV: " + loadLv,272, 588);
+  this._ctx.fillText("LV: " + loadLv, 272, 588);
 
+  //ロード　ステージクリア時にセーブデータ更新
+  loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
+  clearLv = Object.keys(loadData).length;
+  if (loadBtn === 1) {
+  //   for (var i = 1; i < loadLv; i++) {
+  //     this._lv = clearLv;
+  //     this._score = loadData['' + clearLv]._score;
+  //   }
+    this._lv = clearLv;
+    this._score = loadData['' + clearLv]._score;
+    console.log(loadData[clearLv]);
+    loadBtn = 0;
     this.startLv();
   }
 
