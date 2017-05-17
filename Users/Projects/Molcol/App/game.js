@@ -800,15 +800,25 @@ Game.prototype.updateFrame = function(frameDelta)
 		// 次のレベルへ
 		this._lv++;
 		
-		// オートセーブ機能　データの保存
+		// オートセーブ機能　データの読み込み
 		if(JSON.parse(localStorage.getItem('molcolsaveData'))) {
 			this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'))
 		}
-		
+		// セーブデータの配列の要素数がレベル－１より小さい場合、空白のレベルに対し、スコアを追加する
+		if (Object.keys(this._saveData).length < this._lv) {
+			for (var j = 1; j < this._lv; j++) {
+				if (!this._saveData[j]) {
+					this.lvData._score = 0;
+					this.lvData._cannon = [0, 0, 0, 0];
+					this._saveData[j] = this.lvData;
+				}
+			}
+		}
+		// 現在のレベルとデータの追加
 		this.lvData._score = this._score;
 		this.lvData._cannon = this._cannon._arrCntCol;
 		this._saveData[this._lv] = this.lvData;
-		
+		// ローカルへの保存
 		localStorage.removeItem("molcolsaveData");
 		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		console.log(localStorage.getItem('molcolsaveData'));
