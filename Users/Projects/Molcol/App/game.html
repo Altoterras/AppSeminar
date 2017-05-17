@@ -13,27 +13,104 @@
 			margin: 0;
 			font-size: 12px;
 		}
+		html {
+			height: 100%;
+		}
 		body {
 			background: #fff;
-			width:480px;
 			-webkit-user-select: none;
+			height: 100%;
+		}
+		.wrap {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
 		}
 	</style>
 </head>
 <body>
-	<canvas id="game_canvas" width="480" height="600">
-		ゲームキャンバス
-	</canvas>
+	<div class="wrap">
+		<canvas id="game_canvas" width="480" height="600">
+			ゲームキャンバス
+		</canvas>
+	</div>
+<!--
 	<div id="game_log"></div>
 	<div id="game_fps"></div>
+ -->
 	<script>
-		var game = new Game(480, 600);
-		game.start();
-	</script>
-	<p style="text-align: right;">
-		<a href="index.html">ルール</a>
-	</p>
+	var width = 480;
+	var height = 600;
 
+	var game = new Game(width, height);
+	game.start();
+
+	function setCanvasSize(){
+		var canvas = document.getElementById('game_canvas');
+		var ctx = canvas.getContext('2d');
+		var docuWidth = window.innerWidth;
+		var docuHeight = window.innerHeight;
+		if(docuWidth > width){
+			docuWidth = width;
+		}
+		if(docuHeight > height){
+			docuHeight = height
+		}
+		if(ctx){
+		var orgAspect = width / height;
+		var newAspect = docuWidth / docuHeight;
+		if(orgAspect < newAspect){
+			canvas.height = docuHeight;
+			canvas.width = (docuHeight / height) * width;
+			ctx.scale(docuHeight / height, docuHeight / height);
+		} else {
+			canvas.width = docuWidth;
+			canvas.height = (docuWidth / width) * height;
+			ctx.scale(docuWidth / width, docuWidth / width);
+		}
+	}
+}
+
+window.addEventListener("resize", function() {
+setCanvasSize();
+}, false );
+
+/*
+window.addEventListener("resize", function() {
+		var canvas = document.getElementById('game_canvas');
+Game(canvas.width, canvas.height)
+}, false );
+
+function setCanvasSize(){
+var canvas = document.getElementById('game_canvas');
+if(canvas && (typeof(canvas.getContext) === 'function'))
+{
+	var ctx = canvas.getContext('2d');
+	if(ctx){
+ var aspect.Canvas = width / hight;
+ var aspect.Window = window.innerwidth / window.innerhight;
+ if(aspect.Canvas < aspect.Window){
+	 canvas.hight = .innerwidth;
+	 canvas.width = .innerhight;
+ }
+
+	}
+}
+
+
+var s = width / hight;
+ctx.scale(s, s);
+
+}
+
+window.addEventListener( 'resize', setCanvasSize);
+setCanvasSize();
+
+};
+*/
+	</script>
+	<!--
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -42,5 +119,6 @@
 	  ga('create', 'UA-41088170-1', 'altoterras.co.jp');
 	  ga('send', 'pageview');
 	</script>
+-->
 </body>
 </html>

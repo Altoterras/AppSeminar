@@ -215,7 +215,6 @@ var Softkbd = function(xBase, yBase)
 {
 	//======================================================================
 	// Softkbd メンバ変数
-
 	this._xBase = xBase;
 	this._yBase = yBase;
 	this._arrBtn = new Array(this.NUM_KEY);
@@ -225,6 +224,7 @@ var Softkbd = function(xBase, yBase)
 	{
 		this._arrBtn[i] = new SoftkbdBtn();
 	}
+
 	var s = 60;
 	this._arrBtn[this.KEY_LEFT	].set( 0 * s,  1 * s, s, s, "←");
 	this._arrBtn[this.KEY_UP	].set( 1 * s,  0 * s, s, s, "↑");
@@ -331,7 +331,6 @@ var Game = function(width, height)
 
 	//======================================================================
 	// Game メンバ変数
-
 	var widthStage = width - this.PADDING_LEFT_STAGE - this.PADDING_RIGHT_STAGE;
 	var heightStage = height - this.PADDING_TOP_STAGE - this.PADDING_BOTTOM_STAGE;
 	if(widthStage > heightStage)		{	widthStage = heightStage;	}
@@ -431,7 +430,7 @@ Game.prototype.startLv = function()
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
 		this._cannon._arrCntCol[i] = this.NUM_INIT_SHELL;
-		
+
 		// デバッグ機能による弾数直指定
 		if (dbgmode === "1") {
 			if(getparam.bullet != null){
