@@ -8,6 +8,7 @@ public class Step
 	private int x;
 	private int z;
 	private int a;
+	private int p;
 	private int di;
 	private string du;
 
@@ -25,6 +26,11 @@ public class Step
 	{
 		get { return a; }
 		set { a = value; }
+	}
+
+	public int prev {
+		get { return p; }
+		set { p = value; }
 	}
 
 	public int dnum
