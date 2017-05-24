@@ -813,12 +813,10 @@ Game.prototype.updateFrame = function(frameDelta)
 			localStorage.removeItem("molcolsaveData");
 			localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		}
-		console.log(localStorage.getItem('molcolsaveData'))
 
 		//次のステージの開始
 		this.startLv();
 	}
-
 
   //ロード　ステージクリア時にセーブデータ更新
   if (localStorage.getItem('molcolsaveData')) {
