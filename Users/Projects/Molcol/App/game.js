@@ -2,13 +2,14 @@
 
 // ロード用
 var loadBtn = 0;
-var loadOpen = 0;
 var loadLv = 1;
+var clearLv = 1;
 //起動時にセーブデータ読み込み
-if (localStorage.getItem('molcolsaveData')) {
-  var loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
-  var clearLv = Object.keys(loadData).length;
-}
+// if (localStorage.getItem('molcolsaveData')) {
+//   // this.saveDataから読み込ますように修正する。
+//   this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'));
+//   var clearLv = Object.keys(loadData).length;
+// }
 
 // デバック用
 var dbgmode = 0;
@@ -328,8 +329,9 @@ Softkbd.prototype =
       }
     }
 		if(this._arrBtn[this.KEY_LOAD]._onRelease) {
-      loadBtn = 1;   }
-      //kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = true;   }
+      // kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = true;   }
+       loadBtn = 1;
+     }
 	},
 
 	/*-----------------------------------------------------------------*//**
@@ -390,12 +392,21 @@ if (dbgmode === "1") {
 
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
-  	// セーブ用の変数を定義
 	this._saveData = new Object;
-	this._saveData['1'] = {
-		"_score": 0,
-		"_cannon": [this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL]
-	};
+  // セーブ用の変数を定義
+  if (localStorage.getItem('molcolsaveData')) {
+    this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'));
+    clearLv = Object.keys(this._saveData).length;
+    console.log(clearLv);
+    console.log(loadLv);
+  }
+  else {
+    // セーブ用の変数を定義
+    this._saveData['1'] = {
+      "_score": 0,
+      "_cannon": [this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL, this.NUM_INIT_SHELL]
+    };
+  }
 
 	this.lvData = new Object;
 };
@@ -809,31 +820,27 @@ Game.prototype.updateFrame = function(frameDelta)
 		localStorage.setItem('molcolsaveData', JSON.stringify(this._saveData));
 		console.log(localStorage.getItem('molcolsaveData'));
 
+    //ロード　ステージクリア時にクリアLV更新
+    //this._saveData = JSON.parse(localStorage.getItem('molcolsaveData'));
+    clearLv = Object.keys(this._saveData).length;
+
 		//次のステージの開始
 		this.startLv();
 	}
 
-  // ロード　レベル選択ボタン
-  this._ctx.font = 'bold 14px Nico Moji';
-  this._ctx.lineWidth = 4;
-  this._ctx.strokeStyle = '#000';
-  this._ctx.strokeText("LV: " + loadLv,272, 588);
-  this._ctx.fillText("LV: " + loadLv, 272, 588);
-  //ロード　ステージクリア時にセーブデータ更新
-  if (localStorage.getItem('molcolsaveData')) {
-    loadData = JSON.parse(localStorage.getItem('molcolsaveData'));
-    clearLv = Object.keys(loadData).length;
-  }
+  // ロード　ボタンクリックでロード開始
   if (loadBtn === 1) {
+  // if (this._kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD]) {
     if (localStorage.getItem('molcolsaveData')) {
       this._lv = loadLv;
-      this._score = loadData['' + loadLv]._score;
-      console.log(loadData[clearLv]);
+      this._score = this._saveData['' + loadLv]._score;
+      console.log(this._saveData);
     }
     else {
       this._lv = 1;
       this._score = 0;
     }
+    // kbd._onkey[KeybordIf.prototype.KEYCODE_LOAD] = false;
     loadBtn = 0;
     this.startLv();
   }
@@ -1073,6 +1080,14 @@ Game.prototype.drawFrame = function()
 		this._ctx.arc(this.PADDING_LEFT_STAGE + this._arrElm[i]._pos._v[0], this.PADDING_TOP_STAGE + this._arrElm[i]._pos._v[1], this._arrElm[i]._r, 0, 2 * Math.PI, true);
 		this._ctx.stroke();
 	}
+
+  // ロードlv描画
+  this._ctx.font = 'bold 14px Nico Moji';
+  this._ctx.lineWidth = 4;
+  this._ctx.fillStyle = 'rgb(255, 255, 255)';
+  this._ctx.strokeStyle = '#000';
+  this._ctx.strokeText("LV: " + loadLv,272, 588);
+  this._ctx.fillText("LV: " + loadLv, 272, 588);
 
 	// 弾丸描画
 	for(var i = 0; i < this._cannon._arrShell.length; i++)
