@@ -37,16 +37,12 @@ public class Scene : MonoBehaviour
 	private int _govCnt;        //ゲームオーバー条件　20160518mori
 	private string _clearCom;    //クリア条件比較条件格納　20160518mori
 	private string _clearStr;
-	//private string retDice;		//サイコロが戻ったか判定フラグ
 
 	// 画面表示 20160203mori
 	public Text _scoreText; // Text 用変数
 	public Text _scoreText2;    //手数用変数
 	public Text _clearText;		//クリア条件表示用
 	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
-
-	// 計算値保存用配列 20161019mori
-//	private int[] myNum;
 
 	public Step[] _slist;		//座標格納クラス
 
@@ -71,7 +67,6 @@ public class Scene : MonoBehaviour
 		_moveCntMax = 0;
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
-		//retDice = "0";
 
 		// ステージを読み込む
 		if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
@@ -79,9 +74,6 @@ public class Scene : MonoBehaviour
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
-
-		//20161019 mori
-//		myNum = new int[_govCnt];
 
 		// クリア条件表示
 		switch (_clearCom[0])
@@ -163,54 +155,37 @@ public class Scene : MonoBehaviour
 		}
 	}
 
-
     // サイコロの移動可否確認関数
     public bool ValidMovingDirection(Vector3 pos)
 	{
 		return _stage.ValidMovingDirection (pos);
 	}
 
-	// サイコロの戻り判定関数
-	/*	public bool retCheck() {
-			//20170215 mori 戻ったか確認(1手前の座標と現在の座標を比較)
-			if (_moveCnt > 0)
-			{
-				//2手目から判定
-				if (_dice.transform.position.x.Equals(_slist[_moveCnt - 1].xposi) && _dice.transform.position.z.Equals(_slist[_moveCnt - 1].zposi))
-				{
-					return true;
-				}
-			}
-			return false;
-		}	*/
-	//20170516 mori undo redo 判定に変更
-	public string retCheck()
-	{
-		if (_moveCnt > 0)
-		{
-			//2手目から判定
-			if (_dice.transform.position.x.Equals(_slist[_moveCnt - 1].xposi) && _dice.transform.position.z.Equals(_slist[_moveCnt - 1].zposi))
-			{
-				return "undo";	//やり直し
-			}
-			if (_moveCnt < _moveCntMax && _dice.transform.position.x.Equals(_slist[_moveCnt + 1].xposi) && _dice.transform.position.z.Equals(_slist[_moveCnt + 1].zposi))
-			{
-				return "redo";	//元に戻す
-			}
-		}
-		return "go";
+	public enum moveType {
+		undo,redo,go
 	}
 
 	// サイコロが停止したときのイベントハンドラ
 	private void OnDiceStop(int value)
 	{
-		// サイコロが戻ったかチェック
-		//if (retCheck())
-		switch (retCheck())
+		moveType _mtype = moveType.go;
+		if (_moveCnt > 0)
 		{
-			case "undo":
+			//2手目から判定
+			if (_dice.transform.position.x.Equals(_slist[_moveCnt - 1].xposi) && _dice.transform.position.z.Equals(_slist[_moveCnt - 1].zposi))
+			{
+				_mtype = moveType.undo;  //元に戻す
+			}
+			if (_moveCnt < _moveCntMax && _dice.transform.position.x.Equals(_slist[_moveCnt + 1].xposi) && _dice.transform.position.z.Equals(_slist[_moveCnt + 1].zposi))
+			{
+				_mtype = moveType.redo;  //やり直す
+			}
+		}
+		// サイコロ移動判定
+		switch (_mtype)
+		{
+			case moveType.undo:
 				// UNDO(元に戻す)の場合
-				Debug.Log("★UNDO");
 				_moveCnt--;
 				if (_moveCnt > 0)
 				{
@@ -222,9 +197,8 @@ public class Scene : MonoBehaviour
 				_valueCur = _slist[_moveCnt].dnum;
 				_valueResult = _slist[_moveCnt].ans;
 				break;
-			case "redo":
-				// REDO(やり直す)の場合
-				Debug.Log("★REDO");
+			case moveType.redo:
+				// REDO(やり直し)の場合
 				_moveCnt++;
 				_valuePrev = _slist[_moveCnt].prev;
 				_msgDuty = _slist[_moveCnt].duty;
@@ -232,16 +206,21 @@ public class Scene : MonoBehaviour
 				_valueResult = _slist[_moveCnt].ans;
 				break;
 			//		} else {
-			case "go":
-			// 戻らなかった場合
-			Debug.Log("移動した");
-			_moveCnt++;
-				if (_moveCnt > _moveCntMax) {
-					// MAX配列サイズ更新
-					_moveCntMax = _moveCnt;
+			case moveType.go:
+				// 移動した場合
+				_moveCnt++;
+				if (_moveCnt < _moveCntMax)
+				{
+					// MAX配列までの値をクリア
+					for (int i = _moveCntMax ; i > _moveCnt ; i--) {
+						Debug.Log(i + "クリア");
+						_slist[i] = null;
+					}
 				}
+				// MAX配列サイズ更新
+				_moveCntMax = _moveCnt;
 
-			_slist[_moveCnt] = new Step();
+				_slist[_moveCnt] = new Step();
 			_slist[_moveCnt].xposi = (int)_dice.transform.position.x;
 			_slist[_moveCnt].zposi = (int)_dice.transform.position.z;
 
