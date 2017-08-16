@@ -215,16 +215,17 @@ var Softkbd = function(xBase, yBase)
 {
 	//======================================================================
 	// Softkbd メンバ変数
-
 	this._xBase = xBase;
 	this._yBase = yBase;
 	this._arrBtn = new Array(this.NUM_KEY);
+	this._scale = 1.0;
 
 	// ボタン作成
 	for(var i = 0; i < this.NUM_KEY; i++)
 	{
 		this._arrBtn[i] = new SoftkbdBtn();
 	}
+
 	var s = 60;
 	this._arrBtn[this.KEY_LEFT	].set( 0 * s,  1 * s, s, s, "←");
 	this._arrBtn[this.KEY_UP	].set( 1 * s,  0 * s, s, s, "↑");
@@ -265,7 +266,7 @@ Softkbd.prototype =
 			}
 
 			// マウスクリック判定
-			if((mouse._xClick != null) && (mouse._yClick != null) && this._arrBtn[i]._rect.isPointIn(mouse._xClick - this._xBase, mouse._yClick - this._yBase))
+			if((mouse._xClick != null) && (mouse._yClick != null) && this._arrBtn[i]._rect.isPointIn(mouse._xClick / this._scale - this._xBase, mouse._yClick / this._scale - this._yBase))
 			{
 				this._arrBtn[i]._swOnCur = true;
 				if((this._arrBtn[i]._cntOn < 0) || (this._arrBtn[i]._cntOn >= 3))
@@ -331,7 +332,6 @@ var Game = function(width, height)
 
 	//======================================================================
 	// Game メンバ変数
-
 	var widthStage = width - this.PADDING_LEFT_STAGE - this.PADDING_RIGHT_STAGE;
 	var heightStage = height - this.PADDING_TOP_STAGE - this.PADDING_BOTTOM_STAGE;
 	if(widthStage > heightStage)		{	widthStage = heightStage;	}
@@ -351,6 +351,32 @@ var Game = function(width, height)
 		}
 	}
 
+	var game = this;
+	function setCanvasSize(){
+		var canvas = document.getElementById('game_canvas');
+		var ctx = canvas.getContext('2d');
+		var docuWidth = window.innerWidth;
+		var docuHeight = window.innerHeight;
+		if(ctx){
+		var orgAspect = width / height;
+		var newAspect = docuWidth / docuHeight;
+		if(orgAspect < newAspect){
+			canvas.height = docuHeight;
+			canvas.width = (docuHeight / height) * width;
+		} else {
+			canvas.width = docuWidth;
+			canvas.height = (docuWidth / width) * height;
+		}
+		var scale = canvas.height / height;
+		ctx.scale(scale, scale);
+		game._softkbd._scale = scale;
+	}
+}
+
+window.addEventListener("resize", function() {
+setCanvasSize();
+}, false );
+setCanvasSize();
 	this._esc = 0;
 	this._velMax = this.VEL_MAX_DEFAULT;
 };
@@ -431,7 +457,7 @@ Game.prototype.startLv = function()
 	for(var i = 0; i < this._cannon.NUM_COL_TABLE; i++)
 	{
 		this._cannon._arrCntCol[i] = this.NUM_INIT_SHELL;
-		
+
 		// デバッグ機能による弾数直指定
 		if (dbgmode === "1") {
 			if(getparam.bullet != null){
