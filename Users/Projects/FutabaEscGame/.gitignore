@@ -16,7 +16,7 @@ obj/*
 #/*.csproj
 /*.pidb
 /*.suo
-/*.sln*
+#/*.sln*
 /*.unityproj
 /*.booproj
 /.idea*/
