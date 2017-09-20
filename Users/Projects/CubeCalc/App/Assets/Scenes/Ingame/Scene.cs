@@ -42,12 +42,36 @@ public class Scene : MonoBehaviour
 	public Text _scoreText; // Text 用変数
 	public Text _scoreText2;    //手数用変数
 	public Text _clearText;		//クリア条件表示用
-	private Color _ccoler = new Color(Random.value, Random.value, Random.value, 1.0f);
 
 	public Step[] _slist;		//座標格納クラス
 
 	//====
 	// メソッド
+
+	// ステージ再挑戦
+	public void RetryStage()
+	{
+		// Restart で _stageCnt++ しているので、キャンセルしている．
+		// コンフリクトを避けるためにこのような処理をしているが，
+		// Restart の中で _stageCnt++ はやらない方が良いだろう…．
+		// 後に要整理．
+		// by r-kishi
+		_stageCnt--;
+		Restart();
+	}
+
+	// 強制的に次のステージへ（デバッグ用）
+	public void Debug_NextStage()
+	{
+		Restart();
+	}
+
+	// 強制的に次のステージへ（デバッグ用）
+	public void Debug_PrevStage()
+	{
+		_stageCnt -= 2;
+		Restart();
+	}
 
 	// 初期化処理
 	void Start ()
