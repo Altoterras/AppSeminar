@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Scene : MonoBehaviour
 {
@@ -42,8 +43,11 @@ public class Scene : MonoBehaviour
 	public Text _scoreText; // Text 用変数
 	public Text _scoreText2;    //手数用変数
 	public Text _clearText;		//クリア条件表示用
+	public Step[] _slist;       //座標格納クラス
 
-	public Step[] _slist;		//座標格納クラス
+	// シーン効果音
+	AudioSource audioSource;
+	public List<AudioClip> audioClip = new List<AudioClip>();
 
 	//====
 	// メソッド
@@ -76,6 +80,7 @@ public class Scene : MonoBehaviour
 	// 初期化処理
 	void Start ()
 	{
+		audioSource = gameObject.AddComponent<AudioSource>();
 		_stage = new Stage();
         Restart();
 	}
@@ -158,7 +163,7 @@ public class Scene : MonoBehaviour
 	void OnGUI()
 	{
 		// デバッグ表示
-		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}\nPOS = [{5}][{6}]\nIDX = [{7}][{8}]", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg, _dice.transform.position.x, _dice.transform.position.z, _stage.PosXToIndexX(Mathf.Round(_dice.transform.position.x)), _stage.PosZToIndexY(Mathf.Round(_dice.transform.position.z))));
+		GUI.Label (new Rect (10, 50, Screen.width - 20, Screen.height - 60), string.Format ("RES = {0} {1} {2} = {3}\n{4}\nPOS = [{5}][{6}]\nIDX = [{7}][{8}] \n accelerationX = {9} accelerationY = {10}", _valuePrev, _msgDuty, _valueCur, _valueResult, _msgMsg, _dice.transform.position.x, _dice.transform.position.z, _stage.PosXToIndexX(Mathf.Round(_dice.transform.position.x)), _stage.PosZToIndexY(Mathf.Round(_dice.transform.position.z)), _dice.kx, _dice.kz));
 
 		// 表示処理
 		if (_stat == State.CLEAR)
@@ -233,6 +238,18 @@ public class Scene : MonoBehaviour
 			case moveType.go:
 				// 移動した場合
 				_moveCnt++;
+
+				// ゲームオーバー判定
+				if (_moveCnt > _govCnt) {
+					Debug.Log("sound1");
+					audioSource.PlayOneShot(audioClip[1]);
+					if (_secStat >= 3.0f)
+					{
+						_stage.Unload();
+						Restart();
+					}
+				}
+
 				if (_moveCnt < _moveCntMax)
 				{
 					// MAX配列までの値をクリア
@@ -313,6 +330,11 @@ public class Scene : MonoBehaviour
 					}
 					break;
 			}
+
+				if (_stat == State.CLEAR) {
+					Debug.Log("sound1");
+					audioSource.PlayOneShot(audioClip[0]);
+				}
 			_secStat = 0.0f;
 
 			break;
