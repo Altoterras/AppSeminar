@@ -18,8 +18,9 @@ public class Scene : MonoBehaviour
 
 	public GameObject _floorBlockPrehab;
 	public Dice _dice;
+    public Effect _effect;
 
-	private Stage _stage;
+    private Stage _stage;
 	private int _clearNum;
 	private int _valuePrev;		//計算結果退避
 	private int _valueCur;		//現在のサイコロの値
@@ -63,20 +64,25 @@ public class Scene : MonoBehaviour
 	// 強制的に次のステージへ（デバッグ用）
 	public void Debug_NextStage()
 	{
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
 	// 強制的に次のステージへ（デバッグ用）
 	public void Debug_PrevStage()
 	{
 		_stageCnt -= 2;
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
 	// 初期化処理
 	void Start ()
 	{
 		_stage = new Stage();
+        _effect = new Effect();
+        //_dice._effect.ef();
+
         Restart();
 	}
 
@@ -132,8 +138,9 @@ public class Scene : MonoBehaviour
 		_slist[_moveCnt].prev = _valuePrev;
 		_slist[_moveCnt].dnum = _valueCur;
 		_slist[_moveCnt].duty = _msgDuty;
+        //_dice._effect.ef();
 
-	}
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -143,13 +150,26 @@ public class Scene : MonoBehaviour
 		// 次のステージへの処理
 		if (_stat == State.CLEAR)
 		{
+            //_effect.ef();
 			_msgMsg = "Clear! ... " + (int)_secStat + " / 3";
-			if (_secStat >= 3.0f)
+            if (_secStat >= 3.0f)
 			{
-				_stage.Unload();
+                //_effect.CleaEffect();
+                _stage.Unload();
 				Restart();
 			}
 		}
+
+        if (_govCnt < _moveCnt)
+        {
+            _msgMsg = "GAMEOVER! ... " + (int)_secStat + " / 3";
+            if (_secStat >= 3.0f)
+            {
+                //_effect.CleaEffect();
+                _stage.Unload();
+                Restart();
+            }
+        }
 
 
 	}
@@ -163,13 +183,23 @@ public class Scene : MonoBehaviour
 		// 表示処理
 		if (_stat == State.CLEAR)
 		{
-			_dice.active = false;
+            _effect.CleaEffect();
+            _dice.active = false;
+            //_secStat += Time.deltaTime;
+            //if (_secStat <= 3.0f) {
+                //_effect.ef();
+                //_effect.ef();
+                //GameObject obj = GameObject.Find("Particle System");
+                //ParticleSystem particle = obj.GetComponent<ParticleSystem>();
+                //particle.Play();
+            //}
+               
 
-			//_scoreText.fontSize = 50;
-			//_scoreText.color = _ccoler;
-			//_scoreText.alignment = TextAnchor.MiddleCenter;
-			//_scoreText.text = _msgMsg;
-			_clearText.text = _msgMsg;
+            //_scoreText.fontSize = 50;
+            //_scoreText.color = _ccoler;
+            //_scoreText.alignment = TextAnchor.MiddleCenter;
+            //_scoreText.text = _msgMsg;
+            _clearText.text = _msgMsg;
 		}
 		else
 		{
