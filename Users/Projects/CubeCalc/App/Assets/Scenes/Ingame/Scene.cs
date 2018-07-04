@@ -12,6 +12,7 @@ public class Scene : MonoBehaviour
 	{
 		RUN,
 		CLEAR,
+		GAMEOVER,
 	}
 
 	//====
@@ -38,6 +39,7 @@ public class Scene : MonoBehaviour
 	private int _govCnt;        //ゲームオーバー条件　20160518mori
 	private string _clearCom;    //クリア条件比較条件格納　20160518mori
 	private string _clearStr;
+	private bool _rtflg;		// リトライ画面表示フラグ
 
 	// 画面表示 20160203mori
 	public Text _scoreText; // Text 用変数
@@ -47,7 +49,11 @@ public class Scene : MonoBehaviour
 
 	// シーン効果音
 	AudioSource audioSource;
+	AudioSource audioBGM;
 	public List<AudioClip> audioClip = new List<AudioClip>();
+
+	// ゲームオーバーCanvacs
+	public Canvas CanvasGameOver = null;
 
 	//====
 	// メソッド
@@ -80,7 +86,9 @@ public class Scene : MonoBehaviour
 	// 初期化処理
 	void Start ()
 	{
+		// audioSourceを読み込む
 		audioSource = gameObject.AddComponent<AudioSource>();
+		audioBGM = gameObject.GetComponent<AudioSource>();
 		_stage = new Stage();
         Restart();
 	}
@@ -96,6 +104,7 @@ public class Scene : MonoBehaviour
 		_moveCntMax = 0;
 		_msgDuty = "+";
 		_msgMsg = "Answer try to be RES >= " + _clearNum;
+		_rtflg = false;
 
 		// ステージを読み込む
 		if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
@@ -103,6 +112,15 @@ public class Scene : MonoBehaviour
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
+
+		// BGMを再生
+		audioBGM.Play();
+
+		// ダイアログを表示するときまで、 GAMEOVERCanvas を無効にしておく。
+		if (CanvasGameOver != null)
+		{
+			CanvasGameOver.enabled = false;
+		}
 
 		// クリア条件表示
 		switch (_clearCom[0])
@@ -129,7 +147,7 @@ public class Scene : MonoBehaviour
 		_secStat = 0.0f;
 
 		//ステップ情報格納クラス（ゲームオーバー手数分用意）
-		_slist = new Step[_govCnt];      //20170118 ←ここでは配列を定義しただけ
+		_slist = new Step[_govCnt+1];      //20170118 ←ここでは配列を定義しただけ
 		_slist[_moveCnt] = new Step();   //20170118 ←こちらで実際に格納するクラスをNewする
 		_slist[_moveCnt].xposi = (int)_dice.transform.position.x;
 		_slist[_moveCnt].zposi = (int)_dice.transform.position.z;
@@ -148,15 +166,23 @@ public class Scene : MonoBehaviour
 		// 次のステージへの処理
 		if (_stat == State.CLEAR)
 		{
-			_msgMsg = "Clear! ... " + (int)_secStat + " / 3";
-			if (_secStat >= 3.0f)
+			_msgMsg = "Clear! ... " + (int)_secStat + " / 5";
+			if (_secStat >= 5.0f)
 			{
 				_stage.Unload();
 				Restart();
 			}
 		}
-
-
+		// GameOver処理
+		if (_stat == State.GAMEOVER)
+		{
+			_msgMsg = "GameOver! ... " + (int)_secStat + " / 5";
+			if (_secStat >= 5.0f)
+			{
+				// リトライダイアログ表示フラグON
+				if (!_rtflg) { _rtflg = true; }
+			}
+		}
 	}
 
 	// GUI 処理
@@ -175,6 +201,20 @@ public class Scene : MonoBehaviour
 			//_scoreText.alignment = TextAnchor.MiddleCenter;
 			//_scoreText.text = _msgMsg;
 			_clearText.text = _msgMsg;
+		}
+		else if (_stat == State.GAMEOVER)
+		{
+			_dice.active = false;
+			_clearText.text = _msgMsg;
+			if (_rtflg) {
+				// リトライダイアログ表示フラグがONの場合、Canvas を有効にする
+				if (CanvasGameOver != null)
+				{
+					CanvasGameOver.enabled = true;
+					Debug.Log("GameOverオブジェクト");
+					_rtflg = false;		//リトライフラグを戻す
+				}
+			}
 		}
 		else
 		{
@@ -238,16 +278,17 @@ public class Scene : MonoBehaviour
 			case moveType.go:
 				// 移動した場合
 				_moveCnt++;
+				Debug.Log(_moveCnt + " / " + _govCnt);
 
 				// ゲームオーバー判定
 				if (_moveCnt > _govCnt) {
-					Debug.Log("sound1");
+					// 現在の手数がGAMEOVER手数を超えた場合
+					_stat = State.GAMEOVER;
+					// BGMを停止
+					audioBGM.Stop();
+					// ゲームオーバー音再生
 					audioSource.PlayOneShot(audioClip[1]);
-					if (_secStat >= 3.0f)
-					{
-						_stage.Unload();
-						Restart();
-					}
+					break;
 				}
 
 				if (_moveCnt < _moveCntMax)
@@ -330,11 +371,12 @@ public class Scene : MonoBehaviour
 					}
 					break;
 			}
-
-				if (_stat == State.CLEAR) {
-					Debug.Log("sound1");
+			if (_stat == State.CLEAR) {
+					// BGMを停止
+					audioBGM.Stop();
+					// ステージクリア音再生
 					audioSource.PlayOneShot(audioClip[0]);
-				}
+			}
 			_secStat = 0.0f;
 
 			break;
