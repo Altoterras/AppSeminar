@@ -18,7 +18,6 @@ public class Scene : MonoBehaviour
 
 	public GameObject _floorBlockPrehab;
 	public Dice _dice;
-    public Effect _effect;
 
     private Stage _stage;
 	private int _clearNum;
@@ -68,7 +67,7 @@ public class Scene : MonoBehaviour
         Restart();
 	}
 
-	// 強制的に次のステージへ（デバッグ用）
+	// 強制的に前のステージへ（デバッグ用）
 	public void Debug_PrevStage()
 	{
 		_stageCnt -= 2;
@@ -80,9 +79,6 @@ public class Scene : MonoBehaviour
 	void Start ()
 	{
 		_stage = new Stage();
-        _effect = new Effect();
-        //_dice._effect.ef();
-
         Restart();
 	}
 
@@ -138,8 +134,6 @@ public class Scene : MonoBehaviour
 		_slist[_moveCnt].prev = _valuePrev;
 		_slist[_moveCnt].dnum = _valueCur;
 		_slist[_moveCnt].duty = _msgDuty;
-        //_dice._effect.ef();
-
     }
 
 	// Update is called once per frame
@@ -150,11 +144,9 @@ public class Scene : MonoBehaviour
 		// 次のステージへの処理
 		if (_stat == State.CLEAR)
 		{
-            //_effect.ef();
 			_msgMsg = "Clear! ... " + (int)_secStat + " / 3";
             if (_secStat >= 3.0f)
 			{
-                //_effect.CleaEffect();
                 _stage.Unload();
 				Restart();
 			}
@@ -183,18 +175,7 @@ public class Scene : MonoBehaviour
 		// 表示処理
 		if (_stat == State.CLEAR)
 		{
-            _effect.CleaEffect();
             _dice.active = false;
-            //_secStat += Time.deltaTime;
-            //if (_secStat <= 3.0f) {
-                //_effect.ef();
-                //_effect.ef();
-                //GameObject obj = GameObject.Find("Particle System");
-                //ParticleSystem particle = obj.GetComponent<ParticleSystem>();
-                //particle.Play();
-            //}
-               
-
             //_scoreText.fontSize = 50;
             //_scoreText.color = _ccoler;
             //_scoreText.alignment = TextAnchor.MiddleCenter;

@@ -40,7 +40,6 @@ public class Dice : MonoBehaviour
 	public bool active { get { return _active; } set { _active = value; } }
 	public validMovingDirectionFunc validMovingDirection { set { _validMovingDirectionFunc = value; } }
 	public onStopEvent onStop { set { _onStopFunc = value; } }
-    public Effect _effect;
 
 	//====
 	// メソッド
@@ -48,8 +47,6 @@ public class Dice : MonoBehaviour
 	// 開始処理
 	void Start ()
 	{
-        //_effect = new Effect();
-        //_effect.ef();
 	}
 	
 	// 毎フレーム処理
@@ -129,8 +126,7 @@ public class Dice : MonoBehaviour
 				if (_onStopFunc != null)
 				{
 					_onStopFunc(_value);
-				}
-                
+				}                
 /*
 				//20160907mori　移動方向
 				lastMove = dir;
@@ -292,9 +288,4 @@ public class Dice : MonoBehaviour
 	{
 		return lastPos;
 	}
-
-    //public void eff()
-    //{
-    //    _effect.ef();
-    //}
 }

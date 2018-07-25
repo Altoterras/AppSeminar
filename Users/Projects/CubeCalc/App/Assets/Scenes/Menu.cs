@@ -15,7 +15,9 @@ public class Menu : MonoBehaviour {
 
     public bool _titleMode;
     public bool _ingameMode;
+    public static bool _soundOnOff;
 	[SerializeField] public Scene _scene;
+
 
     public void onGameSceneOpen()
     {
@@ -47,11 +49,31 @@ public class Menu : MonoBehaviour {
 		_scene.Debug_PrevStage();
 	}
 
-	// Use this for initialization
-	void Start () {
+    public void OnCreditButton()
+    {
+
+    }
+
+    public void OnSoundButton()
+    {
+        _soundOnOff = false;
+        // リスナーのボリュームを 0 に設定
+        //AudioListener.volume = 0f;
+    }
+
+    void OnValueChanged(bool value)
+    {
+        //if (offGraphic != null)
+        //{
+        //    offGraphic.enabled = !value;
+        //}
+    }
+
+    // Use this for initialization
+    void Start () {
         if (_titleMode)
         {
-            //transform.GetChild(0).GetChild((int)Child.CREDIT).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild((int)Child.RETRY).gameObject.SetActive(false);
         }
         else {
             transform.GetChild(0).GetChild((int)Child.CREDIT).gameObject.SetActive(false); 
