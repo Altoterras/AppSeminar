@@ -17,6 +17,7 @@ public class Menu : MonoBehaviour {
     public bool _ingameMode;
     public static bool _soundOnOff;
 	[SerializeField] public Scene _scene;
+	[SerializeField] public Dice _dice;
 
 
     public void onGameSceneOpen()
@@ -48,6 +49,11 @@ public class Menu : MonoBehaviour {
 	{
 		_scene.Debug_PrevStage();
 	}
+
+    public void OnSwitchButton()
+    {
+        _dice.SwchFlg();
+    }
 
     public void OnCreditButton()
     {
