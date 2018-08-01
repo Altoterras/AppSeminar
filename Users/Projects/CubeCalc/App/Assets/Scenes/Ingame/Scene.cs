@@ -21,7 +21,7 @@ public class Scene : MonoBehaviour
 	public GameObject _floorBlockPrehab;
 	public Dice _dice;
 
-	private Stage _stage;
+    private Stage _stage;
 	private int _clearNum;
 	private int _valuePrev;		//計算結果退避
 	private int _valueCur;		//現在のサイコロの値
@@ -73,14 +73,16 @@ public class Scene : MonoBehaviour
 	// 強制的に次のステージへ（デバッグ用）
 	public void Debug_NextStage()
 	{
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
-	// 強制的に次のステージへ（デバッグ用）
+	// 強制的に前のステージへ（デバッグ用）
 	public void Debug_PrevStage()
 	{
 		_stageCnt -= 2;
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
 	// 初期化処理
@@ -155,8 +157,7 @@ public class Scene : MonoBehaviour
 		_slist[_moveCnt].prev = _valuePrev;
 		_slist[_moveCnt].dnum = _valueCur;
 		_slist[_moveCnt].duty = _msgDuty;
-
-	}
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -169,7 +170,7 @@ public class Scene : MonoBehaviour
 			_msgMsg = "Clear! ... " + (int)_secStat + " / 5";
 			if (_secStat >= 5.0f)
 			{
-				_stage.Unload();
+                _stage.Unload();
 				Restart();
 			}
 		}
@@ -194,13 +195,12 @@ public class Scene : MonoBehaviour
 		// 表示処理
 		if (_stat == State.CLEAR)
 		{
-			_dice.active = false;
-
-			//_scoreText.fontSize = 50;
-			//_scoreText.color = _ccoler;
-			//_scoreText.alignment = TextAnchor.MiddleCenter;
-			//_scoreText.text = _msgMsg;
-			_clearText.text = _msgMsg;
+            _dice.active = false;
+            //_scoreText.fontSize = 50;
+            //_scoreText.color = _ccoler;
+            //_scoreText.alignment = TextAnchor.MiddleCenter;
+            //_scoreText.text = _msgMsg;
+            _clearText.text = _msgMsg;
 		}
 		else if (_stat == State.GAMEOVER)
 		{

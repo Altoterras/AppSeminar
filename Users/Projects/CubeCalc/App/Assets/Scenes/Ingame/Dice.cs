@@ -38,7 +38,7 @@ public class Dice : MonoBehaviour
 	private Vector3 _accDice;
 	private bool swchFlg;
 
-	private SoundManager smg;
+	//private SoundManager smg;
 
 	//====
 	// プロパティ
@@ -206,7 +206,7 @@ public class Dice : MonoBehaviour
 				if (_onStopFunc != null)
 				{
 					_onStopFunc(_value);
-				}
+				}                
 /*
 				//20160907mori　移動方向
 				lastMove = dir;
