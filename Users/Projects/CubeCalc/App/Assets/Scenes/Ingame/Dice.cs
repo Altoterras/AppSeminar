@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Dice : MonoBehaviour
 {
@@ -33,6 +34,12 @@ public class Dice : MonoBehaviour
 	private Vector3 lastMove;
 	private Vector3 lastPos;
 
+	private float speed = 5.0f; //加速度センサー
+	private Vector3 _accDice;
+	private bool swchFlg;
+
+	//private SoundManager smg;
+
 	//====
 	// プロパティ
 
@@ -41,12 +48,24 @@ public class Dice : MonoBehaviour
 	public validMovingDirectionFunc validMovingDirection { set { _validMovingDirectionFunc = value; } }
 	public onStopEvent onStop { set { _onStopFunc = value; } }
 
+	//デバッグ表示用
+	public int kx;
+	public int kz;
+	private GUIStyle style;
+	public GUIStyleState styleState;
+
+	// サイコロSE
+	AudioSource audioSource;
+	public List<AudioClip> audioClip = new List<AudioClip>();
+
+
 	//====
 	// メソッド
 
 	// 開始処理
 	void Start ()
 	{
+		audioSource = gameObject.AddComponent<AudioSource>();
 	}
 	
 	// 毎フレーム処理
@@ -57,33 +76,93 @@ public class Dice : MonoBehaviour
 		// サイコロの値チェック
 		if(CheckLocalHit()) { AcquireValue (); }
 
-		// タッチパネルによる操作
 		Vector3 dir = Vector3.zero;
 		Vector3 rot = Vector3.zero;
-		if (Input.touchCount > 0) {
-			Touch touch = Input.GetTouch(0);
-			if(((Screen.height / 4) <= touch.position.y) && (touch.position.y <= (Screen.height / 4 * 3)))
+
+
+		if (dir.sqrMagnitude > 1)
+		{
+			dir.Normalize();
+		}
+
+		dir *= Time.deltaTime;
+
+		// ターゲット端末の縦横の表示に合わせてremapする
+		if (dir == Vector3.right) { rot = Vector3.back; }
+		if (dir == Vector3.left) { rot = Vector3.forward; }
+		if (dir == Vector3.forward) { rot = Vector3.right; }
+		if (dir == Vector3.back) { rot = Vector3.left; }
+
+		// 傾きによる操作
+		if (swchFlg == true) {
+
+		_accDice = Input.acceleration;
+
+		float flx = Mathf.Round(_accDice.x);
+		float fly = Mathf.Round(_accDice.y);
+		float flz = _accDice.z;
+
+		//端末が表向きの場合
+		if (flz <= 0) {
+			//右に傾けた場合
+			if (flx == 1.0f)
 			{
-				if(touch.position.x <= (Screen.width / 2)) {
-					dir = Vector3.left;
-					rot = Vector3.forward;
-				} else {
-					dir = Vector3.right;
-					rot = Vector3.back;
-				}
+				dir = Vector3.right;
+				rot = Vector3.back;
 			}
-			if(((Screen.width / 4) <= touch.position.x) && (touch.position.x <= (Screen.width / 4 * 3)))
+			//左に傾けた場合
+			else if (flx == -1.0f)
 			{
-				if(touch.position.y <= (Screen.height / 2)) {
-					dir = Vector3.back;
-					rot = Vector3.left;
+				dir = Vector3.left;
+				rot = Vector3.forward;
+			}
+
+			//上に傾けた場合
+			if (fly == 1.0f)
+			{
+				dir = Vector3.forward;
+				rot = Vector3.right;
+			}
+			//下に傾けた場合
+			else if (fly == -1.0f)
+			{
+				dir = Vector3.back;
+				rot = Vector3.left;
+			}
+		}
+		} else
+		{
+			// タッチパネルによる操作
+			if (Input.touchCount > 0)
+			{
+				Touch touch = Input.GetTouch(0);
+				if (((Screen.height / 4) <= touch.position.y) && (touch.position.y <= (Screen.height / 4 * 3)))
+				{
+					if (touch.position.x <= (Screen.width / 2))
+					{
+						dir = Vector3.left;
+						rot = Vector3.forward;
+					}
+					else {
+						dir = Vector3.right;
+						rot = Vector3.back;
+					}
 				}
-				else {
-					dir = Vector3.forward;
-					rot = Vector3.right;
+				if (((Screen.width / 4) <= touch.position.x) && (touch.position.x <= (Screen.width / 4 * 3)))
+				{
+					if (touch.position.y <= (Screen.height / 2))
+					{
+						dir = Vector3.back;
+						rot = Vector3.left;
+					}
+					else {
+						dir = Vector3.forward;
+						rot = Vector3.right;
+					}
 				}
 			}
 		}
+
 		// キーボードによる操作
 		if (Input.GetKey ("right")) {
 			dir = Vector3.right;
@@ -116,6 +195,7 @@ public class Dice : MonoBehaviour
 			// 回転アニメーション終了判定
 			if (_cntMove < 0.0f)
 			{
+				audioSource.PlayOneShot(audioClip[0]);  // SE再生
 				_cntMove = 0.0f;
 
 				// 直角補正
@@ -126,7 +206,7 @@ public class Dice : MonoBehaviour
 				if (_onStopFunc != null)
 				{
 					_onStopFunc(_value);
-				}
+				}                
 /*
 				//20160907mori　移動方向
 				lastMove = dir;
@@ -152,13 +232,25 @@ public class Dice : MonoBehaviour
 	{
 		// デバッグ表示
 		GUI.Label (new Rect (10, 10, Screen.width - 20, Screen.height - 20), string.Format ("pos=[{0}, {1}, {2}]\nrot=[{3}, {4}, {5}]", this.transform.position.x, this.transform.position.y, this.transform.position.z, this.transform.eulerAngles.x, this.transform.eulerAngles.y, this.transform.eulerAngles.z));
+
+		//デバッグ表示
+		style = new GUIStyle();
+		style.fontSize = 30;
+		styleState.textColor = Color.green;
+		style.normal = styleState;
+
+		//デバッグ表示
+		GUI.Label(new Rect(10, 300, Screen.width - 20, Screen.height - 60), string.Format("accelerationX = {0} accelerationY = {1} accelerationZ = {2}\nSwitchFLG = {3}", System.Math.Round(_accDice.x,2), System.Math.Round(_accDice.y,2), System.Math.Round(_accDice.z,2), swchFlg), style);
+
 	}
 
 	// 移動を開始する
 	void Move(Vector3 dir, Vector3 rot) {
 		if (_cntMove > 0.0f) {
+			// 移動中
 			return;
 		}
+		// 移動開始
 		_cntMove = MOVE_SEC;
 		_dirMove = dir;
 		_rotMove = rot;
@@ -287,6 +379,18 @@ public class Dice : MonoBehaviour
 	public Vector3 getlastPos()
 	{
 		return lastPos;
+	}
+
+	public void SwchFlg()
+	{
+		if (swchFlg == false)
+		{
+			swchFlg = true;
+			
+		}
+		else {
+			swchFlg = false;
+		}
 	}
 
 
