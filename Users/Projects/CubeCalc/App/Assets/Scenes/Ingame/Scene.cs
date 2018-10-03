@@ -67,7 +67,8 @@ public class Scene : MonoBehaviour
 		// 後に要整理．
 		// by r-kishi
 		_stageCnt--;
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
 	// 強制的に次のステージへ（デバッグ用）
@@ -84,6 +85,12 @@ public class Scene : MonoBehaviour
         _stage.Unload();
         Restart();
 	}
+
+    // ステージ情報の取得
+    public int StageInfo()
+    {
+        return _stageCnt;
+    }
 
 	// 初期化処理
 	void Start ()
@@ -109,7 +116,13 @@ public class Scene : MonoBehaviour
 		_rtflg = false;
 
 		// ステージを読み込む
-		if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
+		//if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
+        if (_stageCnt >= _stageMax)
+          { _stageCnt = 1; }
+        else if (_stageCnt <= -1)
+          { _stageCnt = _stageMax; }
+        else
+          { _stageCnt++; }
         _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
