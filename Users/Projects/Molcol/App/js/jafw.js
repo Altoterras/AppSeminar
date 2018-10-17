@@ -140,12 +140,12 @@ KeybordIf.prototype =
 		for(var i = 0; i < 255; i++)
 		{
 			this._onkey[i] = this._onkeyLast[i];
-			this._shift = this._shiftLast;
-			this._ctrl = this._ctrlLast;
 			this._onkeyLast[i] = false;
-			this._shiftLast = false;
-			this._ctrlLast = false;
 		}
+		this._shift = this._shiftLast;
+		this._ctrl = this._ctrlLast;
+		this._shiftLast = false;
+		this._ctrlLast = false;
 	},
 };
 

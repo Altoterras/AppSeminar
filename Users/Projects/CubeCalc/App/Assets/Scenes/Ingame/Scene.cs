@@ -55,6 +55,9 @@ public class Scene : MonoBehaviour
 	// ゲームオーバーCanvacs
 	public Canvas CanvasGameOver = null;
 
+	// Saveクラス
+	public SaveSys _save;
+
 	//====
 	// メソッド
 
@@ -99,30 +102,38 @@ public class Scene : MonoBehaviour
 		audioSource = gameObject.AddComponent<AudioSource>();
 		audioBGM = gameObject.GetComponent<AudioSource>();
 		_stage = new Stage();
-        Restart();
+		_save = new SaveSys();
+
+		// ハイスコアを読み込む
+		_save.CsNum = 0;				// クリアステージ数格納
+		_save.HScore = new int[99];		// ハイスコア格納
+		_save.ReadFile();
+
+		Restart();
 	}
 
-	// 再開処理
-	void Restart()
-	{
-		//初期値設定
-		_valuePrev = 0;
-		_valueCur = 0;
-		_valueResult = 0;
-		_moveCnt = 0;
-		_moveCntMax = 0;
-		_msgDuty = "+";
-		_msgMsg = "Answer try to be RES >= " + _clearNum;
-		_rtflg = false;
+    // 再開処理
+    void Restart()
+    {
+        //初期値設定
+        _valuePrev = 0;
+        _valueCur = 0;
+        _valueResult = 0;
+        _moveCnt = 0;
+        _moveCntMax = 0;
+        _msgDuty = "+";
+        _msgMsg = "Answer try to be RES >= " + _clearNum;
+        _rtflg = false;
 
-		// ステージを読み込む
+        // ステージを読み込む
 		//if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
-        if (_stageCnt >= _stageMax)
-          { _stageCnt = 1; }
-        else if (_stageCnt <= -1)
-          { _stageCnt = _stageMax; }
-        else
-          { _stageCnt++; }
+        if (_stageCnt >= _stageMax) {
+            _stageCnt = 1;
+        } else if (_stageCnt <= -1) {
+            _stageCnt = _stageMax; 
+        } else {
+           _stageCnt++;
+        }
         _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
@@ -162,7 +173,7 @@ public class Scene : MonoBehaviour
 		_secStat = 0.0f;
 
 		//ステップ情報格納クラス（ゲームオーバー手数分用意）
-		_slist = new Step[_govCnt+1];      //20170118 ←ここでは配列を定義しただけ
+		_slist = new Step[_govCnt+1];    //20170118 ←ここでは配列を定義しただけ
 		_slist[_moveCnt] = new Step();   //20170118 ←こちらで実際に格納するクラスをNewする
 		_slist[_moveCnt].xposi = (int)_dice.transform.position.x;
 		_slist[_moveCnt].zposi = (int)_dice.transform.position.z;
@@ -389,6 +400,9 @@ public class Scene : MonoBehaviour
 					audioBGM.Stop();
 					// ステージクリア音再生
 					audioSource.PlayOneShot(audioClip[0]);
+					// クリアステージ数を保存 
+					_save.CsnumUpd(_stageCnt);
+					_save.HScoreSave(_stageCnt, _moveCnt);
 			}
 			_secStat = 0.0f;
 
