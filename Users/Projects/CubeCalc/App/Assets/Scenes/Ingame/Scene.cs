@@ -55,9 +55,6 @@ public class Scene : MonoBehaviour
 	// ゲームオーバーCanvacs
 	public Canvas CanvasGameOver = null;
 
-	// Saveクラス
-	public SaveSys _save;
-
 	//====
 	// メソッド
 
@@ -95,14 +92,7 @@ public class Scene : MonoBehaviour
 		audioSource = gameObject.AddComponent<AudioSource>();
 		audioBGM = gameObject.GetComponent<AudioSource>();
 		_stage = new Stage();
-		_save = new SaveSys();
-
-		// ハイスコアを読み込む
-		_save.CsNum = 0;				// クリアステージ数格納
-		_save.HScore = new int[99];		// ハイスコア格納
-		_save.ReadFile();
-
-		Restart();
+        Restart();
 	}
 
 	// 再開処理
@@ -119,11 +109,7 @@ public class Scene : MonoBehaviour
 		_rtflg = false;
 
 		// ステージを読み込む
-		if (_stageCnt >= _stageMax) {
-			_stageCnt = 1;
-		} else {
-			_stageCnt++;
-		}
+		if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
         _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
@@ -163,7 +149,7 @@ public class Scene : MonoBehaviour
 		_secStat = 0.0f;
 
 		//ステップ情報格納クラス（ゲームオーバー手数分用意）
-		_slist = new Step[_govCnt+1];    //20170118 ←ここでは配列を定義しただけ
+		_slist = new Step[_govCnt+1];      //20170118 ←ここでは配列を定義しただけ
 		_slist[_moveCnt] = new Step();   //20170118 ←こちらで実際に格納するクラスをNewする
 		_slist[_moveCnt].xposi = (int)_dice.transform.position.x;
 		_slist[_moveCnt].zposi = (int)_dice.transform.position.z;
@@ -264,6 +250,11 @@ public class Scene : MonoBehaviour
 				_mtype = moveType.redo;  //やり直す
 			}
 		}
+
+		// サイコロが当たった時のパーティクル - 現在止まっているステージを取得
+		ParticleSystem _diceParticle = _stage.GetCellFromPosition(_dice.transform.position)._go.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
+		_diceParticle.Play();
+
 		// サイコロ移動判定
 		switch (_mtype)
 		{
@@ -390,9 +381,6 @@ public class Scene : MonoBehaviour
 					audioBGM.Stop();
 					// ステージクリア音再生
 					audioSource.PlayOneShot(audioClip[0]);
-					// クリアステージ数を保存 
-					_save.CsnumUpd(_stageCnt);
-					_save.HScoreSave(_stageCnt, _moveCnt);
 			}
 			_secStat = 0.0f;
 
