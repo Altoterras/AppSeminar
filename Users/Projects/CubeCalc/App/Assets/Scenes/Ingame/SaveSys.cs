@@ -21,8 +21,9 @@ public class SaveSys : MonoBehaviour {
 
 	//====
 	// フィールド変数
-	private int _csnum;		//クリアステージ数
+	private int _csnum;     //クリアステージ数
 	private int[] _hscore;  //ハイスコア
+//	private int[][] _hscore;  //ハイスコア
 
 	private string _content;
 	
@@ -62,19 +63,19 @@ public class SaveSys : MonoBehaviour {
 	// ハイスコア保存
 	public void HScoreSave(int stn, int hsc)
 	{
-		int i = stn;
-//		Debug.Log("旧ハイスコア：" + _hscore[i]);
-		if (_hscore[i] > hsc) {
+//		Debug.Log("旧ハイスコア：" + _hscore[stn]);
+		if (_hscore[stn] > hsc) {
 			// 手数がハイスコア（最小手数）より少ない場合、ハイスコアを更新
-			_hscore[i] = hsc;
+			_hscore[stn] = hsc;
 			this.SaveFile();
 		}
-//		Debug.Log("ハイスコア更新：" + _hscore[i]);
+//		Debug.Log("ハイスコア更新：" + _hscore[stn]);
 	}
 
 	// 外部ファイル読み込み
 	public void ReadFile()
 	{
+		//↓1017次回ここから　ファイル読み込みを全体読み込みに
 		string _fsflg = "0";
 		int i = 1;
 
@@ -118,10 +119,39 @@ public class SaveSys : MonoBehaviour {
 	// 外部ファイル保存
 	public void SaveFile()
 	{
+		FileInfo fi = new FileInfo(Application.dataPath + "/" + "FileReadTest.txt");
+		Debug.Log("save!");
+		// ファイル書き出し
+		// 現在のフォルダにsaveData.csvを出力する(決まった場所に出力したい場合は絶対パスを指定してください)
+		// 引数説明：第1引数→ファイル出力先, 第2引数→ファイルに追記(true)or上書き(false), 第3引数→エンコード
+		//		StreamWriter sw = new StreamWriter(Application.dataPath + "/" + "FileReadTest.txt", false, Encoding.GetEncoding("Shift_JIS"));
+		StreamWriter sw = new StreamWriter(fi.OpenWrite(), Encoding.UTF8);
+		StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8);
+		//sw = fi.AppendText();
+		//クリアステージ数読み込み
+		//		_csnum = int.Parse(sw.WriteLine());
+		//		_content = sr.ReadLine();
+		sw.WriteLine("aaaaaaa");
+
+		// ハイスコア格納まで読み飛ばし
+		/*
+				// データ出力
+				for (int i = 0; i < 3; i++)
+				{
+					string[] str = { "tatsu", "" + (i + 1) };
+					string str2 = string.Join(",", str);
+					sw.WriteLine(str2);
+				}
+		*/
+		// StreamWriterを閉じる
+		sw.Close();
+
+
+
 	}
 
 	// シリアライズ
 
 	// デシリアライズ
 
-	}
+}
