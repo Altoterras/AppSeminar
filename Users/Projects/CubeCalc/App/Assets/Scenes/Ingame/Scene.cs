@@ -30,7 +30,7 @@ public class Scene : MonoBehaviour
 	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
-    private int _stageMax = 2;
+    private int _stageMax = 3;
     private int _stageCnt = 0;
     private int _diceX;
     private int _diceZ;
