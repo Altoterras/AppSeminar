@@ -30,8 +30,8 @@ public class Scene : MonoBehaviour
 	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
-    private int _stageMax = 3;
-    private int _stageCnt = 0;
+    private int _stageMax;
+    private int _stageCnt;
     private int _diceX;
     private int _diceZ;
 	private int _moveCnt;   //手数カウント
@@ -108,8 +108,10 @@ public class Scene : MonoBehaviour
 		_save.CsNum = 0;				// クリアステージ数格納
 		_save.HScore = new int[99];		// ハイスコア格納
 		_save.ReadFile();
+        _stageCnt = 0;                  // 後々SaveSysクラスから取得する
+        _stageMax = 3;                  // 後々Constクラスから取得する
 
-		Restart();
+        Restart();
 	}
 
     // 再開処理
