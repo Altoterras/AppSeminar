@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour {
@@ -19,5 +20,10 @@ public class Title : MonoBehaviour {
     private void OnGUI()
     {
         GUI.Label(new Rect(0, 0, 100, 20), "さいころコロコロ");
+    }
+
+    public void onGameSceneOpen()
+    {
+        SceneManager.LoadScene("Ingame");
     }
 }

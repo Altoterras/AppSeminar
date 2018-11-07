@@ -30,7 +30,7 @@ public class Scene : MonoBehaviour
 	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
-    private int _stageMax = 2;
+    private int _stageMax = 3;
     private int _stageCnt = 0;
     private int _diceX;
     private int _diceZ;
@@ -70,7 +70,8 @@ public class Scene : MonoBehaviour
 		// 後に要整理．
 		// by r-kishi
 		_stageCnt--;
-		Restart();
+        _stage.Unload();
+        Restart();
 	}
 
 	// 強制的に次のステージへ（デバッグ用）
@@ -87,6 +88,12 @@ public class Scene : MonoBehaviour
         _stage.Unload();
         Restart();
 	}
+
+    // ステージ情報の取得
+    public int StageInfo()
+    {
+        return _stageCnt;
+    }
 
 	// 初期化処理
 	void Start ()
@@ -105,25 +112,28 @@ public class Scene : MonoBehaviour
 		Restart();
 	}
 
-	// 再開処理
-	void Restart()
-	{
-		//初期値設定
-		_valuePrev = 0;
-		_valueCur = 0;
-		_valueResult = 0;
-		_moveCnt = 0;
-		_moveCntMax = 0;
-		_msgDuty = "+";
-		_msgMsg = "Answer try to be RES >= " + _clearNum;
-		_rtflg = false;
+    // 再開処理
+    void Restart()
+    {
+        //初期値設定
+        _valuePrev = 0;
+        _valueCur = 0;
+        _valueResult = 0;
+        _moveCnt = 0;
+        _moveCntMax = 0;
+        _msgDuty = "+";
+        _msgMsg = "Answer try to be RES >= " + _clearNum;
+        _rtflg = false;
 
-		// ステージを読み込む
-		if (_stageCnt >= _stageMax) {
-			_stageCnt = 1;
-		} else {
-			_stageCnt++;
-		}
+        // ステージを読み込む
+		//if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
+        if (_stageCnt >= _stageMax) {
+            _stageCnt = 1;
+        } else if (_stageCnt <= -1) {
+            _stageCnt = _stageMax; 
+        } else {
+           _stageCnt++;
+        }
         _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
