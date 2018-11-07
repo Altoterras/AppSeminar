@@ -21,4 +21,9 @@ public class Title : MonoBehaviour {
     {
         GUI.Label(new Rect(0, 0, 100, 20), "さいころコロコロ");
     }
+
+    public void onGameSceneOpen()
+    {
+        SceneManager.LoadScene("Ingame");
+    }
 }

@@ -11,6 +11,7 @@ public class Menu : MonoBehaviour {
         STAGE,
         SOUND,
         CREDIT,
+        TITLE,
     }
 
     public bool _titleMode;
@@ -21,10 +22,11 @@ public class Menu : MonoBehaviour {
 	[SerializeField] public Dice _dice;
 
 
-    public void onGameSceneOpen()
-    {
-        SceneManager.LoadScene("Ingame");
-    }
+// 複数のSceneでIngameSceneへの遷移を使用するようになったら復活させる
+//    public void onGameSceneOpen()
+//    {
+//        SceneManager.LoadScene("Ingame");
+//    }
 
     public void OnMenuOpenButton()
 	{
@@ -55,14 +57,10 @@ public class Menu : MonoBehaviour {
         _stgNo.text = string.Format("{0}", _scene.StageInfo());
     }
 
+    //　Menuと関係ない処理のため、後で切り出すこと
     public void OnSwitchButton()
     {
         _dice.SwchFlg();
-    }
-
-    public void OnCreditButton()
-    {
-
     }
 
     public void OnSoundButton()
@@ -70,6 +68,16 @@ public class Menu : MonoBehaviour {
         _soundOnOff = false;
         // リスナーのボリュームを 0 に設定
         //AudioListener.volume = 0f;
+    }
+
+    public void OnCreditButton()
+    {
+
+    }
+
+    public void OnReturnToTitleButton()
+    {
+        SceneManager.LoadScene("Title");
     }
 
     void OnValueChanged(bool value)
@@ -85,6 +93,7 @@ public class Menu : MonoBehaviour {
         if (_titleMode)
         {
             transform.GetChild(0).GetChild((int)Child.STAGE).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild((int)Child.TITLE).gameObject.SetActive(false);
         }
         else {
             transform.GetChild(0).GetChild((int)Child.CREDIT).gameObject.SetActive(false);
