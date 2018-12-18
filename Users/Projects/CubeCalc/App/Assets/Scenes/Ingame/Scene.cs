@@ -30,8 +30,6 @@ public class Scene : MonoBehaviour
 	private float _secStat;
 	private string _msgDuty;
 	private string _msgMsg;
-    private int _stageMax;
-    private int _stageCnt;
     private int _diceX;
     private int _diceZ;
 	private int _moveCnt;   //手数カウント
@@ -64,12 +62,12 @@ public class Scene : MonoBehaviour
 	// ステージ再挑戦
 	public void RetryStage()
 	{
-		// Restart で _stageCnt++ しているので、キャンセルしている．
+		// Restart で World.StageCnt++ しているので、キャンセルしている．
 		// コンフリクトを避けるためにこのような処理をしているが，
-		// Restart の中で _stageCnt++ はやらない方が良いだろう…．
+		// Restart の中で World.StageCnt++ はやらない方が良いだろう…．
 		// 後に要整理．
 		// by r-kishi
-		_stageCnt--;
+		World.StageCnt--;
         _stage.Unload();
         Restart();
 	}
@@ -84,7 +82,7 @@ public class Scene : MonoBehaviour
 	// 強制的に前のステージへ（デバッグ用）
 	public void Debug_PrevStage()
 	{
-		_stageCnt -= 2;
+		World.StageCnt -= 2;
         _stage.Unload();
         Restart();
 	}
@@ -92,7 +90,7 @@ public class Scene : MonoBehaviour
     // ステージ情報の取得
     public int StageInfo()
     {
-        return _stageCnt;
+        return World.StageCnt;
     }
 
 	// 初期化処理
@@ -108,8 +106,8 @@ public class Scene : MonoBehaviour
 		_save.CsNum = 0;				// クリアステージ数格納
 		_save.HScore = new int[99];		// ハイスコア格納
 		_save.ReadFile();
-        _stageCnt = 0;                  // 後々SaveSysクラスから取得する
-        _stageMax = 3;                  // 後々Constクラスから取得する
+        World.StageCnt = 0;                  // 後々SaveSysクラスから取得する
+        World.StageMax = 3;                  // 後々Constクラスから取得する
 
         Restart();
 	}
@@ -128,15 +126,15 @@ public class Scene : MonoBehaviour
         _rtflg = false;
 
         // ステージを読み込む
-		//if (_stageCnt >= _stageMax) { _stageCnt = 1; } else { _stageCnt++; }
-        if (_stageCnt >= _stageMax) {
-            _stageCnt = 1;
-        } else if (_stageCnt <= -1) {
-            _stageCnt = _stageMax; 
+		//if (World.StageCnt >= World.StageMax) { World.StageCnt = 1; } else { World.StageCnt++; }
+        if (World.StageCnt >= World.StageMax) {
+            World.StageCnt = 1;
+        } else if (World.StageCnt <= -1) {
+            World.StageCnt = World.StageMax; 
         } else {
-           _stageCnt++;
+           World.StageCnt++;
         }
-        _stage.Load(_floorBlockPrehab, _stageCnt, ref _diceX, ref _diceZ);
+        _stage.Load(_floorBlockPrehab, World.StageCnt, ref _diceX, ref _diceZ);
 		_govCnt = _stage.getgovCnt();   //ゲームオーバー条件を取得 20160518mori
 		_clearNum = _stage.getclearCnt();       //クリア条件を取得　20160518mori
 		_clearCom = _stage.getclearOperator();  //クリア条件2を取得　20160525mori
@@ -403,8 +401,8 @@ public class Scene : MonoBehaviour
 					// ステージクリア音再生
 					audioSource.PlayOneShot(audioClip[0]);
 					// クリアステージ数を保存 
-					_save.CsnumUpd(_stageCnt);
-					_save.HScoreSave(_stageCnt, _moveCnt);
+					World.CsnumUpd(World.StageCnt);
+					World.HScoreSave(World.StageCnt, _moveCnt);
 			}
 			_secStat = 0.0f;
 

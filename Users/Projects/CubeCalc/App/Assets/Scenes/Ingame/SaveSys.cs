@@ -50,28 +50,6 @@ public class SaveSys : MonoBehaviour {
 	}
 
 
-	// クリアステージ数を更新
-	public void CsnumUpd (int csn) {
-//		Debug.Log("旧ステージ数：" + _csnum);
-		if (csn > _csnum) {
-			_csnum = csn;
-		}
-//		Debug.Log("ステージ数更新：" + _csnum);
-	}
-
-	// ハイスコア保存
-	public void HScoreSave(int stn, int hsc)
-	{
-		int i = stn;
-//		Debug.Log("旧ハイスコア：" + _hscore[i]);
-		if (_hscore[i] > hsc) {
-			// 手数がハイスコア（最小手数）より少ない場合、ハイスコアを更新
-			_hscore[i] = hsc;
-			this.SaveFile();
-		}
-//		Debug.Log("ハイスコア更新：" + _hscore[i]);
-	}
-
 	// 外部ファイル読み込み
 	public void ReadFile()
 	{
@@ -113,11 +91,13 @@ public class SaveSys : MonoBehaviour {
 			_content = sr.ReadLine();
 			if (_content == "HStart") { _fsflg = "1"; _content = sr.ReadLine(); }
 		}
+		// World.Load();
 	}
 	
 	// 外部ファイル保存
 	public void SaveFile()
 	{
+		// World.Save()
 	}
 
 	// シリアライズ

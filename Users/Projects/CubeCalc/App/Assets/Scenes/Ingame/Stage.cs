@@ -57,12 +57,12 @@ public class Stage
 		XmlDocument xdoc = new XmlDocument();               // XMLオブジェクトを生成
 //		xdoc.Load("http://hakuhou.space/__tmp__/test.xml");	// XMLファイルを読み込む
 //		TextAsset textAsset = Resources.Load("Stages/n001") as TextAsset;
-        TextAsset textAsset = Resources.Load("Stages/n" + stageCnt.ToString("000")) as TextAsset;
+        TextAsset textAsset = Resources.Load(Const.STAGE_SOURCE + stageCnt.ToString("000")) as TextAsset;
         xdoc.LoadXml(textAsset.text);
 
 		// 全部配列
 		//XmlNodeList nodeListText = xdoc.SelectNodes("stage");   // テキストの配列の読み込み
-		XmlNodeList nodeListText = xdoc.SelectNodes("stagedata/stage"); // テキストの配列の読み込み	//20160518mori
+		XmlNodeList nodeListText = xdoc.SelectNodes(Const.STAGE_NODES); // テキストの配列の読み込み	//20160518mori
 
 		// 表示
 		Debug.Log("ORG: " + nodeListText[0].InnerText);
